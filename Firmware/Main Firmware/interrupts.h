@@ -1,4 +1,3 @@
-#include <xc.h>
 
 #define ISR __attribute__((interrupt(auto_psv)))
 

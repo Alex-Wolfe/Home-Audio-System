@@ -1,5 +1,4 @@
 #include <xc.h>
-#include <stdbool.h>       /* Includes true/false definition */
 #include "interrupts.h"
 #include "config.h"
 

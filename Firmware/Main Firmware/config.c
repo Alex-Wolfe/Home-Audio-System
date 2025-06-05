@@ -1,6 +1,4 @@
 #include <xc.h>
-#include <stdbool.h>         /* For true/false definition */
-
 #include "config.h"            /* variables/params used by user.c */
 
 /******************************************************************************/

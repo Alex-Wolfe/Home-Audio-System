@@ -71,8 +71,6 @@
 /*                      Files to Include                                      */
 /******************************************************************************/
 #include <xc.h>
-#include <stdbool.h>        // Includes true/false definition   
-
 #include "system.h"         // System functions/parameters
 #include "user.h"           // User functions/parameters
 #include "config.h"         // Config functions/paramters

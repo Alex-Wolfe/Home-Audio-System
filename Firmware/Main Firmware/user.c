@@ -1,5 +1,4 @@
 #include <xc.h>
-#include <stdbool.h>         /* For true/false definition */
 
 #include "user.h"
 
