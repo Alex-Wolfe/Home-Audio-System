@@ -1,0 +1,203 @@
+(footprint "SMBJ36A"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "SMBJ36A")
+	(tags "Integrated Circuit")
+	(property "Reference" "IC**"
+		(at -6.6 2.975 0)
+		(layer "F.SilkS")
+		(uuid "96e99753-5028-40f7-9f3f-13ea9e747640")
+		(effects
+			(font
+				(size 0.762 0.762)
+				(thickness 0.127)
+				(bold yes)
+			)
+		)
+	)
+	(property "Value" "SMBJ36A"
+		(at -6.6 2.975 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "462aff17-0baf-496b-bc23-1f32d1aa8c29")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "08113446-a210-477e-9057-da6b8432a83b")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3a87bca4-7a23-47ae-9638-4e50a19e548d")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c67ba92c-94af-49da-9711-ca79aec5c02c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -9.4 1)
+		(end -3.8 1)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "38f08559-b6e6-42af-a60e-a9620bbd6cff")
+	)
+	(fp_line
+		(start -9.4 4.95)
+		(end -3.8 4.95)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7fa3951b-6583-4876-8815-864e68c50c2e")
+	)
+	(fp_line
+		(start -11.2 0)
+		(end -2 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f8af81db-fdcd-424e-8860-ca277536f2d7")
+	)
+	(fp_line
+		(start -11.2 5.95)
+		(end -11.2 0)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "9be10677-08d0-449d-9568-e300fa5d1dc3")
+	)
+	(fp_line
+		(start -2 0)
+		(end -2 5.95)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "cab0348a-77a4-4d01-ad30-a333eb53ada8")
+	)
+	(fp_line
+		(start -2 5.95)
+		(end -11.2 5.95)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "acf2d52d-f8a2-48db-9530-78aaf781b153")
+	)
+	(fp_line
+		(start -9.4 1)
+		(end -3.8 1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "297a09f9-77a8-4d5d-b3ea-09fd777ba28e")
+	)
+	(fp_line
+		(start -9.4 4.95)
+		(end -9.4 1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "663aa84a-8388-4d22-abf8-2ada6141c73e")
+	)
+	(fp_line
+		(start -3.8 1)
+		(end -3.8 4.95)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "a3d35eda-2390-444d-abe6-ff204ec351a7")
+	)
+	(fp_line
+		(start -3.8 4.95)
+		(end -9.4 4.95)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "c0db0414-7983-4be9-a5cb-405f76fa175e")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -6.6 2.975 0)
+		(layer "F.Fab")
+		(uuid "65279909-b14b-47e5-a56a-a8e7fc94017b")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -8.95 2.975 90)
+		(size 2.2 2.5)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "5473063f-d731-4986-86a4-b424b7bc9a7a")
+	)
+	(pad "2" smd rect
+		(at -4.25 2.975 90)
+		(size 2.2 2.5)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "1e8a0b35-2511-4a23-93f5-989358e7389a")
+	)
+	(model "C:\\Users\\adwol\\OneDrive\\Documents\\SamacSys_PCB_Library\\KiCad\\3D_Models\\SamacSys_Parts.3dshapes\\SMBJ36A.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

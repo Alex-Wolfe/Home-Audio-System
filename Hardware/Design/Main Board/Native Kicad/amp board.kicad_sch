@@ -1,0 +1,57 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "155d307c-d052-49ed-8a33-15ea02ffe5f3")
+	(paper "B")
+	(title_block
+		(title "Audio System")
+		(date "2025-02-06")
+		(rev "P1")
+		(company "Wolfe Engineering")
+	)
+	(lib_symbols)
+	(sheet
+		(at 45.72 54.61)
+		(size 224.79 146.05)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "3de3b732-bba6-4bbd-a76a-3d24b20607d7")
+		(property "Sheetname" "Main Board"
+			(at 45.72 53.8984 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Main Board.kicad_sch"
+			(at 45.72 201.2446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

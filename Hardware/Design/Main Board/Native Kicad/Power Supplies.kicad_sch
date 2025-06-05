@@ -1,0 +1,914 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "a16d6f63-1198-418f-ba98-110fd6bdb493")
+	(paper "B")
+	(lib_symbols)
+	(junction
+		(at 209.55 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e72b0416-ff24-4caf-a406-25d1b913f821")
+	)
+	(junction
+		(at 209.55 69.85)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f613c267-76b0-4c72-9965-f3126291893a")
+	)
+	(wire
+		(pts
+			(xy 257.81 121.92) (xy 262.89 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0599a873-33ea-43ce-a310-b48be60d0a26")
+	)
+	(wire
+		(pts
+			(xy 100.33 80.01) (xy 116.84 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2841ebfb-5daa-4329-85bc-0d8045818a74")
+	)
+	(wire
+		(pts
+			(xy 241.3 69.85) (xy 209.55 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "37cfbb33-f5b5-4735-a00f-6ccc5c8c2c11")
+	)
+	(wire
+		(pts
+			(xy 177.8 83.82) (xy 182.88 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a017eb4-05d4-4335-9698-84dfa4753465")
+	)
+	(wire
+		(pts
+			(xy 171.45 154.94) (xy 182.88 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "441c79bb-3696-43bc-afb7-5f18d4e1f60e")
+	)
+	(wire
+		(pts
+			(xy 209.55 69.85) (xy 209.55 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ebc4502-f1c4-4ec8-a6a1-0330a9422714")
+	)
+	(wire
+		(pts
+			(xy 245.11 83.82) (xy 241.3 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "526fd3c7-9f84-469a-840d-493f2ccd2875")
+	)
+	(wire
+		(pts
+			(xy 142.24 85.09) (xy 146.05 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5fbab25e-9302-416e-a6d0-bb50e9fd79fe")
+	)
+	(wire
+		(pts
+			(xy 207.01 69.85) (xy 209.55 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "633dcfd2-6ce1-4cba-b15d-a614392ba024")
+	)
+	(wire
+		(pts
+			(xy 209.55 83.82) (xy 214.63 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "641b6e3d-d8a8-4a98-b0d2-060bdeef7123")
+	)
+	(wire
+		(pts
+			(xy 229.87 119.38) (xy 233.68 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "655a888f-8091-4f3e-9f51-f2546a44c1b7")
+	)
+	(wire
+		(pts
+			(xy 100.33 87.63) (xy 116.84 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ec1465a-7a8f-4e9f-8136-854940d45a8e")
+	)
+	(wire
+		(pts
+			(xy 198.12 154.94) (xy 203.2 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "702ebfa4-0dba-4d4d-b40d-f78732ffe284")
+	)
+	(wire
+		(pts
+			(xy 200.66 83.82) (xy 209.55 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "71c60044-7528-49ae-b645-a96054a2c1e9")
+	)
+	(wire
+		(pts
+			(xy 201.93 118.11) (xy 205.74 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "906e9670-02f9-48c8-811f-b72918af2170")
+	)
+	(wire
+		(pts
+			(xy 257.81 115.57) (xy 262.89 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a32a671f-7400-48f2-9990-c98ed9900bc6")
+	)
+	(wire
+		(pts
+			(xy 241.3 83.82) (xy 241.3 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a5d55210-1118-417f-bcd1-b45fefaf44fe")
+	)
+	(wire
+		(pts
+			(xy 246.38 154.94) (xy 250.19 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a872a3b1-7585-4d24-ad19-b8d6662bacf0")
+	)
+	(wire
+		(pts
+			(xy 262.89 83.82) (xy 265.43 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9ffc198-350b-458e-bcfd-be7a86109acd")
+	)
+	(wire
+		(pts
+			(xy 179.07 116.84) (xy 182.88 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa7ff603-797c-40cf-8d81-d69ca4beb478")
+	)
+	(wire
+		(pts
+			(xy 231.14 83.82) (xy 234.95 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab39bb87-afe9-4e1d-946f-ec1dbc7526e4")
+	)
+	(wire
+		(pts
+			(xy 224.79 154.94) (xy 229.87 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ea5e87ac-fd26-4002-8f84-2c9742016652")
+	)
+	(text "Power Supplies"
+		(exclude_from_sim no)
+		(at 192.786 56.388 0)
+		(effects
+			(font
+				(size 2.54 2.54)
+			)
+		)
+		(uuid "85e42804-ee22-4e15-bc61-de9dc86e79f8")
+	)
+	(label "33V"
+		(at 229.87 119.38 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "10ab8deb-e52d-4cf6-98f0-5782709e145a")
+	)
+	(label "33V"
+		(at 179.07 116.84 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "478572ae-1247-4af6-8fcc-2bd0f951990a")
+	)
+	(label "5V Signal"
+		(at 171.45 154.94 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4aa5f8a4-251f-4fe1-bd14-4a5a7472b84a")
+	)
+	(label "33V"
+		(at 177.8 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7ca4cdb9-c878-43f7-8f39-488f14ad14d5")
+	)
+	(label "8V"
+		(at 224.79 154.94 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8db1271d-41fa-4846-abea-dd1b0ae997d1")
+	)
+	(hierarchical_label "33V"
+		(shape input)
+		(at 146.05 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3252267f-580f-4404-9244-1b23e661901d")
+	)
+	(hierarchical_label "VCC Power R"
+		(shape input)
+		(at 262.89 115.57 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3b7bc519-d050-45be-9c87-8a1ffe3e72ba")
+	)
+	(hierarchical_label "8V"
+		(shape input)
+		(at 207.01 69.85 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "443a550d-ea80-4174-bb99-eed664cff73d")
+	)
+	(hierarchical_label "5V Signal"
+		(shape input)
+		(at 265.43 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "53ccff23-fe0b-43ad-8f2b-84afae61bae6")
+	)
+	(hierarchical_label "2V5"
+		(shape input)
+		(at 203.2 154.94 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5f1401ee-db0b-40c0-ba7c-b150d0b6ad1c")
+	)
+	(hierarchical_label "VCC Signal"
+		(shape input)
+		(at 205.74 118.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6113e9c5-cfeb-4413-b57d-ef3c0dc9efa3")
+	)
+	(hierarchical_label "3V3"
+		(shape input)
+		(at 250.19 154.94 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "90c850c5-7aec-492c-81b1-b5f0ff7f46df")
+	)
+	(hierarchical_label "VAC-"
+		(shape input)
+		(at 100.33 87.63 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "ceaed421-f214-499b-b39b-bfcb725f73b3")
+	)
+	(hierarchical_label "5V"
+		(shape input)
+		(at 234.95 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "cfdef707-243a-4eda-ac34-70ee15967a60")
+	)
+	(hierarchical_label "VAC+"
+		(shape input)
+		(at 100.33 80.01 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "e348cf7c-ac24-4d2b-80e2-7b381a189ab6")
+	)
+	(hierarchical_label "VCC Power L"
+		(shape input)
+		(at 262.89 121.92 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f2439bc0-246d-4d75-b05e-43ba64cb6cd7")
+	)
+	(sheet
+		(at 229.87 148.59)
+		(size 16.51 13.97)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "0dfa3c91-b5c0-45e3-b370-a6f4e4ccc6d5")
+		(property "Sheetname" "3V3 Lin Reg"
+			(at 229.87 147.8784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "3V3 Lin Reg.kicad_sch"
+			(at 229.87 164.1606 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "8V" input
+			(at 229.87 154.94 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "36277e1a-f239-4ad0-acf6-4f5800b883d7")
+		)
+		(pin "3V3" input
+			(at 246.38 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "f4047cc8-7ee1-43b6-9a29-ca01d9b4a79a")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "10")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 182.88 76.2)
+		(size 17.78 13.97)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "2f2e7ea7-acc3-4fc8-a0f8-96ff355b4189")
+		(property "Sheetname" "8V Buck"
+			(at 182.88 75.4884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "8V Buck.kicad_sch"
+			(at 182.88 90.7546 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "8V" input
+			(at 200.66 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fd3c56c6-6f3c-4fda-a2ed-ae50c3313475")
+		)
+		(pin "33V" input
+			(at 182.88 83.82 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "7b349253-0340-4490-b46f-3070c47cdd7d")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 182.88 147.32)
+		(size 15.24 15.24)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "31ccac2e-ccba-4fae-981c-9a20535743f4")
+		(property "Sheetname" "2V5 Signal"
+			(at 182.88 146.6084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "2V5 Signal.kicad_sch"
+			(at 182.88 163.1446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "2V5" input
+			(at 198.12 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "089b3d75-7a2a-4f08-bf3b-fa4ab90799a3")
+		)
+		(pin "5V_Signal" input
+			(at 182.88 154.94 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "1465cfd7-6802-4afa-a9f9-b9257d7646c1")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "11")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 214.63 77.47)
+		(size 16.51 13.97)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "61ed1b1d-33ae-44ed-9d51-732bbca691eb")
+		(property "Sheetname" "5V Lin Reg"
+			(at 214.63 76.7584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "5V Lin Reg.kicad_sch"
+			(at 214.63 92.5326 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(property "Field2" ""
+			(at 214.63 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "8V" input
+			(at 214.63 83.82 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "54ce8115-538f-4c3f-8d1d-7778556ea088")
+		)
+		(pin "5V" input
+			(at 231.14 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "f8b5ca6d-c2aa-43bd-9ed9-2f42e9dff1d0")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 233.68 110.49)
+		(size 24.13 16.51)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "647b750b-9e4f-40c8-b3e7-c7a387e5cca8")
+		(property "Sheetname" "VCC Power"
+			(at 233.68 109.7784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "VCC Power.kicad_sch"
+			(at 233.68 127.5846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "VCC_Power R" input
+			(at 257.81 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "9a40dc49-0b2a-4839-b194-8ca35c738c0c")
+		)
+		(pin "33V" input
+			(at 233.68 119.38 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "ed7c9e81-2dd6-4485-802e-bdbb3bad1de8")
+		)
+		(pin "VCC_Power L" input
+			(at 257.81 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "fb129023-52dd-4859-ad01-a3736bbf29df")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 182.88 110.49)
+		(size 19.05 15.24)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "9ea88e92-d960-43ac-b77c-ad812fe077a2")
+		(property "Sheetname" "VCC Signal"
+			(at 182.88 109.7784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "20V Lin Reg.kicad_sch"
+			(at 182.88 126.0606 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "33V" input
+			(at 182.88 116.84 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "06b87cf2-9831-4369-aa42-dc994ed92285")
+		)
+		(pin "VCC Signal" input
+			(at 201.93 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "6b15abea-86a2-401f-87e7-852019694a46")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "9")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 245.11 76.2)
+		(size 17.78 15.24)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "e6294a9c-93b2-4f26-8d2a-952c93301e8a")
+		(property "Sheetname" "5V Signal"
+			(at 245.11 75.4884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "5V Signal.kicad_sch"
+			(at 245.11 91.6436 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "8V" input
+			(at 245.11 83.82 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "8b06c2fc-719a-45b2-a70a-2207160d0b77")
+		)
+		(pin "5V Signal" input
+			(at 262.89 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d8be4b8d-b6d7-46b3-b6ae-20ef67851411")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 116.84 76.2)
+		(size 25.4 19.05)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "ec3fbb69-27ca-43d8-9a28-6a49364e4b73")
+		(property "Sheetname" "Full Wave Rectifier"
+			(at 116.84 75.4884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "MainFullWaveRectifier.kicad_sch"
+			(at 116.84 95.0726 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "33V" input
+			(at 142.24 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "4ddb02cf-86b6-4a56-852b-698f1683d2e0")
+		)
+		(pin "VAC+" input
+			(at 116.84 80.01 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d2d0c7f0-0b6d-4570-9571-116ab375ddf9")
+		)
+		(pin "VAC-" input
+			(at 116.84 87.63 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "a1c93cb4-b051-4e66-8b97-65a08ec49366")
+		)
+		(instances
+			(project "amp board"
+				(path "/155d307c-d052-49ed-8a33-15ea02ffe5f3/3de3b732-bba6-4bbd-a76a-3d24b20607d7/76d48577-2c0f-4c2f-b4cc-60d33b4dbd64"
+					(page "6")
+				)
+			)
+		)
+	)
+)

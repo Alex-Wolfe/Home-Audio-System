@@ -1,0 +1,235 @@
+(footprint "GCM21"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "GCM21")
+	(tags "Capacitor")
+	(property "Reference" "C**"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(uuid "12355841-a65d-4096-84e0-90ef3829d2d1")
+		(effects
+			(font
+				(size 0.762 0.762)
+				(thickness 0.127)
+				(bold yes)
+			)
+		)
+	)
+	(property "Value" "GCM21"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "dcabe69e-a0cf-479a-aca4-f50729a82782")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c94beabe-8bd6-412c-899b-e0d26228d843")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2096558e-556f-46d1-aa3a-18f06ef64dd8")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "96f9782d-8dc6-43e6-b1a5-825f0e729588")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.8 -0.1)
+		(end -1.8 -0.1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "cf973394-7531-4306-8a07-4a741ea2c06f")
+	)
+	(fp_line
+		(start -1.8 0.1)
+		(end -1.8 0.1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7d38383e-21fb-46b6-895b-06aa713ac840")
+	)
+	(fp_line
+		(start 0 -0.525)
+		(end 0 0.525)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e940ced1-f986-45f9-bb70-db45f9990a0b")
+	)
+	(fp_arc
+		(start -1.8 -0.1)
+		(mid -1.7 0)
+		(end -1.8 0.1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c7f2dff0-51ab-4077-bfdd-e46b774d9dec")
+	)
+	(fp_arc
+		(start -1.8 0.1)
+		(mid -1.9 0)
+		(end -1.8 -0.1)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "b3a5c80e-ed7a-4343-ba18-575082d6eee9")
+	)
+	(fp_line
+		(start -1.4224 -0.762)
+		(end 1.4224 -0.762)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "647226db-af9d-46c4-ac07-c6152f8b85f5")
+	)
+	(fp_line
+		(start -1.4224 0.762)
+		(end -1.4224 -0.762)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "34140e67-ea73-4df9-8a87-4e35e70b0727")
+	)
+	(fp_line
+		(start 1.4224 -0.762)
+		(end 1.4224 0.762)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "fafc8be3-852c-491e-8e2e-d59b50a1c546")
+	)
+	(fp_line
+		(start 1.4224 0.762)
+		(end -1.4224 0.762)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f65f0c4c-064b-4f3a-aaf8-eb9ef41f3948")
+	)
+	(fp_line
+		(start -1 -0.625)
+		(end 1 -0.625)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "23d54c3c-8d94-47a1-a8c4-eded237f0f59")
+	)
+	(fp_line
+		(start -1 0.625)
+		(end -1 -0.625)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "f38fdbd6-0202-49c3-8d60-f6941d986865")
+	)
+	(fp_line
+		(start 1 -0.625)
+		(end 1 0.625)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "1a8f7e59-c48a-4e67-b560-857eedc7b7c2")
+	)
+	(fp_line
+		(start 1 0.625)
+		(end -1 0.625)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "a3bb371f-dfbd-426b-9500-ef8e36cf5c7f")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "01cd4cde-b094-497c-840a-fe245396890d")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -0.95 0)
+		(size 0.7 1.3)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "c0431bc3-9ec3-456c-8978-2d68dd36fe12")
+	)
+	(pad "2" smd rect
+		(at 0.95 0)
+		(size 0.7 1.3)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "45698637-faac-48df-8ede-e10d2abfe1cb")
+	)
+	(model "C:\\Users\\adwol\\OneDrive\\Documents\\SamacSys_PCB_Library\\KiCad\\3D_Models\\SamacSys_Parts.3dshapes\\GCM21B5C1H223FA16L.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

@@ -1,0 +1,271 @@
+(footprint "NX3008PBK215"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "NX3008PBK,215-1")
+	(tags "MOSFET (P-Channel)")
+	(property "Reference" "Q**"
+		(at 0 0 180)
+		(layer "F.SilkS")
+		(uuid "5797358a-488a-4bca-9eba-1d360598a6cb")
+		(effects
+			(font
+				(size 0.762 0.762)
+				(thickness 0.127)
+				(bold yes)
+			)
+		)
+	)
+	(property "Value" "NX3008PBK215"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "041224f1-780f-4252-bc48-b9075351120c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "dcbc80e1-b072-42e8-be57-aced0973a190")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "726e8390-7b2f-4cfb-843d-53034bf33561")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ad05502c-4fd4-464a-a895-c07fe4709369")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.45 -0.65)
+		(end -1.45 0.4)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "82eab7b2-d13c-4cdf-9b28-f41b238e7022")
+	)
+	(fp_line
+		(start -1 1.7)
+		(end -1 1.7)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "aaab5ae2-4dcd-49a9-b2d4-340000a022cb")
+	)
+	(fp_line
+		(start -1 1.8)
+		(end -1 1.8)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "383050cb-77ff-48da-ba08-751cab583b6d")
+	)
+	(fp_line
+		(start -0.6 -0.65)
+		(end -1.45 -0.65)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "ee3125f8-a363-40ca-9e7d-19e86a727907")
+	)
+	(fp_line
+		(start 0.6 -0.65)
+		(end 1.45 -0.65)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "08c272b6-ad65-4008-992f-6c46d3633236")
+	)
+	(fp_line
+		(start 1.45 -0.65)
+		(end 1.45 0.4)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "5bc93c1c-fea2-4cf8-ace8-ae8c5c8b5a30")
+	)
+	(fp_arc
+		(start -1 1.7)
+		(mid -0.95 1.75)
+		(end -1 1.8)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "fdfb2a76-9b17-4100-a9c3-6272b274f26e")
+	)
+	(fp_arc
+		(start -1 1.8)
+		(mid -1.05 1.75)
+		(end -1 1.7)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e58dc91c-4a3d-4e79-a458-6dc2e11f58a8")
+	)
+	(fp_line
+		(start -1.5298 -1.6256)
+		(end 1.524 -1.6256)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "13b859a0-c1ac-4587-b155-b119f5fd907c")
+	)
+	(fp_line
+		(start -1.524 1.6256)
+		(end -1.5298 -1.6256)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "22bbdfc8-1013-4c6f-b097-405e4aecfac9")
+	)
+	(fp_line
+		(start 1.524 -1.6256)
+		(end 1.5298 1.6764)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "b8bd2870-d4fe-4a03-b251-81e59fcf5724")
+	)
+	(fp_line
+		(start 1.5298 1.6764)
+		(end -1.524 1.6764)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "dc8557fa-edf7-4720-ac4e-5ebd39224512")
+	)
+	(fp_line
+		(start -1.45 -0.65)
+		(end 1.45 -0.65)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "2296c97f-0301-4e8b-8c0e-d068b21e7e80")
+	)
+	(fp_line
+		(start -1.45 0.65)
+		(end -1.45 -0.65)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "0e442d32-eba8-44ff-b770-6819752c58df")
+	)
+	(fp_line
+		(start 1.45 -0.65)
+		(end 1.45 0.65)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "029ac390-c707-4506-b388-d7d60869eb97")
+	)
+	(fp_line
+		(start 1.45 0.65)
+		(end -1.45 0.65)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "b0882214-d1bc-4a0e-a219-e795d6403769")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "146fabe6-c482-45ae-88ce-3287abbefa5c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -0.95 1)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "c41bc0b6-9f47-40c4-a6b7-bd32e3a46f8f")
+	)
+	(pad "2" smd rect
+		(at 0.95 1)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "371c0d96-71e6-479a-8850-a84d6417c514")
+	)
+	(pad "3" smd rect
+		(at 0 -1)
+		(size 0.6 0.7)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "1f4dcb42-fa98-4ab4-86c1-9c0a99b3b4f1")
+	)
+	(model "C:\\Users\\adwol\\OneDrive\\Documents\\SamacSys_PCB_Library\\KiCad\\3D_Models\\SamacSys_Parts.3dshapes\\NX3008PBK,215.stp"
+		(offset
+			(xyz 1.330000023 -2.109999863 -1.159999949)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 -180)
+		)
+	)
+)

@@ -1,0 +1,197 @@
+(footprint "LTL433HR"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "LTL-433HR-2")
+	(tags "LED")
+	(property "Reference" "LED**"
+		(at 1.7018 -1.9558 0)
+		(layer "F.SilkS")
+		(uuid "62cdcdc3-abe6-4f15-a2c6-2679e4709b74")
+		(effects
+			(font
+				(size 0.762 0.762)
+				(thickness 0.127)
+				(bold yes)
+			)
+		)
+	)
+	(property "Value" "LTL433HR"
+		(at 1.1684 0.1016 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "8ea67538-c38c-466d-93d8-6c4fb95ab2ed")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f30b90ea-9b06-408e-b5f1-61ba1a272524")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7e1b58f4-1a4d-4b08-a654-2ed2163d0b1d")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "eae2b7ea-9148-473c-aaba-aca2e424c1af")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start 3.1496 -1.0254)
+		(end 3.1496 0.9746)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "7c323e08-b8e9-439e-8ac3-56df9283d666")
+	)
+	(fp_line
+		(start -0.5334 -1.2192)
+		(end 3.3528 -1.2192)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "7b0dd258-6396-4f53-b71e-8c2574c1aaa9")
+	)
+	(fp_line
+		(start -0.5334 1.1938)
+		(end -0.5334 -1.2192)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "03cb0d4c-000a-4bb5-b1de-dde5064037c6")
+	)
+	(fp_line
+		(start 3.3528 -1.2192)
+		(end 3.3528 1.1938)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "7f65a1ac-22ac-4e77-8069-6054708136e1")
+	)
+	(fp_line
+		(start 3.3528 1.1938)
+		(end -0.5334 1.1938)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "368e338c-c881-467a-ae47-c867d7fb2f13")
+	)
+	(fp_line
+		(start -0.3156 -1.0254)
+		(end 3.1496 -1.0254)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "aa9f5b17-f4cf-483e-b592-3f302c6cf923")
+	)
+	(fp_line
+		(start -0.3048 0.9746)
+		(end -0.3048 -1.0254)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "70be5583-0cf4-4aab-ac50-2681e0d08f9a")
+	)
+	(fp_line
+		(start 3.1496 -1.0254)
+		(end 3.1496 0.9746)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "b97345a5-216c-47ff-bb83-6cac6a970b0a")
+	)
+	(fp_line
+		(start 3.1496 0.9746)
+		(end -0.3048 0.9746)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "b2a9de2d-0840-4714-9c05-88d2c6c40bbf")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 1.8288 0.1016 0)
+		(layer "F.Fab")
+		(uuid "cfbb0127-69e3-4fe7-9b79-010f829a5e4b")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 0.508 0)
+		(size 1.416 1.416)
+		(drill 0.91)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "027e1228-5d7e-48a5-b7cd-1456a6252c9f")
+	)
+	(pad "2" thru_hole circle
+		(at 2.3368 0)
+		(size 1.416 1.416)
+		(drill 0.91)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "aca20c1b-eb30-494b-8d18-868ca4ef0264")
+	)
+	(model "C:\\Users\\adwol\\OneDrive\\Documents\\SamacSys_PCB_Library\\KiCad\\3D_Models\\SamacSys_Parts.3dshapes\\LTL-433HR.stp"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)
