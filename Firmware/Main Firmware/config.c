@@ -1,5 +1,6 @@
 #include <xc.h>
 #include "config.h"            /* variables/params used by user.c */
+#include "pin_definitions.h"
 
 /******************************************************************************/
 /* Configuration Functions                                                    */
@@ -9,6 +10,7 @@ void config_app(void)
 {
     disable_LCD_module();
     enable_timer1();
+    enable_timer2();
     configure_IO();
     configure_debug_uart();
     configure_I2C_bus();
@@ -174,4 +176,14 @@ void enable_timer1(void)
     T1CONbits.TCKPS1 = 1;
     PR1 = 0x7A12;
     T1CONbits.TON = 1;
+}
+
+void enable_timer2(void)
+{
+    T2CONbits.TCS = 0;
+    T2CONbits.T32 = 0;      // use as 16 bit timer
+    T2CONbits.TCKPS0 = 1;   // set to prescalar of 8
+    T2CONbits.TCKPS1 = 0;
+    T2CONbits.TSIDL = 0;
+    T2CONbits.TON = 1;    
 }

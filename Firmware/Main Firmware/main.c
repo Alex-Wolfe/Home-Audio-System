@@ -72,7 +72,7 @@
 /******************************************************************************/
 #include <xc.h>
 #include "system.h"         // System functions/parameters
-#include "user.h"           // User functions/parameters
+#include "debug_uart.h"     // Debug uart functions/parameters
 #include "config.h"         // Config functions/paramters
 #include "interrupts.h"     // Interrupt Handlers
 

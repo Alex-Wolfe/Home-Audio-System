@@ -21,6 +21,13 @@ void write_debug_string(char *text)
     {
         write_debug_byte(*(text + 1));  // shift byte to transmit buffer
     }
+    write_debug_newline();
     while (!U1STAbits.TRMT);        // wait for all bytes to be shifted out
     U1STAbits.UTXEN = 0;            // Disable UART transmitter
+}
+
+void write_debug_newline(void)
+{
+    while (U1STAbits.UTXBF);
+    write_debug_byte(0x0A);
 }
