@@ -1,6 +1,6 @@
 #include <xc.h>
 #include "interrupts.h"
-#include "config.h"
+#include "pin_definitions.h"
 
 /******************************************************************************/
 /* Interrupt Vector Options                                                   */
@@ -60,8 +60,7 @@
 /* Interrupt Routines                                                         */
 /******************************************************************************/
 
-void ISR _T1Interrupt(void)
-{
+void ISR _T1Interrupt(void) {
     TEST ^= 1;
     /* Clear interrupt flag*/
     IFS0bits.T1IF = 0;

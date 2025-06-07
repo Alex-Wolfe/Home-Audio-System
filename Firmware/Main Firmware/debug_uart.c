@@ -1,19 +1,17 @@
 #include <xc.h>
 
-#include "user.h"
+#include "debug_uart.h"
 
 /******************************************************************************/
 /* User Functions                                                             */
 /******************************************************************************/
 
-void write_debug_byte(char byte)
-{
+void write_debug_byte(char byte) {
     while (U1STAbits.UTXBF);
     U1TXREG = byte;
 } 
 
-void write_debug_string(char *text)
-{
+void write_debug_string(char *text) {
     /* Arrays passed to functions decay to pointer*/
     U1STAbits.UTXEN = 1;            // Enable UART transmitter
     while (!U1STAbits.TRMT);        // check and wait for previous tx
@@ -26,8 +24,7 @@ void write_debug_string(char *text)
     U1STAbits.UTXEN = 0;            // Disable UART transmitter
 }
 
-void write_debug_newline(void)
-{
+void write_debug_newline(void) {
     while (U1STAbits.UTXBF);
     write_debug_byte(0x0A);
 }

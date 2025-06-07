@@ -74,6 +74,8 @@
 #include "system.h"         // System functions/parameters
 #include "debug_uart.h"     // Debug uart functions/parameters
 #include "config.h"         // Config functions/paramters
+#include "pin_definitions.h"
+#include "i2c.h"
 #include "interrupts.h"     // Interrupt Handlers
 
 
@@ -91,8 +93,7 @@ char fw_version[] = "v0.1 Alpha";
 /* Main Program                                                               */
 /******************************************************************************/
 
-int main(void)
-{
+int main(void) {
     /* Disable reference oscillator */
     configure_oscillator();
     
@@ -104,8 +105,7 @@ int main(void)
     
     TEST = 0;
     
-    while(1)
-    {
+    while(1) {
         
     }
     
