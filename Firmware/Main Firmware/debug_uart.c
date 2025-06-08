@@ -17,7 +17,7 @@ void write_debug_string(char *text) {
     while (!U1STAbits.TRMT);        // check and wait for previous tx
     for (unsigned char i = 0; *(text + 1) != '\0'; i++)
     {
-        write_debug_byte(*(text + 1));  // shift byte to transmit buffer
+        write_debug_byte(*(text + i));  // shift byte to transmit buffer
     }
     write_debug_newline();
     while (!U1STAbits.TRMT);        // wait for all bytes to be shifted out

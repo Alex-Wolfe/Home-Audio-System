@@ -87,11 +87,30 @@ void configure_IO(void) {
 }
 
 void configure_SPI1_port(void) {
-
+    SPI1BUFL = 0x0000;
+    SPI1BUFH = 0x0000;
+//    SPI1CON1Lbits.ENHBUF = 1;       // use enhanced buffer mode
+    SPI1BRGL = 31;                  // 500kHz clock frequency
+    SPI1STATLbits.SPIROV = 0;       // clear the overflow
+    SPI1CON1Lbits.MSTEN = 1;        // enable master mode
+    SPI1CON1Lbits.DISSDI = 1;       // disable SDI pin on SPI port 1
+//    SPI1CON1Hbits.FRMEN = 1;        // use chip select as FSYNC
+//    SPI1CON1Hbits.MSSEN = 1;        // give peripheral automatic control of CS
+//    setup interrupts here
+    SPI1CON1Lbits.SPIEN = 1;        // enable SPI
 }
 
 void configure_SPI2_port(void) {
-
+    SPI2BUFL = 0x0000;
+    SPI2BUFH = 0x0000;
+//    SPI2CON1Lbits.ENHBUF = 1;       // use enhanced buffer mode
+    SPI2BRGL = 31;                  // 500kHz clock frequency
+    SPI2STATLbits.SPIROV = 0;       // clear the overflow
+    SPI2CON1Lbits.MSTEN = 1;        // enable master mode
+//    SPI2CON1Hbits.FRMEN = 1;        // use chip select as FSYNC
+//    SPI2CON1Hbits.MSSEN = 1;        // give peripheral automatic control of CS
+//    setup interrupts here
+    SPI2CON1Lbits.SPIEN = 1;        // enable SPI
 }
 
 void configure_I2C_bus(void) {
