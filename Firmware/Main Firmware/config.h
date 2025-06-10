@@ -33,3 +33,6 @@ void enable_timer1(void);
 
 /* Enable timer 2 */
 void enable_timer2(void);
+
+/* Set up ADC */
+void configure_ADC(void)

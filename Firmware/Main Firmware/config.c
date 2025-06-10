@@ -16,6 +16,7 @@ void config_app(void) {
     configure_I2C_bus();
     configure_SPI1_port();
     configure_SPI2_port();
+    configure_ADC();
     configure_interrupts();
 
 }
@@ -196,4 +197,15 @@ void enable_timer2(void) {
     T2CONbits.TCKPS1 = 0;
     T2CONbits.TSIDL = 0;
     T2CONbits.TON = 1;
+}
+
+void configure_ADC(void) {
+    AD1CON1 = 0x0474;           // 12 bit, free running mode
+    AD1CON2 = 0x0C3C;           // Vcc reference, addressed buffer, scans inputs
+    AD1CON3 = 0x1F08;           // sample time = 31Tad, Tad = 9Tcy
+//    AD1CON4 = 0x0000;           // DMA control buffer
+    AD1CON5 = 0x8000;           // enable auto scan
+    AD1CHS = 0x1E00;            // mux B is measuring Vdd, Mux A starts at AN0
+    AD1CSSL = 0xFFFF;           // incluce all 16 channels in scan
+    ADCON1bits.ADON = 1;        // enable ADC operation
 }
