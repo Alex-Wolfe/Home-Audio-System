@@ -65,3 +65,8 @@ void ISR _T1Interrupt(void) {
     /* Clear interrupt flag*/
     IFS0bits.T1IF = 0;
 }
+
+void ISR _ADC1Interrupt(void) {
+    // do nothing for now
+    IFS0bits.AD1IF = 0;
+}

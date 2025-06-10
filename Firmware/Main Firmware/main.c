@@ -98,12 +98,13 @@ int main(void) {
     configure_oscillator();
     
     /* Initialize IO ports and peripherals */
-    config_app();
+    config_peripherals();
     
     /* Write FW version to debug UART header */
     write_debug_string(fw_version);
     
     TEST = 0;
+    
     
     while(1) {
         

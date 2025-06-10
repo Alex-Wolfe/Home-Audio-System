@@ -7,7 +7,7 @@
 
 /******************************************************************************/
 
-void config_app(void) {
+void config_peripherals(void) {
     disable_LCD_module();
     enable_timer1();
     enable_timer2();
@@ -172,6 +172,7 @@ void configure_interrupts(void) {
     INTCON2bits.GIE = 1;
     /* Enable peripheral interrupt enables as needed */
     IEC0bits.T1IE = 1;          //Enable Timer 1 interrupt
+    IEC0bits.AD1IE = 1;         // Enable ADC interrupt
 }
 
 void enable_timer1(void) {

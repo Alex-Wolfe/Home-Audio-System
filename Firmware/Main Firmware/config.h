@@ -4,7 +4,7 @@
 /******************************************************************************/
 
 /* Run all functions to configure micro */
-void config_app(void);
+void config_peripherals(void);
 
 /* Disable LCD peripheral */
 void disable_LCD_module(void);
