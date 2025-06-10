@@ -184,5 +184,5 @@ void configure_ADC(void) {
     AD1CON5 = 0x8000;           // enable auto scan
     AD1CHS = 0x1E00;            // mux B is measuring Vdd, Mux A starts at AN0
     AD1CSSL = 0xFFFF;           // incluce all 16 channels in scan
-    ADCON1bits.ADON = 1;        // enable ADC operation
+    AD1CON1bits.ADON = 1;        // enable ADC operation
 }
