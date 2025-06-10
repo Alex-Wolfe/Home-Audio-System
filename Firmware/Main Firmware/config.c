@@ -4,7 +4,6 @@
 
 /******************************************************************************/
 /* Configuration Functions                                                    */
-
 /******************************************************************************/
 
 void config_peripherals(void) {
@@ -35,16 +34,11 @@ void configure_IO(void) {
     TRISAbits.TRISA0 = 0; // set BT play/pause pin to digital output
     ANSELA = 0x0000;
     ODCA = 0x0000; // disable open drain mode, use normal output mode
-    PLAY_PAUSE = 1; // set BT play/pause pin
 
     /* Configure Port B */
     TRISB = 0x33FF; // Set analog inputs and digital outputs
     ANSELB = 0x33FC;
     ODCB = 0x0000;
-    IN_SEL_A = 0; // Default to AUX input on startup (in future
-    IN_SEL_B = 0; // use EEPROM storage to remember previous setting)
-    FAN_EN = 1; // Disable fan power supply
-    FAN_PWM = 0; // Disable fan power switch
 
     /* Configure Port C */
     TRISCbits.TRISC13 = 1; // Set to digital inputs
@@ -56,25 +50,17 @@ void configure_IO(void) {
     TRISD = 0x0C28; // Set digital inputs and outputs
     ANSELD = 0x0000;
     ODCD = 0x0000;
-    VOL_UP = 1; // Set VOL up and dn signals to bluetooth high
-    VOL_DN = 1;
-    DISPLAY_LATCH = 0; // Set output latch on LED display shift registers
-    DISPLAY_BLANK = 1; // Turn all segment display LEDs off
 
     /* Configure Port E */
     TRISE = 0x0079;
     ANSELE = 0x0000;
     ODCE = 0x0000;
-    LATCH = 0; // Set latch on LED bar graph shift registers
-    BLANK = 1; // Turn bar graph LEDs off
-    MFB = 0; // Disable power on signal to bluetooth radio
 
     /* Configure Port F */
     TRISF = 0x0053;
     ANSELF = 0x0000;
     ODCF = 0x0000;
-    FM_nRST = 0; // Initialize with FM radio in reset
-
+    
     /* Configure Port G */
     TRISGbits.TRISG2 = 0;
     TRISGbits.TRISG3 = 0;
@@ -84,7 +70,6 @@ void configure_IO(void) {
     ANSELG = 0x0000;
     ODCGbits.ODCG2 = 1; // Set I2C pins to open drain output
     ODCGbits.ODCG3 = 1;
-    TEST = 0;
 }
 
 void configure_SPI1_port(void) {
@@ -122,20 +107,15 @@ void configure_I2C_bus(void) {
 void configure_debug_uart(void) {
     /* Enable peripheral */
     PMD1bits.U1MD = 0;
-
     /* Assign peripheral pins */
     RPINR18 = 0xFF1A; // Assign RXD to pin RG7 (RP26)
     RPOR9 = 0x0300; // Assign TXD to pin RG8 (RP19)
-
     /* Setup UART Settings */
     U1MODE = 0x0808; // 8 data bit, no parity, 1 stop bit
-
     /* Set baud rate to 115200 */
     U1BRG = 16;
-
     /* Setup interrupt and status control */
     // none
-
     /* Enable UARTx */
     U1MODEbits.UARTEN = 1;
 }
@@ -145,10 +125,8 @@ void configure_interrupts(void) {
     SRbits.IPL0 = 0;
     SRbits.IPL1 = 0;
     SRbits.IPL2 = 0;
-
     /* Interrupt nesting is disabled */
     INTCON1bits.NSTDIS = 0;
-
     /* Standard vector table is used
        All external interrupts set to trigger on negative edge */
     INTCON2bits.AIVTEN = 0;
@@ -157,7 +135,6 @@ void configure_interrupts(void) {
     INTCON2bits.INT2EP = 1;
     INTCON2bits.INT3EP = 1;
     INTCON2bits.INT4EP = 1;
-
     /* Clear all interrupt flags */
     IFS0 = 0x0000;
     IFS1 = 0x0000;
@@ -167,7 +144,6 @@ void configure_interrupts(void) {
     IFS5 = 0x0000;
     IFS6 = 0x0000;
     IFS7 = 0x0000;
-
     /* Enable global interrupt enable */
     INTCON2bits.GIE = 1;
     /* Enable peripheral interrupt enables as needed */

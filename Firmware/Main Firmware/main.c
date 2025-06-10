@@ -86,6 +86,13 @@
 
 const long fosc = 32000000;
 const long fcy = 16000000;
+
+/* I2C 7 bit addresses */
+const char ambient_temp = 0x4A;
+const char eeprom_ic = 0x50;
+const char fm_radio = 0x11;
+const char vol_pot = 0x2F;
+
 char fw_version[] = "v0.1 Alpha";
 
 
@@ -103,7 +110,25 @@ int main(void) {
     /* Write FW version to debug UART header */
     write_debug_string(fw_version);
     
-    TEST = 0;
+    TEST = 0;           // heartbeat LED off
+    
+    PLAY_PAUSE = 1;     // set BT play/pause pin
+    
+    IN_SEL_A = 0;       // Default to AUX input on startup (in future
+    IN_SEL_B = 0;       // use EEPROM storage to remember previous setting)
+    FAN_EN = 1;         // Disable fan power supply
+    FAN_PWM = 0;        // Disable fan power switch
+    
+    VOL_UP = 1;         // Set VOL up and dn signals to bluetooth high
+    VOL_DN = 1;
+    DISPLAY_LATCH = 0;  // Set output latch on LED display shift registers
+    DISPLAY_BLANK = 1;  // Turn all segment display LEDs off
+    
+    LATCH = 0;          // Set latch on LED bar graph shift registers
+    BLANK = 1;          // Turn bar graph LEDs off
+    MFB = 0;            // Disable power on signal to bluetooth radio
+    
+    FM_nRST = 0;        // Initialize with FM radio in reset
     
     
     while(1) {
