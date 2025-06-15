@@ -61,7 +61,7 @@
 /******************************************************************************/
 
 void ISR _T1Interrupt(void) {
-    TEST ^= 1;
+    TEST ^= 1;    
     /* Clear interrupt flag*/
     IFS0bits.T1IF = 0;
 }

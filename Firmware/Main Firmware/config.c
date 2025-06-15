@@ -108,12 +108,14 @@ void configure_debug_uart(void) {
     /* Enable peripheral */
     PMD1bits.U1MD = 0;
     /* Assign peripheral pins */
-    RPINR18 = 0xFF1A; // Assign RXD to pin RG7 (RP26)
-    RPOR9 = 0x0300; // Assign TXD to pin RG8 (RP19)
+//    RPINR18 = 0xFF1A; // Assign RXD to pin RG7 (RP26)
+//    RPOR9 = 0x0300; // Assign TXD to pin RG8 (RP19)
+    RPINR18 = 0xFF13;
+    RPOR13 = 0x0003;
     /* Setup UART Settings */
     U1MODE = 0x0808; // 8 data bit, no parity, 1 stop bit
     /* Set baud rate to 115200 */
-    U1BRG = 16;
+    U1BRG = 34;
     /* Setup interrupt and status control */
     // none
     /* Enable UARTx */
@@ -159,19 +161,19 @@ void enable_timer1(void) {
     T1CONbits.TCS = 0;
     T1CONbits.TGATE = 0;
     /*  Set prescaler to 1:256
-        Write value to period register to get 0.5 second period
+        Write value to period register to get 2 second period
         Enable Timer 1 */
     T1CONbits.TCKPS0 = 1;
     T1CONbits.TCKPS1 = 1;
-    PR1 = 0x7A12;
+    PR1 = 0xF424;
     T1CONbits.TON = 1;
 }
 
 void enable_timer2(void) {
     T2CONbits.TCS = 0;
     T2CONbits.T32 = 0;          // use as 16 bit timer
-    T2CONbits.TCKPS0 = 1;       // set to prescalar of 8
-    T2CONbits.TCKPS1 = 0;
+    T2CONbits.TCKPS0 = 1;       // set to prescalar of 256
+    T2CONbits.TCKPS1 = 1;
     T2CONbits.TSIDL = 0;
     T2CONbits.TON = 1;
 }

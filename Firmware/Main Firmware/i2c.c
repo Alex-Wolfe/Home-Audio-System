@@ -65,9 +65,11 @@ void i2c_read_command(unsigned char address) {      // argument is 7 bit address
 }
 
 void i2c_ack_wait(void) {
+    T2CONbits.TCKPS0 = 1;       // set to prescalar of 256
+    T2CONbits.TCKPS1 = 1;
     TMR2 = 0x0000;
     while (ACKSTAT) {       // wait for slave ack, timeout after 10ms
-        if (TMR2 >= 0x4E20) {
+        if (TMR2 >= 625) {
             write_debug_string("i2c ack timeout");
             return;
         }

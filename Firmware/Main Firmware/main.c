@@ -76,6 +76,10 @@
 #include "config.h"         // Config functions/paramters
 #include "pin_definitions.h"
 #include "i2c.h"
+#include "spi.h"
+#include "ambient_temp.h"
+#include "user.h"
+#include "eeprom.h"
 #include "interrupts.h"     // Interrupt Handlers
 
 
@@ -88,27 +92,24 @@ const long fosc = 32000000;
 const long fcy = 16000000;
 
 /* I2C 7 bit addresses */
-const char ambient_temp = 0x4A;
-const char eeprom_ic = 0x50;
 const char fm_radio = 0x11;
 const char vol_pot = 0x2F;
 
-char fw_version[] = "v0.1 Alpha";
+/* Constants for Source Selection*/
+const char AUX = 0;
+const char BT = 1;
+const char TV = 2;
+const char FM = 3;
 
+char fw_version[11] = "v0.1 Alpha";
+
+float ambient_C;
 
 /******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
 
 int main(void) {
-    /* Disable reference oscillator */
-    configure_oscillator();
-    
-    /* Initialize IO ports and peripherals */
-    config_peripherals();
-    
-    /* Write FW version to debug UART header */
-    write_debug_string(fw_version);
     
     TEST = 0;           // heartbeat LED off
     
@@ -129,6 +130,20 @@ int main(void) {
     MFB = 0;            // Disable power on signal to bluetooth radio
     
     FM_nRST = 0;        // Initialize with FM radio in reset
+    
+     /* Disable reference oscillator */
+    configure_oscillator();
+    
+    /* Initialize IO ports and peripherals */
+    config_peripherals();
+    
+    /* Write FW version to debug UART header */
+    write_debug_string(fw_version);
+    
+    /* Set source to AUX input*/
+    set_source(AUX);
+    
+    
     
     
     while(1) {

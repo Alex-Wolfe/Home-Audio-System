@@ -10,7 +10,7 @@ void i2c_restart(void);
 
 void i2c_stop(void);
 
-void i2c_sendbyte(unsigned char byte);
+void i2c_send_byte(unsigned char byte);
 
 unsigned char i2c_read_byte(void);
 
