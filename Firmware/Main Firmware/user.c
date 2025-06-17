@@ -26,7 +26,6 @@ void delayus(unsigned int us) {
     while (TMR2 <= ticks);
 }
 
-
 /* Set input source with decoder 
    0 = AUX
    1 = BT

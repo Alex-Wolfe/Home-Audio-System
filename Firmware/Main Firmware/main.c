@@ -92,7 +92,6 @@ const long fosc = 32000000;
 const long fcy = 16000000;
 
 /* I2C 7 bit addresses */
-const char fm_radio = 0x11;
 const char vol_pot = 0x2F;
 
 /* Constants for Source Selection*/

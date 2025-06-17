@@ -5,15 +5,12 @@
 
 /* I2C 7 bit address */
 const unsigned char eeprom_ic = 0x50;
-unsigned int upper_add;
-unsigned int lower_add;
 
-unsigned char received;
 
 /* Write data to byte at add*/
 void write_eeprom(unsigned int add, unsigned char data) {
-    upper_add = add >> 8;
-    lower_add = 0x00FF | add;
+    unsigned int upper_add = add >> 8;
+    unsigned int lower_add = add & 0x00FF;
     i2c_start();
     i2c_write_command(eeprom_ic);
     delayus(100);
@@ -28,8 +25,9 @@ void write_eeprom(unsigned int add, unsigned char data) {
 
 /* Read data from byte at add*/
 unsigned char read_eeprom(unsigned int add) {
-    upper_add = add >> 8;
-    lower_add = 0x00FF | add;
+    unsigned char received;
+    unsigned int upper_add = add >> 8;
+    unsigned int lower_add = 0x00FF | add;
     i2c_start();
     i2c_write_command(eeprom_ic);
     delayus(100);

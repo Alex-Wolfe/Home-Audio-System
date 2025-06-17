@@ -6,10 +6,6 @@
 /* I2C 7 bit address */
 const char ambient_temp = 0x4A;
 
-unsigned char amb_tempH;
-unsigned char amb_tempL;
-unsigned int amb_temp;
-float C;
 
 /******************************************************************************/
 /* LM75B Functions                                                    */
@@ -17,6 +13,10 @@ float C;
 
 /* Read temperature register. Assume temp is always positive*/
 float read_ambient_temp(void) {
+    unsigned char amb_tempH;
+    unsigned char amb_tempL;
+    unsigned int amb_temp;
+    float C;
     i2c_start();
     i2c_write_command(ambient_temp);
     i2c_send_byte(0x00);
