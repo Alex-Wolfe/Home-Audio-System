@@ -8,9 +8,9 @@
 
 void config_peripherals(void) {
     disable_LCD_module();
+    configure_IO();
     enable_timer1();
     enable_timer2();
-    configure_IO();
     configure_debug_uart();
     configure_I2C_bus();
     configure_SPI1_port();
@@ -21,12 +21,12 @@ void config_peripherals(void) {
 }
 
 void disable_LCD_module(void) {
-    PMD6bits.LCDMD = 1; // Disable LCD peripheral module
     LCDCONbits.LCDEN = 0; // Disable LCD driver enable
     LCDSE0 = 0x0000; // Ensure digital IO control is given back to pins
     LCDSE1 = 0x0000;
     LCDSE2 = 0x0000;
     LCDSE3 = 0x0000;
+    PMD6bits.LCDMD = 1; // Disable CD peripheral module
 }
 
 void configure_IO(void) {

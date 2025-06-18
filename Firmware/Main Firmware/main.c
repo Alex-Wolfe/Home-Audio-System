@@ -1,6 +1,14 @@
-/******************************************************************************/
-//                      Configuration Bits
-/******************************************************************************/
+/*
+ * File:   main.c
+ * Author: WolfeAlexD
+ *
+ * Created on June 18, 2025, 4:56 PM
+ */
+
+// PIC24FJ128GL306 Configuration Bit Settings
+
+// 'C' source line config statements
+
 // FSEC
 #pragma config BWRP = OFF               // Boot Segment Write-Protect bit (Boot Segment may be written)
 #pragma config BSS = DISABLED           // Boot Segment Code-Protect Level bits (No Protection (other than BWRP))
@@ -21,7 +29,7 @@
 
 // FOSC
 #pragma config POSCMD = HS              // Primary Oscillator Mode Select bits (HS Crystal Oscillator Mode)
-#pragma config OSCIOFCN = OFF           // OSC2 Pin Function bit (OSC2 is clock output)
+#pragma config OSCIOFCN = ON            // OSC2 Pin Function bit (OSC2 is general purpose digital I/O pin)
 #pragma config SOSCSEL = ON             // SOSC Power Selection Configuration bits (SOSC is used in crystal (SOSCI/SOSCO) mode)
 #pragma config PLLSS = PLL_PRI          // PLL Secondary Selection Configuration bit (PLL is fed by the Primary oscillator)
 #pragma config IOL1WAY = ON             // Peripheral pin select configuration bit (Allow only one reconfiguration)
@@ -37,16 +45,16 @@
 #pragma config WDTCLK = LPRC            // WDT Clock Source Select bits (WDT uses LPRC)
 
 // FPOR
-#pragma config BOREN = OFF               // Brown Out Enable bit (Brown Out Enable Bit)
+#pragma config BOREN = OFF              // Brown Out Enable bit (Brown Out Disabled)
 #pragma config LPCFG = OFF              // Low power regulator control (No Retention Sleep)
-#pragma config DNVPEN = DISABLE          // Downside Voltage Protection Enable bit (Downside protection enabled using ZPBOR when BOR is inactive)
+#pragma config DNVPEN = ENABLE          // Downside Voltage Protection Enable bit (Downside protection enabled using ZPBOR when BOR is inactive)
 
 // FICD
 #pragma config ICS = PGD1               // ICD Communication Channel Select bits (Communicate on PGEC1 and PGED1)
 #pragma config JTAGEN = OFF             // JTAG Enable bit (JTAG is disabled)
 
 // FDMTIVTL
-#pragma config DMTIVTL = 0xFFFF       // Deadman Timer Interval Low Word (Enter Hexadecimal value)
+#pragma config DMTIVTL = 0xFFFF         // Deadman Timer Interval Low Word (Enter Hexadecimal value)
 
 // FDMTIVTH
 #pragma config DMTIVTH = 0xFFFF         // Deadman Timer Interval High Word (Enter Hexadecimal value)
@@ -65,11 +73,12 @@
 #pragma config TMPRPIN = OFF            // Tamper Pin Enable bit (TMPRN pin function is disabled)
 #pragma config SOSCHP = ON              // SOSC High Power Enable bit (valid only when SOSCSEL = 1 (Enable SOSC high power mode (default))
 #pragma config ALTI2C1 = ALTI2C1_OFF    // Alternate I2C pin Location (I2C1 Pin mapped to SDA1/SCL1 pins)
-#pragma config SMB3EN = SMBUS3          // SM Bus Enable (SMBus 3.0 input levels)
+#pragma config SMB3EN = SMBUS3 
 
 /******************************************************************************/
 /*                      Files to Include                                      */
 /******************************************************************************/
+
 #include <xc.h>
 #include "system.h"         // System functions/parameters
 #include "debug_uart.h"     // Debug uart functions/parameters
@@ -81,8 +90,6 @@
 #include "user.h"
 #include "eeprom.h"
 #include "interrupts.h"     // Interrupt Handlers
-
-
 
 /******************************************************************************/
 /* Global Variable Declaration                                                */
@@ -110,6 +117,18 @@ float ambient_C;
 
 int main(void) {
     
+    /* Disable reference oscillator */
+    configure_oscillator();
+    
+    /* Initialize IO ports and peripherals */
+    config_peripherals();
+    
+    /* Write FW version to debug UART header */
+    write_debug_string(fw_version);
+    
+    /* Set source to AUX input*/
+    set_source(AUX);
+    
     TEST = 0;           // heartbeat LED off
     
     PLAY_PAUSE = 1;     // set BT play/pause pin
@@ -125,28 +144,21 @@ int main(void) {
     DISPLAY_BLANK = 1;  // Turn all segment display LEDs off
     
     LATCH = 0;          // Set latch on LED bar graph shift registers
-    BLANK = 1;          // Turn bar graph LEDs off
-    MFB = 0;            // Disable power on signal to bluetooth radio
+    BLANK = 1;
+    MFB = 0;
     
     FM_nRST = 0;        // Initialize with FM radio in reset
     
-     /* Disable reference oscillator */
-    configure_oscillator();
-    
-    /* Initialize IO ports and peripherals */
-    config_peripherals();
-    
-    /* Write FW version to debug UART header */
-    write_debug_string(fw_version);
-    
-    /* Set source to AUX input*/
-    set_source(AUX);
-    
-    
-    
     
     while(1) {
-        
+        set_source(AUX);
+        delayms(50);
+        set_source(BT);
+        delayms(50);
+        set_source(TV);
+        delayms(50);
+        set_source(FM);
+        delayms(300);
     }
     
     return 0;
