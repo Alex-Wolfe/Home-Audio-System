@@ -2,10 +2,10 @@
 /* SPI Function Prototypes                                                    */
 /******************************************************************************/
 
-void spi_write_1(unsigned char byte);
+void spi1_write(unsigned char byte);
 
-unsigned char spi_read_1(void);
+unsigned char spi2_read(void);
 
-void spi_write_2(unsigned char byte);
+void spi2_write(unsigned char byte);
 
-unsigned char spi_read_1(void);
+unsigned char spi2_read(void);

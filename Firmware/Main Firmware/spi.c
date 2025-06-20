@@ -18,12 +18,12 @@
 /* SPI Functions                                                              */
 /******************************************************************************/
 
-void spi_write_1(unsigned char byte) {
+void spi1_write(unsigned char byte) {
     while (SPI1TBF);        // wait for buffer to be empty
     SPI1BUFL = byte;        // load byte into buffer   
 }
 
-void spi_write_2(unsigned char byte) {
+void spi2_write(unsigned char byte) {
     while (SPI2TBF);                // wait for buffer to be empty
     SPI2BUFL = byte;                // load byte into buffer  
     while (SPI2RBE);

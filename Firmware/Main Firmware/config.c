@@ -84,6 +84,8 @@ void configure_SPI1_port(void) {
 //    SPI1CON1Hbits.MSSEN = 1;        // give peripheral automatic control of CS
 //    setup interrupts here
     SPI1CON1Lbits.SPIEN = 1;        // enable SPI
+    RPOR11 = 0x70;                  // Assign SDO pin
+    RPOR12 = 0x08;                  // Assign SCLK pin
 }
 
 void configure_SPI2_port(void) {
@@ -97,6 +99,10 @@ void configure_SPI2_port(void) {
 //    SPI2CON1Hbits.MSSEN = 1;        // give peripheral automatic control of CS
 //    setup interrupts here
     SPI2CON1Lbits.SPIEN = 1;        // enable SPI
+    RPOR15 = 0x0A;                  // Assign MOSI Pin
+    RPOR8 = 0x0B;                   // Assign SCLK Pin
+    RPOR5 = 0xC0;                   // Assign CS Pin
+    RPINR22 = 0x0C;                 // Assign MISO Pin
 }
 
 void configure_I2C_bus(void) {
