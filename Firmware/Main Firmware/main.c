@@ -112,8 +112,8 @@ char fw_version[11] = "v0.1 Alpha";
 
 float ambient_C;
 
-unsigned char shift_array[12] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                                0x00, 0x00, 0x00, 0x00};
+unsigned char shift_array[12] = {0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+                                    0x00, 0x00, 0x00, 0x00};
 
 /******************************************************************************/
 /* Main Program                                                               */
@@ -155,15 +155,17 @@ int main(void) {
     
     BLANK = 0;
     DISPLAY_BLANK = 0;
-    
+//    clear_display();
+    update_display(shift_array);
+    delayms(1000);
     while(1) {
         for (unsigned char i = 0; i < 8; i++) {
-            for (unsigned char j = 0; j < 11; j++) {
-                write_bargraph(i, j, shift_array);
-                update_display(shift_array);
-                delayms(100);
-            }
+            write_bargraph(i, 10, shift_array);
+            update_display(shift_array);
+            delayms(50);
+            clear_array(shift_array);
         }
+        delayms(1000);
 //        update_display(shift_array);
 //        set_source(AUX);
 //        delayms(50);

@@ -10,3 +10,9 @@ void update_display(unsigned char *array);
 /* Amplitude values can be 0-10*/
 void write_bargraph(unsigned char index, unsigned char amplitude, 
                     unsigned char *array);
+
+void clear_display(void);
+
+void latch_data(void);
+
+void clear_array(unsigned char *array);
