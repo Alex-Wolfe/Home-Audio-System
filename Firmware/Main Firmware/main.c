@@ -90,6 +90,7 @@
 #include "user.h"
 #include "eeprom.h"
 #include "interrupts.h"     // Interrupt Handlers
+#include "display.h"
 
 /******************************************************************************/
 /* Global Variable Declaration                                                */
@@ -110,6 +111,9 @@ const char FM = 3;
 char fw_version[11] = "v0.1 Alpha";
 
 float ambient_C;
+
+unsigned char shift_array[12] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+                                0x00, 0x00, 0x00, 0x00};
 
 /******************************************************************************/
 /* Main Program                                                               */
@@ -149,8 +153,22 @@ int main(void) {
     
     FM_nRST = 0;        // Initialize with FM radio in reset
     
-    
+    BLANK = 0;
+    DISPLAY_BLANK = 0;
+    delayms(500);
+    update_display(shift_array);
+    delayms(500);
+    shift_array[5] = 0xFF;
+    update_display(shift_array);
     while(1) {
+//        for (unsigned char i = 0; i < 8; i++) {
+//            for (unsigned char j = 0; j < 11; j++) {
+//                write_bargraph(i, j, shift_array);
+//                update_display(shift_array);
+//                delayms(100);
+//            }
+//        }
+        update_display(shift_array);
         set_source(AUX);
         delayms(50);
         set_source(BT);
@@ -158,7 +176,7 @@ int main(void) {
         set_source(TV);
         delayms(50);
         set_source(FM);
-        delayms(300);
+        delayms(50);
     }
     
     return 0;
