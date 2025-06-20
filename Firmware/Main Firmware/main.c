@@ -155,28 +155,24 @@ int main(void) {
     
     BLANK = 0;
     DISPLAY_BLANK = 0;
-    delayms(500);
-    update_display(shift_array);
-    delayms(500);
-    shift_array[5] = 0xFF;
-    update_display(shift_array);
+    
     while(1) {
-//        for (unsigned char i = 0; i < 8; i++) {
-//            for (unsigned char j = 0; j < 11; j++) {
-//                write_bargraph(i, j, shift_array);
-//                update_display(shift_array);
-//                delayms(100);
-//            }
-//        }
-        update_display(shift_array);
-        set_source(AUX);
-        delayms(50);
-        set_source(BT);
-        delayms(50);
-        set_source(TV);
-        delayms(50);
-        set_source(FM);
-        delayms(50);
+        for (unsigned char i = 0; i < 8; i++) {
+            for (unsigned char j = 0; j < 11; j++) {
+                write_bargraph(i, j, shift_array);
+                update_display(shift_array);
+                delayms(100);
+            }
+        }
+//        update_display(shift_array);
+//        set_source(AUX);
+//        delayms(50);
+//        set_source(BT);
+//        delayms(50);
+//        set_source(TV);
+//        delayms(50);
+//        set_source(FM);
+//        delayms(50);
     }
     
     return 0;
