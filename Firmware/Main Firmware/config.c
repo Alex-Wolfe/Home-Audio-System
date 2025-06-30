@@ -6,7 +6,7 @@
 /* Configuration Functions                                                    */
 /******************************************************************************/
 
-void config_peripherals(void) {
+void config_app(void) {
     disable_LCD_module();
     configure_IO();
     enable_timer1();
@@ -17,7 +17,6 @@ void config_peripherals(void) {
     configure_SPI2_port();
     configure_ADC();
     configure_interrupts();
-
 }
 
 void disable_LCD_module(void) {
@@ -143,6 +142,16 @@ void configure_interrupts(void) {
     INTCON2bits.INT2EP = 1;
     INTCON2bits.INT3EP = 1;
     INTCON2bits.INT4EP = 1;
+    /* Configure interrupt-on-change for UI pins */
+    IOCNFbits.IOCNF0 = 1;
+    IOCNFbits.IOCNF1 = 1;
+    IOCNEbits.IOCNE0 = 1;
+    IOCNEbits.IOCNE4 = 1;
+    IOCNEbits.IOCNE5 = 1;
+    IOCNDbits.IOCND10 = 1;
+    IOCNCbits.IOCNC13 = 1;
+    IOCNCbits.IOCNC14 = 1;
+    // IR interrupt not enabled
     /* Clear all interrupt flags */
     IFS0 = 0x0000;
     IFS1 = 0x0000;
@@ -152,13 +161,22 @@ void configure_interrupts(void) {
     IFS5 = 0x0000;
     IFS6 = 0x0000;
     IFS7 = 0x0000;
+    IOCFC = 0x0000;
+    IOCFD = 0x0000;
+    IOCFE = 0x0000;
+    IOCFF = 0x0000;
     /* Enable global interrupt enable */
     INTCON2bits.GIE = 1;
     /* Enable peripheral interrupt enables as needed */
-    IEC0bits.T1IE = 1;          //Enable Timer 1 interrupt
+    IEC0bits.T1IE = 1;          // Enable Timer 1 interrupt
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
     IEC0bits.AD1IE = 1;         // Enable ADC interrupt
+    IEC1bits.IOCIE = 1;         // Enable IOC interrupts
+    PADCONbits.IOCON = 1;
+    
 }
 
+/* Used for heartbeat LED */
 void enable_timer1(void) {
     /*  Set to keep timer running in idle mode
         Set to use internal clock
@@ -175,6 +193,7 @@ void enable_timer1(void) {
     T1CONbits.TON = 1;
 }
 
+/* Used for delay user functions */
 void enable_timer2(void) {
     T2CONbits.TCS = 0;
     T2CONbits.T32 = 0;          // use as 16 bit timer
@@ -184,13 +203,23 @@ void enable_timer2(void) {
     T2CONbits.TON = 1;
 }
 
+/* Used for 7 segment multiplexing */
+void enable_timer3(void) {
+    T3CONbits.TCS = 0;          // use as 16 bit timer
+    T3CONbits.TCKPS0 = 1;       // set to prescalar of 256
+    T3CONbits.TCKPS1 = 1;
+    T3CONbits.TSIDL = 0;
+    PR3 = 0x0200;               // set period to ~120 Hz
+    T3CONbits.TON = 1;
+}
+
 void configure_ADC(void) {
     AD1CON1 = 0x0474;           // 12 bit, free running mode
     AD1CON2 = 0x0C3C;           // Vcc reference, addressed buffer, scans inputs
     AD1CON3 = 0x1F08;           // sample time = 31Tad, Tad = 9Tcy
-//    AD1CON4 = 0x0000;           // DMA control buffer
+//    AD1CON4 = 0x0000;         // DMA control buffer
     AD1CON5 = 0x8000;           // enable auto scan
     AD1CHS = 0x1E00;            // mux B is measuring Vdd, Mux A starts at AN0
-    AD1CSSL = 0xFFFF;           // incluce all 16 channels in scan
-    AD1CON1bits.ADON = 1;        // enable ADC operation
+    AD1CSSL = 0xFFFF;           // include all 16 channels in scan
+    AD1CON1bits.ADON = 1;       // enable ADC operation
 }

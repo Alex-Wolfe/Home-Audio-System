@@ -1,6 +1,8 @@
 #include <xc.h>
 #include "interrupts.h"
 #include "pin_definitions.h"
+#include "display.h"
+#include "user.h"
 
 /******************************************************************************/
 /* Interrupt Vector Options                                                   */
@@ -62,11 +64,62 @@
 
 void ISR _T1Interrupt(void) {
     TEST ^= 1;    
-    /* Clear interrupt flag*/
+    /* Clear interrupt flag */
     IFS0bits.T1IF = 0;
+}
+
+void ISR _T3Interrupt(void) {
+    step_selected_index();
+    update_display();
+    /* Clear interrupt flag */
+    IFS0bits.T3IF = 0;
 }
 
 void ISR _ADC1Interrupt(void) {
     // do nothing for now
     IFS0bits.AD1IF = 0;
+}
+
+void ISR _IOCInterrupt(void) {
+    if (IOCFFbits.IOCFF1) {    // interrupt on nDISPLAY
+        display_toggle();
+        debounce();
+        IOCFFbits.IOCFF1 = 0;
+    }
+    else if (IOCFEbits.IOCFE0) {    // interrupt on nSOURCE
+        toggle_source();
+        debounce();
+        IOCFEbits.IOCFE0 = 0;
+    }
+    else if (IOCFEbits.IOCFE4) {    // interrupt on nMULTI1
+        // handle short and long presses for menu options
+        debounce();
+        IOCFEbits.IOCFE4 = 0;
+    }
+    else if (IOCFEbits.IOCFE5) {    // interrupt on nMULTI2
+        // handle short and long presses for menu options
+        debounce();
+        IOCFEbits.IOCFE5 = 0;
+    }
+    else if (IOCFDbits.IOCFD10) {   // interrupt on VOLA
+        // handle rotary encoder input for volume
+        if (VOL_B){
+            volume_inc();
+        }
+        else {
+            volume_dec();
+        }
+        debounce();
+        IOCFDbits.IOCFD10 = 0;
+    }
+    else if (IOCFCbits.IOCFC14) {   // interrupt on TUNEA
+        if (TUNE_B){
+            tune_inc();
+        }
+        else {
+            tune_dec();
+        }
+        debounce();
+        IOCFCbits.IOCFC14 = 0;
+    }
 }

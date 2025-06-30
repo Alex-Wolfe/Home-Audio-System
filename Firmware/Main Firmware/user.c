@@ -2,7 +2,11 @@
 
 #include "user.h"
 #include "pin_definitions.h"
+#include "debug_uart.h"
 
+unsigned char source_setting = 0;
+unsigned char volume_setting = 0;
+unsigned char tune_setting = 0;
 
 /******************************************************************************/
 /* User Functions                                                             */
@@ -52,4 +56,37 @@ void set_source(unsigned char a) {
         default:
             break;
     }
+}
+
+void toggle_source(void) {
+    source_setting = (source_setting + 1) % 4;
+    set_source(source_setting);
+}
+
+void volume_inc(void) {
+    volume_setting++;
+//    write_debug_byte(volume_setting);
+//    write_debug_newline();
+}
+
+void volume_dec(void) {
+    volume_setting--;
+//    write_debug_byte(volume_setting);
+//    write_debug_newline();
+}
+
+void tune_inc(void){
+    tune_setting++;
+//    write_debug_byte(tune_setting);
+//    write_debug_newline();
+}
+
+void tune_dec(void) {
+    tune_setting--;
+//    write_debug_byte(tune_setting);
+//    write_debug_newline();
+}
+
+void debounce(void) {
+    delayms(20);
 }

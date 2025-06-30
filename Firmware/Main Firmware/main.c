@@ -93,39 +93,43 @@
 #include "display.h"
 
 /******************************************************************************/
-/* Global Variable Declaration                                                */
-/******************************************************************************/
-
-const long fosc = 32000000;
-const long fcy = 16000000;
-
-/* I2C 7 bit addresses */
-const char vol_pot = 0x2F;
-
-/* Constants for Source Selection*/
-const char AUX = 0;
-const char BT = 1;
-const char TV = 2;
-const char FM = 3;
-
-char fw_version[11] = "v0.1 Alpha";
-
-float ambient_C;
-
-unsigned char shift_array[12] = {0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                                    0x00, 0x00, 0x00, 0x00};
-
-/******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
 
 int main(void) {
+    /* I2C 7 bit addresses */
+    const char vol_pot = 0x2F;
+
+    /* Constants for Source Selection*/
+    const char AUX = 0;
+    const char BT = 1;
+    const char TV = 2;
+    const char FM = 3;
+
+    char fw_version[11] = "v0.1 Alpha";
     
     /* Disable reference oscillator */
     configure_oscillator();
     
     /* Initialize IO ports and peripherals */
-    config_peripherals();
+    config_app();
+    
+    TEST = 0;           // heartbeat LED off
+    
+    PLAY_PAUSE = 1;     // set BT play/pause pin
+    VOL_UP = 1;         // Set VOL up and dn signals to bluetooth high
+    VOL_DN = 1;
+    MFB = 0;
+    
+    FAN_EN = 1;         // Disable fan power supply
+    FAN_PWM = 0;        // Disable fan power switch
+
+    DISPLAY_LATCH = 0;  // Set output latch on LED display shift registers
+    DISPLAY_BLANK = 0;  // Enable LEDs to be turned on
+    LATCH = 0;          // Set latch on LED bar graph shift registers
+    BLANK = 0;
+
+    FM_nRST = 0;        // Initialize with FM radio in reset
     
     /* Write FW version to debug UART header */
     write_debug_string(fw_version);
@@ -133,49 +137,11 @@ int main(void) {
     /* Set source to AUX input*/
     set_source(AUX);
     
-    TEST = 0;           // heartbeat LED off
-    
-    PLAY_PAUSE = 1;     // set BT play/pause pin
-    
-    IN_SEL_A = 0;       // Default to AUX input on startup (in future
-    IN_SEL_B = 0;       // use EEPROM storage to remember previous setting)
-    FAN_EN = 1;         // Disable fan power supply
-    FAN_PWM = 0;        // Disable fan power switch
-    
-    VOL_UP = 1;         // Set VOL up and dn signals to bluetooth high
-    VOL_DN = 1;
-    DISPLAY_LATCH = 0;  // Set output latch on LED display shift registers
-    DISPLAY_BLANK = 1;  // Turn all segment display LEDs off
-    
-    LATCH = 0;          // Set latch on LED bar graph shift registers
-    BLANK = 1;
-    MFB = 0;
-    
-    FM_nRST = 0;        // Initialize with FM radio in reset
-    
-    BLANK = 0;
-    DISPLAY_BLANK = 0;
-//    clear_display();
-    update_display(shift_array);
-    delayms(1000);
+    /* Initialize LEDs with test display */
+    display_test();
+
     while(1) {
-        for (unsigned char i = 0; i < 8; i++) {
-            write_bargraph(i, 10, shift_array);
-            update_display(shift_array);
-            delayms(50);
-            clear_array(shift_array);
-        }
-        delayms(1000);
-//        update_display(shift_array);
-//        set_source(AUX);
-//        delayms(50);
-//        set_source(BT);
-//        delayms(50);
-//        set_source(TV);
-//        delayms(50);
-//        set_source(FM);
-//        delayms(50);
+        
     }
-    
     return 0;
 }

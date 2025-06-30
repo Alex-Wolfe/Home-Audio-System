@@ -4,7 +4,7 @@
 /******************************************************************************/
 
 /* Run all functions to configure micro */
-void config_peripherals(void);
+void config_app(void);
 
 /* Disable LCD peripheral */
 void disable_LCD_module(void);
@@ -33,6 +33,9 @@ void enable_timer1(void);
 
 /* Enable timer 2 */
 void enable_timer2(void);
+
+/* Enable timer 2 */
+void enable_timer3(void);
 
 /* Set up ADC */
 void configure_ADC(void);
