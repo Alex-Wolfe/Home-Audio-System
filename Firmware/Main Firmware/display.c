@@ -7,7 +7,7 @@
 /* Create array for shift register data. bytes 0-9 are bar graph LEDs 
    bytes 10-17 are characters for segment display, and byte 18 controls 
    multiplexing the segment characters */
-unsigned char shift_array[19] = {0x80, 0x00, 0x00, 0x00, 0x00,
+unsigned char shift_array[19] = {0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
@@ -91,7 +91,7 @@ void latch_data(void) {
 }
 
 void clear_shift_array(void) {
-    for (unsigned char i = 0; i < 12; i++) {
+    for (unsigned char i = 0; i < 19; i++) {
         *(shift_array + i) = 0x00;
     }
 }
@@ -119,18 +119,14 @@ void display_toggle(void) {
 
 /* Code for display and LED animation at power on */
 void display_test(void) {
-    clear_shift_array();
     write_segments("test", 1234);
     for (unsigned char i = 0; i < 11; i++) {
         for (unsigned char j = 0; j < 10; j++) {
             write_bargraph(j, i);
+            delayms(500);
         }
-        delayms(100);
+        delayms(500);
+        clear_shift_array();
     }
-    for (unsigned char i = 0; i < 5; i++) {
-        display_toggle();
-        delayms(100);
-    }
-    clear_shift_array();
     delayms(500);
 }

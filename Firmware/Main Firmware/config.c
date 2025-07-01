@@ -11,6 +11,7 @@ void config_app(void) {
     configure_IO();
     enable_timer1();
     enable_timer2();
+    enable_timer3();
     configure_debug_uart();
     configure_I2C_bus();
     configure_SPI1_port();

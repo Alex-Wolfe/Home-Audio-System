@@ -138,10 +138,11 @@ int main(void) {
     set_source(AUX);
     
     /* Initialize LEDs with test display */
-    display_test();
-
+//    display_test();
+    
     while(1) {
-        
+//        display_test();
+        delayms(900);
     }
     return 0;
 }
