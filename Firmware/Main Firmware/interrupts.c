@@ -68,11 +68,11 @@ void ISR _T1Interrupt(void) {
     IFS0bits.T1IF = 0;
 }
 
-void ISR _T3Interrupt(void) {
+void ISR _T4Interrupt(void) {
     step_selected_index();
     update_display();
     /* Clear interrupt flag */
-    IFS0bits.T3IF = 0;
+    IFS1bits.T4IF = 0;
 }
 
 void ISR _ADC1Interrupt(void) {

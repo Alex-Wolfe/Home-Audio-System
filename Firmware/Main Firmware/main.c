@@ -141,8 +141,18 @@ int main(void) {
 //    display_test();
     
     while(1) {
-//        display_test();
-        delayms(900);
+//        write_bargraph(2,2);
+//        delayms(500);
+//        write_bargraph(3,3);
+//        delayms(500);
+//        write_bargraph(4,4);
+//        delayms(500);
+        set_source(AUX);
+        delayms(500);
+        set_source(BT);
+        delayms(500);
+        set_source(TV);
+        delayms(500);
     }
     return 0;
 }

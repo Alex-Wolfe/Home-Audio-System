@@ -119,7 +119,7 @@ void display_toggle(void) {
 
 /* Code for display and LED animation at power on */
 void display_test(void) {
-    write_segments("test", 1234);
+//    write_segments("test", 1234);
     for (unsigned char i = 0; i < 11; i++) {
         for (unsigned char j = 0; j < 10; j++) {
             write_bargraph(j, i);

@@ -11,7 +11,7 @@ void config_app(void) {
     configure_IO();
     enable_timer1();
     enable_timer2();
-    enable_timer3();
+    enable_timer4();
     configure_debug_uart();
     configure_I2C_bus();
     configure_SPI1_port();
@@ -170,7 +170,7 @@ void configure_interrupts(void) {
     INTCON2bits.GIE = 1;
     /* Enable peripheral interrupt enables as needed */
     IEC0bits.T1IE = 1;          // Enable Timer 1 interrupt
-    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
+    IEC1bits.T4IE = 1;          // Enable Timer 4 interrupt
     IEC0bits.AD1IE = 1;         // Enable ADC interrupt
     IEC1bits.IOCIE = 1;         // Enable IOC interrupts
     PADCONbits.IOCON = 1;
@@ -205,13 +205,15 @@ void enable_timer2(void) {
 }
 
 /* Used for 7 segment multiplexing */
-void enable_timer3(void) {
-    T3CONbits.TCS = 0;          // use as 16 bit timer
-    T3CONbits.TCKPS0 = 1;       // set to prescalar of 256
-    T3CONbits.TCKPS1 = 1;
-    T3CONbits.TSIDL = 0;
-    PR3 = 0x0200;               // set period to ~120 Hz
-    T3CONbits.TON = 1;
+void enable_timer4(void) {      //enabling this timer breaks my delay functions
+                                // that use timer 2 somehow. No clue
+//    T4CONbits.TCS = 0;
+//    T4CONbits.T32 = 0;          // use as 16 bit timer
+//    T4CONbits.TCKPS0 = 1;       // set to prescalar of 256
+//    T4CONbits.TCKPS1 = 1;
+//    T4CONbits.TSIDL = 0;
+//    PR4 = 0x0200;
+//    T4CONbits.TON = 1;
 }
 
 void configure_ADC(void) {
