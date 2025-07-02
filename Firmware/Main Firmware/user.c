@@ -14,18 +14,22 @@ unsigned char tune_setting = 0;
 
 /* Assumes fcy of 16MHz, 1000 ms max */
 void delayms(unsigned int ms) {
+    T2CONbits.TON = 0;
     T2CONbits.TCKPS0 = 1;       // set to prescalar of 256
     T2CONbits.TCKPS1 = 1;
     unsigned int ticks = ms * 62.5;
+    T2CONbits.TON = 1;
     TMR2 = 0x0000;
     while (TMR2 <= ticks);
 }
 
 /* Assumes fcy of 16MHz, 4000us max*/
 void delayus(unsigned int us) {
+    T2CONbits.TON = 0;
     T2CONbits.TCKPS0 = 0;       // change prescalar to 1
     T2CONbits.TCKPS1 = 0;
     unsigned int ticks = us * 16;
+    T2CONbits.TON = 1;
     TMR2 = 0x0000;
     while (TMR2 <= ticks);
 }
