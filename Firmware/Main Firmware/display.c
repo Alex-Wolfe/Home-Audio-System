@@ -11,11 +11,11 @@ unsigned char shift_array[19] = {0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-/* Create alphabet code: 0-9, A,b,c,d,E,F,H,i,J,L,n,o,P,r,S,t,u, space */
-const unsigned char alphabet[28] = {0x7D, 0x11, 0x2F, 0x1F, 0x53, 0x5E, 0x7E,
-    0x19, 0x7F, 0x5F, 0x7B, 0x76, 0x26, 0x37,
-    0x6E, 0x6A, 0x73, 0x24, 0x15, 0x64, 0x32,
-    0x36, 0x6B, 0x22, 0x5E, 0x66, 0x34, 0x00};
+/* Create alphabet code: 0-9, A-Z */
+const unsigned char alphabet[43] = {0x7D, 0x11, 0x2F, 0x1F, 0x53, 0x5E, 0x7E,
+    0x19, 0x7F, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7B, 0x76,
+    0x26, 0x37, 0x6E, 0x6A, 0x00, 0x73, 0x24, 0x15, 0x00, 0x64, 0x00, 0x32,
+    0x36, 0x6B, 0x00, 0x22, 0x5E, 0x66, 0x34, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 unsigned char display_setting = 0;
 
@@ -42,6 +42,8 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
     }
     unsigned char home_byte = (10 * index) / 8;
     unsigned char offset_bits = (10 * index) % 8;
+    *(shift_array + home_byte) &= 0xFF >> (8 - offset_bits);
+    *(shift_array + home_byte + 1) &= 0xFF << (2 + offset_bits);
     if (amplitude <= 8 - offset_bits) {
         *(shift_array + home_byte) |= ((0xFF >> (8 - amplitude)) << offset_bits);
         *(shift_array + home_byte + 1) |= 0x00;
@@ -55,7 +57,7 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
 void write_segments(char *text, unsigned int value) {
     for (unsigned char i = 0; *(text + i) != '\0'; i++)
     {
-        *(shift_array + 10 + i) = alphabet[i];
+        *(shift_array + 10 + i) = alphabet[*(text + i) - 48];
     }
     unsigned char j = 0;
     unsigned char remainder;
@@ -85,13 +87,25 @@ void step_selected_index(void) {
 void latch_data(void) {
     DISPLAY_LATCH = 1; // latch in data to output
     LATCH = 1;
-    delayus(100); // this length uncertain, but seems to work
+    intdelayus(100); // this length uncertain, but seems to work
     DISPLAY_LATCH = 0;
     LATCH = 0;
 }
 
 void clear_shift_array(void) {
     for (unsigned char i = 0; i < 19; i++) {
+        *(shift_array + i) = 0x00;
+    }
+}
+
+void clear_bargraph_data(void) {
+    for (unsigned char i = 0; i < 10; i++) {
+        *(shift_array + i) = 0x00;
+    }
+}
+
+void clear_segment_data(void) {
+    for (unsigned char i = 10; i < 18; i++) {
         *(shift_array + i) = 0x00;
     }
 }
@@ -119,14 +133,14 @@ void display_toggle(void) {
 
 /* Code for display and LED animation at power on */
 void display_test(void) {
-//    write_segments("test", 1234);
-    for (unsigned char i = 0; i < 11; i++) {
-        for (unsigned char j = 0; j < 10; j++) {
-            write_bargraph(j, i);
-            delayms(500);
+    write_segments("TEST", 1234);
+    for (unsigned char amp = 0; amp < 11; amp++) {
+        for (unsigned char i = 0; i < 10; i++) {
+            write_bargraph(i, amp);
+            delayms(200);
         }
         delayms(500);
-        clear_shift_array();
+        clear_bargraph_data();
     }
     delayms(500);
 }

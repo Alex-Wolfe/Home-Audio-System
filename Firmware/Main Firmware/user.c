@@ -34,6 +34,30 @@ void delayus(unsigned int us) {
     while (TMR2 <= ticks);
 }
 
+/* Assumes fcy of 16MHz, 4000us max
+    delay function for used in interrupts so that timers don't collide */
+void intdelayms(unsigned int ms) {
+    T4CONbits.TON = 0;
+    T4CONbits.TCKPS0 = 1;       // set to prescalar of 256
+    T4CONbits.TCKPS1 = 1;
+    unsigned int ticks = ms * 62.5;
+    T4CONbits.TON = 1;
+    TMR4 = 0x0000;
+    while (TMR4 <= ticks);
+}
+
+/* Assumes fcy of 16MHz, 4000us max
+    delay function for used in interrupts so that timers don't collide */
+void intdelayus(unsigned int us) {
+    T4CONbits.TON = 0;
+    T4CONbits.TCKPS0 = 0;       // change prescalar to 1
+    T4CONbits.TCKPS1 = 0;
+    unsigned int ticks = us * 16;
+    T4CONbits.TON = 1;
+    TMR4 = 0x0000;
+    while (TMR4 <= ticks);
+}
+
 /* Set input source with decoder 
    0 = AUX
    1 = BT
@@ -92,5 +116,5 @@ void tune_dec(void) {
 }
 
 void debounce(void) {
-    delayms(20);
+    intdelayms(20);
 }

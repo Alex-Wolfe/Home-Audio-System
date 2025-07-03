@@ -8,11 +8,21 @@
 /* User Function Prototypes                                                   */
 /******************************************************************************/
 
-/* Delay by ms milliseconds */
+/* Delay by ms milliseconds 
+    Uses Timer 2            */
 void delayms(unsigned int ms);
 
-/* Delay by us microseconds */
+/* Delay by us microseconds
+ *     Uses Timer 2        */
 void delayus(unsigned int us);
+
+/* Delay by ms milliseconds 
+    Uses Timer 4            */
+void intdelayms(unsigned int ms);
+
+/* Delay by us microseconds 
+    Uses Timer 4            */
+void intdelayus(unsigned int us);
 
 /* Set input audio source*/
 void set_source(unsigned char a);

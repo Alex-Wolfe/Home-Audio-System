@@ -20,6 +20,10 @@ void latch_data(void);
 
 void clear_shift_array(void);
 
+void clear_bargraph_data(void);
+
+void clear_segment_data(void);
+
 void display_toggle(void);
 
 void display_test(void);

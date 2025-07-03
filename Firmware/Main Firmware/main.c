@@ -138,15 +138,9 @@ int main(void) {
     set_source(AUX);
     
     /* Initialize LEDs with test display */
-//    display_test();
+    display_test();
     
     while(1) {
-//        write_bargraph(2,2);
-//        delayms(500);
-//        write_bargraph(3,3);
-//        delayms(500);
-//        write_bargraph(4,4);
-//        delayms(500);
         set_source(AUX);
         delayms(500);
         set_source(BT);
