@@ -206,13 +206,13 @@ void enable_timer2(void) {
 }
 
 /* Used for 7 segment multiplexing */
-void enable_timer3(void) {      //enabling this timer breaks my delay functions
-                                // that use timer 2 somehow. No clue why
+void enable_timer3(void) {
     T3CONbits.TCS = 0;          // use as 16 bit timer
     T3CONbits.TCKPS0 = 1;       // set to prescalar of 256
     T3CONbits.TCKPS1 = 1;
     T3CONbits.TSIDL = 0;
-    PR3 = 0x0200;
+    PR3 = 0x0080;             // set refresh rate to ~120Hz
+//    PR3 = 0xFF00;
     T3CONbits.TON = 1;
 }
 

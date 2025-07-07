@@ -15,9 +15,10 @@ unsigned char shift_array[19] = {0x00, 0x00, 0x00, 0x00, 0x00,
 const unsigned char alphabet[43] = {0x7D, 0x11, 0x2F, 0x1F, 0x53, 0x5E, 0x7E,
     0x19, 0x7F, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7B, 0x76,
     0x26, 0x37, 0x6E, 0x6A, 0x00, 0x73, 0x24, 0x15, 0x00, 0x64, 0x00, 0x32,
-    0x36, 0x6B, 0x00, 0x22, 0x5E, 0x66, 0x34, 0x00, 0x00, 0x00, 0x00, 0x00};
+    0x36, 0x6B, 0x00, 0x22, 0x5E, 0x66, 0x34, 0x75, 0x00, 0x00, 0x00, 0x00};
 
 unsigned char display_setting = 0;
+unsigned char character_index = 0;
 
 /******************************************************************************/
 /* Display Functions                                                          */
@@ -28,7 +29,7 @@ unsigned char display_setting = 0;
     Assumes there are 12 bytes stored in the shift register array */
 void update_display(void) {
     spi1_write(*(shift_array + 18)); // send multiplexing index byte
-    spi1_write(*(shift_array + 9 + *(shift_array + 18))); // send character
+    spi1_write(*(shift_array + 10 + character_index)); // send character
     for (unsigned char i = 0; i < 10; i++) {        // send bar graph values
         spi1_write(*(shift_array + 9 - i));
     }
@@ -37,7 +38,7 @@ void update_display(void) {
 
 /* Edit bytes in memory corresponding to selected bar graph LEDs */
 void write_bargraph(unsigned char index, unsigned char amplitude) {
-    if (index > 9) {
+    if (index > 7) {
         return;
     }
     unsigned char home_byte = (10 * index) / 8;
@@ -55,9 +56,12 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
 
 /* Edit bytes in memory corresponding to 7 segment display character LEDs */
 void write_segments(char *text, unsigned int value) {
+    for (unsigned char i = 0; i < 8; i++) {
+        *(shift_array + 10 + i) = 0x00;
+    }
     for (unsigned char i = 0; *(text + i) != '\0'; i++)
     {
-        *(shift_array + 10 + i) = alphabet[*(text + i) - 48];
+        *(shift_array + 17 - i) = alphabet[*(text + i) - 48];
     }
     unsigned char j = 0;
     unsigned char remainder;
@@ -66,7 +70,7 @@ void write_segments(char *text, unsigned int value) {
             break;
         }
         remainder = value % 10;
-        *(shift_array + 17 - j) = alphabet[remainder];
+        *(shift_array + 10 + j) = alphabet[remainder];
         value /= 10; 
         j++;
     }
@@ -74,7 +78,8 @@ void write_segments(char *text, unsigned int value) {
 
 /* Called by ISR to multiplex 7 segment display characters */
 void step_selected_index(void) {
-    *(shift_array + 18) = 0x01 << ((*(shift_array + 18) + 1) % 8);
+    character_index = (character_index + 1) % 8;
+    *(shift_array + 18) = 0x01 << character_index;
 }
 
 //void clear_display(void) {
@@ -85,6 +90,7 @@ void step_selected_index(void) {
 //}
 
 void latch_data(void) {
+    while (SPI1STATLbits.SPITBF);   // wait for buffer to be empty
     DISPLAY_LATCH = 1; // latch in data to output
     LATCH = 1;
     intdelayus(100); // this length uncertain, but seems to work
@@ -133,13 +139,13 @@ void display_toggle(void) {
 
 /* Code for display and LED animation at power on */
 void display_test(void) {
-    write_segments("TEST", 1234);
+    write_segments("TUNE", 1234);
     for (unsigned char amp = 0; amp < 11; amp++) {
-        for (unsigned char i = 0; i < 10; i++) {
+        for (unsigned char i = 0; i < 8; i++) {
             write_bargraph(i, amp);
-            delayms(200);
+            delayms(50);
         }
-        delayms(500);
+        delayms(50);
         clear_bargraph_data();
     }
     delayms(500);
