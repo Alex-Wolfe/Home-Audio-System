@@ -28,12 +28,14 @@ unsigned char character_index = 0;
  *  Updates shift registers with data array starting at "array"
     Assumes there are 12 bytes stored in the shift register array */
 void update_display(void) {
+    display_blank_setting(3);       // blank displays to prevent ghosting
     spi1_write(*(shift_array + 18)); // send multiplexing index byte
     spi1_write(*(shift_array + 10 + character_index)); // send character
     for (unsigned char i = 0; i < 10; i++) {        // send bar graph values
         spi1_write(*(shift_array + 9 - i));
     }
     latch_data();
+    display_blank_setting(display_setting);
 }
 
 /* Edit bytes in memory corresponding to selected bar graph LEDs */
@@ -93,7 +95,7 @@ void latch_data(void) {
     while (SPI1STATLbits.SPITBF);   // wait for buffer to be empty
     DISPLAY_LATCH = 1; // latch in data to output
     LATCH = 1;
-    intdelayus(100); // this length uncertain, but seems to work
+    intdelayus(50); // this length uncertain, but seems to work
     DISPLAY_LATCH = 0;
     LATCH = 0;
 }
@@ -117,24 +119,31 @@ void clear_segment_data(void) {
 }
 
 /* Toggle through settings with each call */
-void display_toggle(void) {
-    display_setting = (display_setting + 1) % 4;
+void display_blank_setting(unsigned char display_setting) {
     switch (display_setting) {
         case 0:     // bar graph LEDs and character display enabled
             BLANK = 0;
             DISPLAY_BLANK = 0; 
+            break;
         case 1:     // disable bar graph LEDs
             BLANK = 1;
             DISPLAY_BLANK = 0;
+            break;
         case 2:     // disable character display
             BLANK = 0;
             DISPLAY_BLANK = 1;
+            break;
         case 3:     // disable bar graph LEDs and character display
             BLANK = 1;
             DISPLAY_BLANK = 1;
+            break;
         default:
             break;
     }
+}
+
+void display_blank_setting_toggle(void) {
+    display_setting = (display_setting + 1) % 4;
 }
 
 /* Code for display and LED animation at power on */

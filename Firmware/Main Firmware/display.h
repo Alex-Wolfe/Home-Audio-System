@@ -24,6 +24,8 @@ void clear_bargraph_data(void);
 
 void clear_segment_data(void);
 
-void display_toggle(void);
+void display_blank_setting(unsigned char display_setting);
+
+void display_blank_setting_toggle(void);
 
 void display_test(void);

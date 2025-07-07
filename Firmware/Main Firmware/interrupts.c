@@ -82,13 +82,13 @@ void ISR _ADC1Interrupt(void) {
 
 void ISR _IOCInterrupt(void) {
     if (IOCFFbits.IOCFF1) {    // interrupt on nDISPLAY
-        display_toggle();
-        debounce();
+        display_blank_setting_toggle();
+//        debounce();
         IOCFFbits.IOCFF1 = 0;
     }
     else if (IOCFEbits.IOCFE0) {    // interrupt on nSOURCE
         toggle_source();
-        debounce();
+//        debounce();
         IOCFEbits.IOCFE0 = 0;
     }
     else if (IOCFEbits.IOCFE4) {    // interrupt on nMULTI1

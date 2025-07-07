@@ -147,6 +147,9 @@ int main(void) {
         delayms(500);
         set_source(TV);
         delayms(500);
+        set_source(FM);
+        delayms(500);
     }
+    
     return 0;
 }
