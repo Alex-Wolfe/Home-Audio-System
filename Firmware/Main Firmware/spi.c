@@ -26,7 +26,7 @@ void spi1_write(unsigned char byte) {
 void spi2_write(unsigned char byte) {
     while (SPI2TBF);                // wait for buffer to be empty
     SPI2BUFL = byte;                // load byte into buffer  
-    while (SPI2RBE);
-    unsigned char x = SPI2BUFL;     // read the buffer to clear the rx out
+//    while (SPI2RBE);
+//    unsigned char x = SPI2BUFL;     // read the buffer to clear the rx out
 }
 

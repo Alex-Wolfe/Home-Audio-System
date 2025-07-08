@@ -91,14 +91,14 @@
 #include "eeprom.h"
 #include "interrupts.h"     // Interrupt Handlers
 #include "display.h"
+#include "vol_pot.h"
+#include "eq_pot.h"
 
 /******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
 
 int main(void) {
-    /* I2C 7 bit addresses */
-    const char vol_pot = 0x2F;
 
     /* Constants for Source Selection*/
     const char AUX = 0;
@@ -133,6 +133,10 @@ int main(void) {
     
     /* Write FW version to debug UART header */
     write_debug_string(fw_version);
+    
+    /* Set VOl and EQ potentiometers to low level */
+    init_eq();
+    set_volume(50,50);
     
     /* Set source to AUX input*/
     set_source(AUX);
