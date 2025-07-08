@@ -3,6 +3,7 @@
 #include "user.h"
 #include "pin_definitions.h"
 #include "debug_uart.h"
+#include "display.h"
 
 unsigned char source_setting = 0;
 unsigned char volume_setting = 0;
@@ -116,5 +117,9 @@ void tune_dec(void) {
 }
 
 void debounce(void) {
-    intdelayms(20);
+    intdelayms(1);
+}
+
+void write_vol_setting_to_display(void) {
+    write_segments("VOL", volume_setting);
 }

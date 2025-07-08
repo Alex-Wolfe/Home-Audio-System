@@ -145,14 +145,8 @@ int main(void) {
     display_test();
     
     while(1) {
-        set_source(AUX);
-        delayms(500);
-        set_source(BT);
-        delayms(500);
-        set_source(TV);
-        delayms(500);
-        set_source(FM);
-        delayms(500);
+        write_vol_setting_to_display();
+        delayms(100);
     }
     
     return 0;

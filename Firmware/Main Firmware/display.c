@@ -157,5 +157,4 @@ void display_test(void) {
         delayms(50);
         clear_bargraph_data();
     }
-    delayms(500);
 }

@@ -84,21 +84,25 @@ void ISR _IOCInterrupt(void) {
     if (IOCFFbits.IOCFF1) {    // interrupt on nDISPLAY
         display_blank_setting_toggle();
 //        debounce();
+        IFS1bits.IOCIF = 0;
         IOCFFbits.IOCFF1 = 0;
     }
     else if (IOCFEbits.IOCFE0) {    // interrupt on nSOURCE
         toggle_source();
 //        debounce();
+        IFS1bits.IOCIF = 0;
         IOCFEbits.IOCFE0 = 0;
     }
     else if (IOCFEbits.IOCFE4) {    // interrupt on nMULTI1
         // handle short and long presses for menu options
         debounce();
+        IFS1bits.IOCIF = 0;
         IOCFEbits.IOCFE4 = 0;
     }
     else if (IOCFEbits.IOCFE5) {    // interrupt on nMULTI2
         // handle short and long presses for menu options
         debounce();
+        IFS1bits.IOCIF = 0;
         IOCFEbits.IOCFE5 = 0;
     }
     else if (IOCFDbits.IOCFD10) {   // interrupt on VOLA
@@ -110,6 +114,7 @@ void ISR _IOCInterrupt(void) {
             volume_dec();
         }
         debounce();
+        IFS1bits.IOCIF = 0;
         IOCFDbits.IOCFD10 = 0;
     }
     else if (IOCFCbits.IOCFC14) {   // interrupt on TUNEA
@@ -120,6 +125,7 @@ void ISR _IOCInterrupt(void) {
             tune_dec();
         }
         debounce();
+        IFS1bits.IOCIF = 0;
         IOCFCbits.IOCFC14 = 0;
     }
 }

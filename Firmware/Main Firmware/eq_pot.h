@@ -15,3 +15,5 @@ void set_right_high_level(unsigned char val);
 void set_left_low_level(unsigned char val);
 
 void set_left_high_level(unsigned char val);
+
+void init_eq(void);

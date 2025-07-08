@@ -44,3 +44,6 @@ void tune_dec(void);
 
 /* Short debounce delay for button presses */
 void debounce(void);
+
+
+void write_vol_setting_to_display(void);
