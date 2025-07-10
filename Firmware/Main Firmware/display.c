@@ -157,4 +157,7 @@ void display_test(void) {
         delayms(50);
         clear_bargraph_data();
     }
+    for (unsigned char i = 0; i < 8; i++) {
+        write_bargraph(i,2);
+    }
 }

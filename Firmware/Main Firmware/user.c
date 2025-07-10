@@ -117,7 +117,7 @@ void tune_dec(void) {
 }
 
 void debounce(void) {
-    intdelayms(20);
+    intdelayms(1);
 }
 
 void write_vol_setting_to_display(void) {

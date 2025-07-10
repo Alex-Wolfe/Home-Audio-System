@@ -107,15 +107,22 @@ void ISR _IOCInterrupt(void) {
     }
     else if (IOCFDbits.IOCFD10) {   // interrupt on VOL A
         // handle rotary encoder input for volume
-        if (VOL_B){
-            volume_inc();
+        if (VOL_A) {
+            debounce();
+            IFS1bits.IOCIF = 0;
+            IOCFDbits.IOCFD10 = 0;
         }
         else {
-            volume_dec();
+            if (VOL_B) {
+                volume_inc();
+            }
+            else {
+                volume_dec();
+            }
+            debounce();
+            IFS1bits.IOCIF = 0;
+            IOCFDbits.IOCFD10 = 0;
         }
-        debounce();
-        IFS1bits.IOCIF = 0;
-        IOCFDbits.IOCFD10 = 0;
     }
     else if (IOCFCbits.IOCFC14) {   // interrupt on TUNE A
         if (TUNE_B){
@@ -127,5 +134,8 @@ void ISR _IOCInterrupt(void) {
         debounce();
         IFS1bits.IOCIF = 0;
         IOCFCbits.IOCFC14 = 0;
+    }
+    else {
+        IFS1bits.IOCIF = 0;
     }
 }

@@ -40,5 +40,8 @@ void enable_timer3(void);
 /* Enable timer 4*/
 void enable_timer4(void);
 
+/* Enable timer 5*/
+void enable_timer5(void);
+
 /* Set up ADC */
 void configure_ADC(void);

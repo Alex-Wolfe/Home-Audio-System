@@ -13,6 +13,7 @@ void config_app(void) {
     enable_timer2();
     enable_timer3();
     enable_timer4();
+    enable_timer5();
     configure_debug_uart();
     configure_I2C_bus();
     configure_SPI1_port();
@@ -149,13 +150,21 @@ void configure_interrupts(void) {
     INTCON2bits.INT4EP = 1;
     /* Configure interrupt-on-change for UI pins */
     IOCNFbits.IOCNF0 = 1;
+    IOCPFbits.IOCPF0 = 1;
     IOCNFbits.IOCNF1 = 1;
+    IOCPFbits.IOCPF1 = 1;
     IOCNEbits.IOCNE0 = 1;
+    IOCPEbits.IOCPE0 = 1;
     IOCNEbits.IOCNE4 = 1;
+    IOCPEbits.IOCPE4 = 1;
     IOCNEbits.IOCNE5 = 1;
+    IOCPEbits.IOCPE5 = 1;
     IOCNDbits.IOCND10 = 1;
+    IOCPDbits.IOCPD10 = 1;
     IOCNCbits.IOCNC13 = 1;
+    IOCPCbits.IOCPC13 = 1;
     IOCNCbits.IOCNC14 = 1;
+    IOCPCbits.IOCPC14 = 1;
     // IR interrupt not enabled
     /* Clear all interrupt flags */
     IFS0 = 0x0000;
@@ -226,6 +235,15 @@ void enable_timer4(void) {
     T4CONbits.TCKPS1 = 1;
     T4CONbits.TSIDL = 0;
     T4CONbits.TON = 1;
+}
+
+/* Gen purp timer */
+void enable_timer5(void) {
+    T5CONbits.TCS = 0;          // use as 16 bit timer
+    T5CONbits.TCKPS0 = 1;       // set to prescalar of 256
+    T5CONbits.TCKPS1 = 1;
+    T5CONbits.TSIDL = 0;
+    T5CONbits.TON = 1;
 }
 
 void configure_ADC(void) {
