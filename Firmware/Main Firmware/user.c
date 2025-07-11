@@ -9,6 +9,12 @@ unsigned char source_setting = 0;
 unsigned char volume_setting = 0;
 unsigned char tune_setting = 0;
 
+unsigned char source_button_pressed = 0;
+unsigned char display_button_pressed = 0;
+unsigned char nMULTI1_pressed = 0;
+unsigned char nMULTI2_pressed = 0;
+unsigned int debounce_delay = 62.5 * 20; // tactile button debounce delay in ms
+
 /******************************************************************************/
 /* User Functions                                                             */
 /******************************************************************************/
@@ -94,26 +100,18 @@ void toggle_source(void) {
 
 void volume_inc(void) {
     volume_setting++;
-//    write_debug_byte(volume_setting);
-//    write_debug_newline();
 }
 
 void volume_dec(void) {
     volume_setting--;
-//    write_debug_byte(volume_setting);
-//    write_debug_newline();
 }
 
 void tune_inc(void){
     tune_setting++;
-//    write_debug_byte(tune_setting);
-//    write_debug_newline();
 }
 
 void tune_dec(void) {
     tune_setting--;
-//    write_debug_byte(tune_setting);
-//    write_debug_newline();
 }
 
 void debounce(void) {
@@ -122,4 +120,64 @@ void debounce(void) {
 
 void write_vol_setting_to_display(void) {
     write_segments("VOL", volume_setting);
+}
+
+void handle_source_button(void) {
+    if (source_button_pressed && nSOURCE && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+            source_button_pressed = 0;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+            return;
+        }
+    else if (!source_button_pressed && !nSOURCE && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+        source_button_pressed = 1;
+        toggle_source();
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+    }
+}
+
+void handle_display_button(void) {
+    if (display_button_pressed && nDISPLAY && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+            display_button_pressed = 0;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+            return;
+        }
+    else if (!display_button_pressed && !nDISPLAY && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+        display_button_pressed = 1;
+        display_blank_setting_toggle();
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+    }
+}
+
+void handle_nMULTI1(void) {
+    if (nMULTI1_pressed && nMULTI1 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+            nMULTI1_pressed = 0;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+            return;
+        }
+    else if (!nMULTI1_pressed && !nMULTI1 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+        nMULTI1_pressed = 1;
+        // do nothing for now. also add long press stuff later
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+    }
+}
+
+void handle_nMULTI2(void) {
+    if (nMULTI2_pressed && nMULTI2 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+            nMULTI2_pressed = 0;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+            return;
+        }
+    else if (!nMULTI2_pressed && !nMULTI2 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
+        nMULTI2_pressed = 1;
+        // do nothing for now. also add long press stuff later
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+    }
 }

@@ -45,5 +45,17 @@ void tune_dec(void);
 /* Short debounce delay for button presses */
 void debounce(void);
 
-
+/* update volume setting on display */
 void write_vol_setting_to_display(void);
+
+/* handle debouncing of source button with interrupt on change */
+void handle_source_button(void);
+
+/* handle debouncing of display button with interrupt on change */
+void handle_display_button(void);
+
+
+void handle_nMULTI1(void);
+
+
+void handle_nMULTI2(void);

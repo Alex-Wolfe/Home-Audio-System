@@ -81,27 +81,23 @@ void ISR _ADC1Interrupt(void) {
 }
 
 void ISR _IOCInterrupt(void) {
-    if (IOCFFbits.IOCFF1) {    // interrupt on nDISPLAY
-        display_blank_setting_toggle();
-        debounce();
+    if (IOCFFbits.IOCFF1) {         // interrupt on nDISPLAY
+        handle_display_button();    // handle debouncing
         IFS1bits.IOCIF = 0;
         IOCFFbits.IOCFF1 = 0;
     }
     else if (IOCFEbits.IOCFE0) {    // interrupt on nSOURCE
-        toggle_source();
-        debounce();
+        handle_source_button();     // handle debouncing
         IFS1bits.IOCIF = 0;
         IOCFEbits.IOCFE0 = 0;
     }
     else if (IOCFEbits.IOCFE4) {    // interrupt on nMULTI1
-        // handle short and long presses for menu options
-        debounce();
+        handle_nMULTI1();           // handle short and long presses for menu options
         IFS1bits.IOCIF = 0;
         IOCFEbits.IOCFE4 = 0;
     }
     else if (IOCFEbits.IOCFE5) {    // interrupt on nMULTI2
-        // handle short and long presses for menu options
-        debounce();
+        handle_nMULTI2();           // handle short and long presses for menu options
         IFS1bits.IOCIF = 0;
         IOCFEbits.IOCFE5 = 0;
     }

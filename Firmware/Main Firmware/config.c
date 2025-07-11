@@ -149,8 +149,8 @@ void configure_interrupts(void) {
     INTCON2bits.INT3EP = 1;
     INTCON2bits.INT4EP = 1;
     /* Configure interrupt-on-change for UI pins */
-    IOCNFbits.IOCNF0 = 1;
-    IOCPFbits.IOCPF0 = 1;
+    IOCNFbits.IOCNF0 = 1;       //falling edge interrupt enable
+    IOCPFbits.IOCPF0 = 1;       // rising edge interrupt enable
     IOCNFbits.IOCNF1 = 1;
     IOCPFbits.IOCPF1 = 1;
     IOCNEbits.IOCNE0 = 1;
@@ -237,7 +237,7 @@ void enable_timer4(void) {
     T4CONbits.TON = 1;
 }
 
-/* Gen purp timer */
+/* General purpose timer */
 void enable_timer5(void) {
     T5CONbits.TCS = 0;          // use as 16 bit timer
     T5CONbits.TCKPS0 = 1;       // set to prescalar of 256

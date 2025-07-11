@@ -118,7 +118,7 @@ void clear_segment_data(void) {
     }
 }
 
-/* Toggle through settings with each call */
+/* Set display setting with argument */
 void display_blank_setting(unsigned char display_setting) {
     switch (display_setting) {
         case 0:     // bar graph LEDs and character display enabled
