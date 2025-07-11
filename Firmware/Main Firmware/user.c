@@ -124,11 +124,10 @@ void write_vol_setting_to_display(void) {
 
 void handle_source_button(void) {
     if (source_button_pressed && nSOURCE && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-            source_button_pressed = 0;
-            TMR5 = 0;
-            IFS1bits.T5IF = 0;
-            return;
-        }
+        source_button_pressed = 0;
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+    }
     else if (!source_button_pressed && !nSOURCE && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
         source_button_pressed = 1;
         toggle_source();
@@ -139,11 +138,11 @@ void handle_source_button(void) {
 
 void handle_display_button(void) {
     if (display_button_pressed && nDISPLAY && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-            display_button_pressed = 0;
-            TMR5 = 0;
-            IFS1bits.T5IF = 0;
-            return;
-        }
+        display_button_pressed = 0;
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+        return;
+    }
     else if (!display_button_pressed && !nDISPLAY && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
         display_button_pressed = 1;
         display_blank_setting_toggle();
@@ -154,11 +153,11 @@ void handle_display_button(void) {
 
 void handle_nMULTI1(void) {
     if (nMULTI1_pressed && nMULTI1 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-            nMULTI1_pressed = 0;
-            TMR5 = 0;
-            IFS1bits.T5IF = 0;
-            return;
-        }
+        nMULTI1_pressed = 0;
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+        return;
+    }
     else if (!nMULTI1_pressed && !nMULTI1 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
         nMULTI1_pressed = 1;
         // do nothing for now. also add long press stuff later
@@ -169,11 +168,11 @@ void handle_nMULTI1(void) {
 
 void handle_nMULTI2(void) {
     if (nMULTI2_pressed && nMULTI2 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-            nMULTI2_pressed = 0;
-            TMR5 = 0;
-            IFS1bits.T5IF = 0;
-            return;
-        }
+        nMULTI2_pressed = 0;
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
+        return;
+    }
     else if (!nMULTI2_pressed && !nMULTI2 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
         nMULTI2_pressed = 1;
         // do nothing for now. also add long press stuff later
