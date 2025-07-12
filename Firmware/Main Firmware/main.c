@@ -146,8 +146,9 @@ int main(void) {
     while(1) {
 //        update_source();    // update display with text for selected source
 //        update_volume();    // update volume potentiometer with volume setting
+
         test_screen_update();
-        update_bargraphs();
+//        update_bargraphs();
         delayms(10);
     }
     

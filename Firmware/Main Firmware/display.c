@@ -72,6 +72,9 @@ void write_first_segments_text(char *text) {
 
 void write_first_segments_int(unsigned int value) {
     IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 14 + i) = 0x00;
+    }
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -99,6 +102,9 @@ void write_second_segments_text(char *text) {
 
 void write_second_segments_int(unsigned int value) {
     IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 10 + i) = 0x00;
+    }
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -190,13 +196,13 @@ void display_test(void) {
             for (unsigned char i = 0; i < 8; i++) {
                 write_bargraph(i, amp);
             }
-            delayms(30);
+            delayms(20);
         }
         for (unsigned char amp = 0; amp < 11; amp++) {
             for (unsigned char i = 0; i < 8; i++) {
                 write_bargraph(i, 10 - amp);
             }
-            delayms(30);
+            delayms(20);
         }
     }
     clear_shift_array();

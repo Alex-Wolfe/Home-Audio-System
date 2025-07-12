@@ -8,17 +8,17 @@
 #include "vol_pot.h"
 
 #define SAMPLES_PER_STEP 2
-#define DEBOUNCE_DELAY 625      // delay of 10ms assuming 256 prescalar
+#define DEBOUNCE_DELAY 63      // delay of 1ms assuming 256 prescalar
 
 #define EEPROM_SOURCE_ADD 0x01
 
 unsigned char source_setting = 0;
 unsigned char source_changed_flag = 0;
 
-unsigned char volume_setting = 20;
+unsigned char volume_setting = 24;
 unsigned char volume_changed_flag = 0;
 
-unsigned char tune_setting = 0;
+unsigned int tune_setting = 999;
 unsigned char tune_changed_flag = 0;
 
 unsigned char source_button_pressed = 0;
@@ -31,11 +31,13 @@ unsigned char volume_encoder_next_state = 0;
 unsigned char volume_encoder_previous_state = 0;
 char volume_direction = 0;
 char previous_volume_direction = 0;
+unsigned char volume_streak = 0;
 
 unsigned char tune_encoder_next_state = 0;
 unsigned char tune_encoder_previous_state = 0;
 char tune_direction = 0;
 char previous_tune_direction = 0;
+unsigned char tune_streak = 0;
 
 const unsigned char transition_table[4][4] = {
     {0, -1, 1, 0},  // 00 -> {00, 01, 10, 11}
@@ -116,7 +118,6 @@ void set_source(unsigned char a) {
 void toggle_source(void) {
     source_setting = (source_setting + 1) % 4;
     set_source(source_setting);
-    write_eeprom(EEPROM_SOURCE_ADD, source_setting);
 }
 
 void init_source(void) {
@@ -216,18 +217,22 @@ void handle_volume_encoder(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         volume_encoder_next_state = (VOL_A << 1) + VOL_B;
         volume_direction = transition_table[volume_encoder_previous_state][volume_encoder_next_state];
+        volume_encoder_previous_state = volume_encoder_next_state;
         if (!volume_direction) {
             return;
         }
         if (volume_direction == previous_volume_direction) {
-            if ((volume_direction > 0) && (volume_setting <= 248)) {
-                volume_setting += 8 * volume_direction;
+            volume_streak++;
+            if ((volume_direction > 0) && (volume_setting < 248) && (volume_streak > 3)) {
+                volume_setting += 8;
                 previous_volume_direction = 0;
+                volume_streak = 0;
                 volume_changed_flag = 1;
             }
-            else if ((volume_direction < 0) && (volume_setting >= 8)) {
-                volume_setting += 8 * volume_direction;
+            else if ((volume_direction < 0) && (volume_setting > 8) && (volume_streak > 3)) {
+                volume_setting -= 8;
                 previous_volume_direction = 0;
+                volume_streak = 0;
                 volume_changed_flag = 1;
             }
         } else {
@@ -255,18 +260,22 @@ void handle_tune_encoder(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         tune_encoder_next_state = (TUNE_A << 1) + TUNE_B;
         tune_direction = transition_table[tune_encoder_previous_state][tune_encoder_next_state];
+        tune_encoder_previous_state = tune_encoder_next_state;
         if (!tune_direction) {
             return;
         }
         if (tune_direction == previous_tune_direction) {
-            if ((tune_direction > 0) && (tune_setting < 1079)){
-                tune_setting += tune_direction;
+            tune_streak++;
+            if ((tune_direction > 0) && (tune_setting < 1079) && (tune_streak > 3)) {
+                tune_setting += 1;
                 previous_tune_direction = 0;
+                tune_streak = 0;
                 tune_changed_flag = 1;
             }
-            else if ((tune_direction < 0) && tune_setting > 881) {
-                tune_setting += tune_direction;
+            else if ((tune_direction < 0) && (tune_setting > 879) && (tune_streak > 3)) {
+                tune_setting -= 1;
                 previous_tune_direction = 0;
+                tune_streak = 0;
                 tune_changed_flag = 1;
             }
         } else {
@@ -334,10 +343,14 @@ void update_bargraphs(void) {
 }
 
 void test_screen_update(void) {
-    if (volume_changed_flag) {
-        write_second_segments_int(volume_setting);
-    }
-    if (tune_changed_flag) {
-        write_first_segments_int(tune_setting);
-    }
+    write_first_segments_int(volume_setting / 8);
+    write_second_segments_int(tune_setting);
+//    if (volume_changed_flag) {
+//        write_second_segments_int(volume_setting);
+//        volume_changed_flag = 0;
+//    }
+//    if (tune_changed_flag) {
+//        write_first_segments_int(tune_setting);
+//        tune_changed_flag = 0;
+//    }
 }
