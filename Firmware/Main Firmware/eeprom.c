@@ -27,7 +27,7 @@ void write_eeprom(unsigned int add, unsigned char data) {
 unsigned char read_eeprom(unsigned int add) {
     unsigned char received;
     unsigned int upper_add = add >> 8;
-    unsigned int lower_add = 0x00FF | add;
+    unsigned int lower_add = add & 0x00FF;
     i2c_start();
     i2c_write_command(eeprom_ic);
     delayus(100);

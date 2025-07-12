@@ -4,9 +4,12 @@
 #include "pin_definitions.h"
 #include "debug_uart.h"
 #include "display.h"
+#include "eeprom.h"
 
 #define SAMPLES_PER_STEP 2
 #define DEBOUNCE_DELAY 625      // delay of 10ms assuming 256 prescalar
+
+#define EEPROM_SOURCE_ADD 0x01
 
 unsigned char source_setting = 0;
 unsigned char volume_setting = 0;
@@ -34,6 +37,8 @@ const unsigned char transition_table[4][4] = {
     {0, 1, -1, 0}   // 11 -> {00, 01, 10, 11}
 };
 
+unsigned int adc_results[16];
+
 /******************************************************************************/
 /* User Functions                                                             */
 /******************************************************************************/
@@ -58,18 +63,6 @@ void delayus(unsigned int us) {
     T2CONbits.TON = 1;
     TMR2 = 0x0000;
     while (TMR2 <= ticks);
-}
-
-/* Assumes fcy of 16MHz, 4000us max
-    delay function for used in interrupts so that timers don't collide */
-void intdelayms(unsigned int ms) {
-    T4CONbits.TON = 0;
-    T4CONbits.TCKPS0 = 1;       // set to prescalar of 256
-    T4CONbits.TCKPS1 = 1;
-    unsigned int ticks = ms * 62.5;
-    T4CONbits.TON = 1;
-    TMR4 = 0x0000;
-    while (TMR4 <= ticks);
 }
 
 /* Assumes fcy of 16MHz, 4000us max
@@ -115,30 +108,7 @@ void set_source(unsigned char a) {
 void toggle_source(void) {
     source_setting = (source_setting + 1) % 4;
     set_source(source_setting);
-}
-
-void volume_inc(void) {
-    volume_setting++;
-}
-
-void volume_dec(void) {
-    volume_setting--;
-}
-
-void tune_inc(void){
-    tune_setting++;
-}
-
-void tune_dec(void) {
-    tune_setting--;
-}
-
-void debounce(void) {
-    intdelayms(1);
-}
-
-void write_vol_setting_to_display(void) {
-    write_segments("VOL", volume_setting);
+    write_eeprom(EEPROM_SOURCE_ADD, source_setting);
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
@@ -157,6 +127,10 @@ void handle_source_button(void) {
             IFS1bits.T5IF = 0;
         }
     }
+}
+
+void init_source(void) {
+    set_source(read_eeprom(EEPROM_SOURCE_ADD));
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
@@ -192,6 +166,7 @@ void handle_nMULTI1(void) {
         }
     }
 }
+
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
 void handle_nMULTI2(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
@@ -225,7 +200,6 @@ void handle_volume_encoder(void) {
     IFS1bits.T5IF = 0;
 }
 
-
 void handle_tune_encoder(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         tune_encoder_next_state = (TUNE_A << 1) + TUNE_B;
@@ -242,4 +216,13 @@ void handle_tune_encoder(void) {
     }
     TMR5 = 0;
     IFS1bits.T5IF = 0;
+}
+
+void update_ADC_memory(void) {
+    AD1CON1bits.ASAM = 0;   // stop auto sampling/conversion
+    volatile unsigned int *adc_ptr = &ADC1BUF0;
+    for(unsigned char i = 0; i < 16; i++) { // put results from buffer in memory
+        adc_results[i] = *(adc_ptr + i);
+    }
+    AD1CON1bits.ASAM = 1;   // resume auto sampling/conversion
 }

@@ -76,7 +76,7 @@ void ISR _T3Interrupt(void) {
 }
 
 void ISR _ADC1Interrupt(void) {
-    // do nothing for now
+    update_ADC_memory();
     IFS0bits.AD1IF = 0;
 }
 

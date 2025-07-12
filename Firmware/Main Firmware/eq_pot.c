@@ -35,11 +35,11 @@ void set_left_high_level(unsigned char val) {
 }
 
 void init_eq(void) {
-    set_right_low_level(50);
+    set_right_low_level(128);
     delayus(10);
-    set_right_high_level(50);
+    set_right_high_level(128);
     delayus(10);
-    set_left_low_level(50);
+    set_left_low_level(128);
     delayus(10);
-    set_left_high_level(50);
+    set_left_high_level(128);
 }

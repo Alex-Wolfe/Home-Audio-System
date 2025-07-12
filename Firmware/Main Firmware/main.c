@@ -6,9 +6,7 @@
  */
 
 // PIC24FJ128GL306 Configuration Bit Settings
-
 // 'C' source line config statements
-
 // FSEC
 #pragma config BWRP = OFF               // Boot Segment Write-Protect bit (Boot Segment may be written)
 #pragma config BSS = DISABLED           // Boot Segment Code-Protect Level bits (No Protection (other than BWRP))
@@ -98,14 +96,15 @@
 /* Main Program                                                               */
 /******************************************************************************/
 
+#define AUX 0       // arguments for set source function
+#define BT 1
+#define TV 2
+#define FM 3
+
+
+
 int main(void) {
-
-    /* Constants for Source Selection*/
-    const char AUX = 0;
-    const char BT = 1;
-    const char TV = 2;
-    const char FM = 3;
-
+    
     char fw_version[11] = "v0.1 Alpha";
     
     /* Disable reference oscillator */
@@ -134,19 +133,18 @@ int main(void) {
     /* Write FW version to debug UART header */
     write_debug_string(fw_version);
     
-    /* Set VOl and EQ potentiometers to low level */
+    /* Set VOL and EQ potentiometers to low level */
     init_eq();
-    set_volume(50,50);
+    set_volume(20,20);
     
-    /* Set source to AUX input*/
-    set_source(AUX);
+    /* Get previous source setting */
+    init_source();
     
     /* Initialize LEDs with test display */
     display_test();
     
     while(1) {
-        write_vol_setting_to_display();
-        delayms(100);
+//        delayms(100);
     }
     
     return 0;

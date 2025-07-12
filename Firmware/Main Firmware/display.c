@@ -153,15 +153,19 @@ void display_blank_setting_toggle(void) {
 /* Code for display and LED animation at power on */
 void display_test(void) {
     write_segments("TUNE", 1234);
-    for (unsigned char amp = 0; amp < 11; amp++) {
-        for (unsigned char i = 0; i < 8; i++) {
-            write_bargraph(i, amp);
-            delayms(50);
+    for (unsigned char k = 0; k < 3; k++) {
+        for (unsigned char amp = 0; amp < 11; amp++) {
+            for (unsigned char i = 0; i < 8; i++) {
+                write_bargraph(i, amp);
+            }
+            delayms(30);
         }
-        delayms(50);
-        clear_bargraph_data();
+        for (unsigned char amp = 0; amp < 11; amp++) {
+            for (unsigned char i = 0; i < 8; i++) {
+                write_bargraph(i, 10 - amp);
+            }
+            delayms(30);
+        }
     }
-    for (unsigned char i = 0; i < 8; i++) {
-        write_bargraph(i,2);
-    }
+    clear_shift_array();
 }
