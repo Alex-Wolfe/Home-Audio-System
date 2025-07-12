@@ -64,14 +64,12 @@
 
 void ISR _T1Interrupt(void) {
     TEST ^= 1;    
-    /* Clear interrupt flag */
     IFS0bits.T1IF = 0;
 }
 
 void ISR _T3Interrupt(void) {
     step_selected_index();
     update_display();           //takes minimum 50us due to latch data function
-    /* Clear interrupt flag */
     IFS0bits.T3IF = 0;
 }
 

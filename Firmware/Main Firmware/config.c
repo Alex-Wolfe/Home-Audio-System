@@ -198,10 +198,7 @@ void enable_timer1(void) {
     T1CONbits.TSIDL = 0;
     T1CONbits.TCS = 0;
     T1CONbits.TGATE = 0;
-    /*  Set prescaler to 1:256
-        Write value to period register to get 2 second period
-        Enable Timer 1 */
-    T1CONbits.TCKPS0 = 1;
+    T1CONbits.TCKPS0 = 1;       // Set prescaler to 256
     T1CONbits.TCKPS1 = 1;
     PR1 = 0xF424;
     T1CONbits.TON = 1;

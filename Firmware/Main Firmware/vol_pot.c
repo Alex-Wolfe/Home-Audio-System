@@ -33,10 +33,10 @@ void set_left_volume(unsigned char left) {
     i2c_stop();
 }
 
-void set_volume(unsigned char right, unsigned char left) {
-    set_right_volume(right);
+void set_volume(unsigned char vol) {
+    set_right_volume(vol);
     delayus(10);
-    set_left_volume(left);
+    set_left_volume(vol);
 }
 
 void mute_right(void) {

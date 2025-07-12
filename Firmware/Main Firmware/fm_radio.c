@@ -96,7 +96,6 @@ void enable_FM(void) {
     delayms(500);
 }
 
-
 void FM_tune_freq(unsigned int freq) {
     send_command_byte(0x20);
     i2c_send_byte(0x02);

@@ -59,15 +59,46 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
 }
 
 /* Edit bytes in memory corresponding to 7 segment display character LEDs */
-void write_segments(char *text, unsigned int value) {
+void write_first_segments_text(char *text) {
     IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
-    for (unsigned char i = 0; i < 8; i++) {
-        *(shift_array + 10 + i) = 0x00;
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 14 + i) = 0x00;
     }
-    for (unsigned char i = 0; *(text + i) != '\0'; i++)
-    {
+    for (unsigned char i = 0; *(text + i) != '\0'; i++) {
         *(shift_array + 17 - i) = alphabet[*(text + i) - 48];
     }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
+}
+
+void write_first_segments_int(unsigned int value) {
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    unsigned char j = 0;
+    unsigned char remainder;
+    while (value) {
+        if (j > 3) {
+            break;
+        }
+        remainder = value % 10;
+        *(shift_array + 14 + j) = alphabet[remainder];
+        value /= 10; 
+        j++;
+    }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
+}
+
+void write_second_segments_text(char *text) {
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 10 + i) = 0x00;
+    }
+    for (unsigned char i = 0; *(text + i) != '\0'; i++) {
+        *(shift_array + 13 - i) = alphabet[*(text + i) - 48];
+    }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
+}
+
+void write_second_segments_int(unsigned int value) {
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -152,7 +183,8 @@ void display_blank_setting_toggle(void) {
 
 /* Code for display and LED animation at power on */
 void display_test(void) {
-    write_segments("TUNE", 1234);
+    write_first_segments_text("TEST");
+    write_second_segments_int(1234);
     for (unsigned char k = 0; k < 3; k++) {
         for (unsigned char amp = 0; amp < 11; amp++) {
             for (unsigned char i = 0; i < 8; i++) {

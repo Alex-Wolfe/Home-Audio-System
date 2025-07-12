@@ -135,7 +135,7 @@ int main(void) {
     
     /* Set VOL and EQ potentiometers to low level */
     init_eq();
-    set_volume(20,20);
+    init_volume();
     
     /* Get previous source setting */
     init_source();
@@ -144,7 +144,11 @@ int main(void) {
     display_test();
     
     while(1) {
-//        delayms(100);
+//        update_source();    // update display with text for selected source
+//        update_volume();    // update volume potentiometer with volume setting
+        test_screen_update();
+        update_bargraphs();
+        delayms(10);
     }
     
     return 0;

@@ -28,23 +28,30 @@ void toggle_source(void);
 
 void init_source(void);
 
+void update_source(void);
+
 /* handle debouncing of source button with interrupt on change */
 void handle_source_button(void);
 
 /* handle debouncing of display button with interrupt on change */
 void handle_display_button(void);
 
-
 void handle_nMULTI1(void);
-
 
 void handle_nMULTI2(void);
 
-
 void handle_volume_encoder(void);
 
+void update_volume(void);
+
+void init_volume(void);
 
 void handle_tune_encoder(void);
 
-
 void update_ADC_memory(void);
+
+unsigned char get_bar_from_adc(unsigned int counts);
+
+void update_bargraphs(void);
+
+void test_screen_update(void);

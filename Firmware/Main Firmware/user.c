@@ -5,6 +5,7 @@
 #include "debug_uart.h"
 #include "display.h"
 #include "eeprom.h"
+#include "vol_pot.h"
 
 #define SAMPLES_PER_STEP 2
 #define DEBOUNCE_DELAY 625      // delay of 10ms assuming 256 prescalar
@@ -12,22 +13,28 @@
 #define EEPROM_SOURCE_ADD 0x01
 
 unsigned char source_setting = 0;
-unsigned char volume_setting = 0;
+unsigned char source_changed_flag = 0;
+
+unsigned char volume_setting = 20;
+unsigned char volume_changed_flag = 0;
+
 unsigned char tune_setting = 0;
+unsigned char tune_changed_flag = 0;
 
 unsigned char source_button_pressed = 0;
 unsigned char display_button_pressed = 0;
+
 unsigned char nMULTI1_pressed = 0;
 unsigned char nMULTI2_pressed = 0;
 
 unsigned char volume_encoder_next_state = 0;
 unsigned char volume_encoder_previous_state = 0;
-unsigned char volume_direction = 0;
+char volume_direction = 0;
 char previous_volume_direction = 0;
 
 unsigned char tune_encoder_next_state = 0;
 unsigned char tune_encoder_previous_state = 0;
-unsigned char tune_direction = 0;
+char tune_direction = 0;
 char previous_tune_direction = 0;
 
 const unsigned char transition_table[4][4] = {
@@ -103,12 +110,39 @@ void set_source(unsigned char a) {
         default:
             break;
     }
+    source_changed_flag = 1;
 }
 
 void toggle_source(void) {
     source_setting = (source_setting + 1) % 4;
     set_source(source_setting);
     write_eeprom(EEPROM_SOURCE_ADD, source_setting);
+}
+
+void init_source(void) {
+    set_source(read_eeprom(EEPROM_SOURCE_ADD));
+}
+
+void update_source(void) {
+    if (source_changed_flag) {
+        switch (source_setting) {
+            case 0:
+                write_first_segments_text("AUX");
+                break;
+            case 1:
+                write_first_segments_text("BT");
+                break;
+            case 2:
+                write_first_segments_text("TV");
+                break;
+            case 3:
+                write_first_segments_text("FM");
+                break;
+            default:
+                break;
+        }
+        source_changed_flag = 0;
+    }
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
@@ -127,10 +161,6 @@ void handle_source_button(void) {
             IFS1bits.T5IF = 0;
         }
     }
-}
-
-void init_source(void) {
-    set_source(read_eeprom(EEPROM_SOURCE_ADD));
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
@@ -190,14 +220,35 @@ void handle_volume_encoder(void) {
             return;
         }
         if (volume_direction == previous_volume_direction) {
-            volume_setting += volume_direction;
-            previous_volume_direction = 0;
+            if ((volume_direction > 0) && (volume_setting <= 248)) {
+                volume_setting += 8 * volume_direction;
+                previous_volume_direction = 0;
+                volume_changed_flag = 1;
+            }
+            else if ((volume_direction < 0) && (volume_setting >= 8)) {
+                volume_setting += 8 * volume_direction;
+                previous_volume_direction = 0;
+                volume_changed_flag = 1;
+            }
         } else {
             previous_volume_direction = volume_direction;
         }
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
     }
-    TMR5 = 0;
-    IFS1bits.T5IF = 0;
+}
+
+void update_volume(void) {
+    if (volume_changed_flag) {
+//        set_volume(volume_setting);
+        write_first_segments_text("VOL");
+        write_second_segments_int(volume_setting / 8);
+        volume_changed_flag = 0;
+    }
+}
+
+void init_volume(void) {
+    set_volume(volume_setting);
 }
 
 void handle_tune_encoder(void) {
@@ -208,14 +259,22 @@ void handle_tune_encoder(void) {
             return;
         }
         if (tune_direction == previous_tune_direction) {
-            tune_setting += tune_direction;
-            previous_tune_direction = 0;
+            if ((tune_direction > 0) && (tune_setting < 1079)){
+                tune_setting += tune_direction;
+                previous_tune_direction = 0;
+                tune_changed_flag = 1;
+            }
+            else if ((tune_direction < 0) && tune_setting > 881) {
+                tune_setting += tune_direction;
+                previous_tune_direction = 0;
+                tune_changed_flag = 1;
+            }
         } else {
             previous_tune_direction = tune_direction;
         }
+        TMR5 = 0;
+        IFS1bits.T5IF = 0;
     }
-    TMR5 = 0;
-    IFS1bits.T5IF = 0;
 }
 
 void update_ADC_memory(void) {
@@ -225,4 +284,60 @@ void update_ADC_memory(void) {
         adc_results[i] = *(adc_ptr + i);
     }
     AD1CON1bits.ASAM = 1;   // resume auto sampling/conversion
+}
+
+unsigned char get_bar_from_adc(unsigned int counts) {
+    if (counts <= 129) {
+        return 0;
+    }
+    else if (counts <= 183) {
+        return 1;
+    }
+    else if (counts <= 258) {
+        return 2;
+    }
+    else if (counts <= 365) {
+        return 3;
+    }
+    else if (counts <= 516) {
+        return 4;
+    }
+    else if (counts <= 728) {
+        return 5;
+    }
+    else if (counts <= 1028) {
+        return 6;
+    }
+    else if (counts <= 1453) {
+        return 7;
+    }
+    else if (counts <= 2051) {
+        return 8;
+    }
+    else if (counts <= 2899) {
+        return 9;
+    }
+    else {
+        return 10;
+    }
+}
+
+void update_bargraphs(void) {
+    write_bargraph(7, get_bar_from_adc(adc_results[4]));
+    write_bargraph(6, get_bar_from_adc(adc_results[2]));
+    write_bargraph(5, get_bar_from_adc(adc_results[9]));
+    write_bargraph(4, get_bar_from_adc(adc_results[8]));
+    write_bargraph(3, get_bar_from_adc(adc_results[5]));
+    write_bargraph(2, get_bar_from_adc(adc_results[6]));
+    write_bargraph(1, get_bar_from_adc(adc_results[7]));
+    write_bargraph(0, get_bar_from_adc(adc_results[3]));
+}
+
+void test_screen_update(void) {
+    if (volume_changed_flag) {
+        write_second_segments_int(volume_setting);
+    }
+    if (tune_changed_flag) {
+        write_first_segments_int(tune_setting);
+    }
 }
