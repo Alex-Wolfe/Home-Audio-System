@@ -59,3 +59,9 @@ void handle_nMULTI1(void);
 
 
 void handle_nMULTI2(void);
+
+
+void handle_volume_encoder(void);
+
+
+void handle_tune_encoder(void);

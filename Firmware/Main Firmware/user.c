@@ -5,6 +5,9 @@
 #include "debug_uart.h"
 #include "display.h"
 
+#define SAMPLES_PER_STEP 2
+#define DEBOUNCE_DELAY 625      // delay of 10ms assuming 256 prescalar
+
 unsigned char source_setting = 0;
 unsigned char volume_setting = 0;
 unsigned char tune_setting = 0;
@@ -13,7 +16,23 @@ unsigned char source_button_pressed = 0;
 unsigned char display_button_pressed = 0;
 unsigned char nMULTI1_pressed = 0;
 unsigned char nMULTI2_pressed = 0;
-unsigned int debounce_delay = 62.5 * 20; // tactile button debounce delay in ms
+
+unsigned char volume_encoder_next_state = 0;
+unsigned char volume_encoder_previous_state = 0;
+unsigned char volume_direction = 0;
+char previous_volume_direction = 0;
+
+unsigned char tune_encoder_next_state = 0;
+unsigned char tune_encoder_previous_state = 0;
+unsigned char tune_direction = 0;
+char previous_tune_direction = 0;
+
+const unsigned char transition_table[4][4] = {
+    {0, -1, 1, 0},  // 00 -> {00, 01, 10, 11}
+    {1, 0, 0, -1},  // 01 -> {00, 01, 10, 11}
+    {-1, 0, 0, 1},  // 10 -> {00, 01, 10, 11}
+    {0, 1, -1, 0}   // 11 -> {00, 01, 10, 11}
+};
 
 /******************************************************************************/
 /* User Functions                                                             */
@@ -122,61 +141,105 @@ void write_vol_setting_to_display(void) {
     write_segments("VOL", volume_setting);
 }
 
+/* Removed rising/falling edge conditionals, add back in if doesn't work */
 void handle_source_button(void) {
-    if (source_button_pressed && nSOURCE && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        source_button_pressed = 0;
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
-    }
-    else if (!source_button_pressed && !nSOURCE && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        source_button_pressed = 1;
-        toggle_source();
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
+    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        if (source_button_pressed) {
+            source_button_pressed = 0;
+            toggle_source();
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
+        else if (!source_button_pressed) {
+            source_button_pressed = 1;
+    //        toggle_source();
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
     }
 }
 
+/* Removed rising/falling edge conditionals, add back in if doesn't work */
 void handle_display_button(void) {
-    if (display_button_pressed && nDISPLAY && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        display_button_pressed = 0;
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
-        return;
-    }
-    else if (!display_button_pressed && !nDISPLAY && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        display_button_pressed = 1;
-        display_blank_setting_toggle();
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
+    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        if (display_button_pressed) {
+            display_button_pressed = 0;
+            display_blank_setting_toggle();
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
+        else if (!display_button_pressed) {
+            display_button_pressed = 1;
+//            display_blank_setting_toggle();
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
     }
 }
 
+/* Removed rising/falling edge conditionals, add back in if doesn't work */
 void handle_nMULTI1(void) {
-    if (nMULTI1_pressed && nMULTI1 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        nMULTI1_pressed = 0;
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
-        return;
+    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        if (nMULTI1_pressed) {
+            nMULTI1_pressed = 0;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
+        else if (!nMULTI1_pressed) {
+            nMULTI1_pressed = 1;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
     }
-    else if (!nMULTI1_pressed && !nMULTI1 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        nMULTI1_pressed = 1;
-        // do nothing for now. also add long press stuff later
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
+}
+/* Removed rising/falling edge conditionals, add back in if doesn't work */
+void handle_nMULTI2(void) {
+    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        if (nMULTI2_pressed) {
+            nMULTI2_pressed = 0;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        } else if (!nMULTI2_pressed) {
+            nMULTI2_pressed = 1;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
+        }
     }
 }
 
-void handle_nMULTI2(void) {
-    if (nMULTI2_pressed && nMULTI2 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        nMULTI2_pressed = 0;
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
-        return;
+void handle_volume_encoder(void) {
+    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        volume_encoder_next_state = (VOL_A << 1) + VOL_B;
+        volume_direction = transition_table[volume_encoder_previous_state][volume_encoder_next_state];
+        if (!volume_direction) {
+            return;
+        }
+        if (volume_direction == previous_volume_direction) {
+            volume_setting += volume_direction;
+            previous_volume_direction = 0;
+        } else {
+            previous_volume_direction = volume_direction;
+        }
     }
-    else if (!nMULTI2_pressed && !nMULTI2 && ((TMR5 > debounce_delay) || IFS1bits.T5IF)) {
-        nMULTI2_pressed = 1;
-        // do nothing for now. also add long press stuff later
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
+    TMR5 = 0;
+    IFS1bits.T5IF = 0;
+}
+
+
+void handle_tune_encoder(void) {
+    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        tune_encoder_next_state = (TUNE_A << 1) + TUNE_B;
+        tune_direction = transition_table[tune_encoder_previous_state][tune_encoder_next_state];
+        if (!tune_direction) {
+            return;
+        }
+        if (tune_direction == previous_tune_direction) {
+            tune_setting += tune_direction;
+            previous_tune_direction = 0;
+        } else {
+            previous_tune_direction = tune_direction;
+        }
     }
+    TMR5 = 0;
+    IFS1bits.T5IF = 0;
 }

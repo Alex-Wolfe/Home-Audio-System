@@ -183,7 +183,7 @@ void configure_interrupts(void) {
     INTCON2bits.GIE = 1;
     /* Enable peripheral interrupt enables as needed */
     IEC0bits.T1IE = 1;          // Enable Timer 1 interrupt
-    IEC0bits.T3IE = 1;          // Enable Timer 4 interrupt
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
     IEC0bits.AD1IE = 1;         // Enable ADC interrupt
     IEC1bits.IOCIE = 1;         // Enable IOC interrupts
     PADCONbits.IOCON = 1;

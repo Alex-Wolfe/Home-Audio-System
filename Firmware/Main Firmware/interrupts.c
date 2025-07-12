@@ -70,7 +70,7 @@ void ISR _T1Interrupt(void) {
 
 void ISR _T3Interrupt(void) {
     step_selected_index();
-    update_display();
+    update_display();           //takes minimum 50us due to latch data function
     /* Clear interrupt flag */
     IFS0bits.T3IF = 0;
 }
@@ -102,34 +102,24 @@ void ISR _IOCInterrupt(void) {
         IOCFEbits.IOCFE5 = 0;
     }
     else if (IOCFDbits.IOCFD10) {   // interrupt on VOL A
-        // handle rotary encoder input for volume
-        if (VOL_A) {
-            debounce();
-            IFS1bits.IOCIF = 0;
-            IOCFDbits.IOCFD10 = 0;
-        }
-        else {
-            if (VOL_B) {
-                volume_inc();
-            }
-            else {
-                volume_dec();
-            }
-            debounce();
-            IFS1bits.IOCIF = 0;
-            IOCFDbits.IOCFD10 = 0;
-        }
+        handle_volume_encoder();
+        IFS1bits.IOCIF = 0;
+        IOCFDbits.IOCFD10 = 0;
+    }
+    else if (IOCFFbits.IOCFF0) {    // interrupt on VOL B
+        handle_volume_encoder();
+        IFS1bits.IOCIF = 0;
+        IOCFFbits.IOCFF0 = 0;
     }
     else if (IOCFCbits.IOCFC14) {   // interrupt on TUNE A
-        if (TUNE_B){
-            tune_inc();
-        }
-        else {
-            tune_dec();
-        }
-        debounce();
+        handle_tune_encoder();
         IFS1bits.IOCIF = 0;
         IOCFCbits.IOCFC14 = 0;
+    }
+    else if (IOCFCbits.IOCFC13) {   // interrupt on TUNE B
+        handle_tune_encoder();
+        IFS1bits.IOCIF = 0;
+        IOCFCbits.IOCFC13 = 0;
     }
     else {
         IFS1bits.IOCIF = 0;

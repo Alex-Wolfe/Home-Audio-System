@@ -43,6 +43,7 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
     if (index > 7) {
         return;
     }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     unsigned char home_byte = (10 * index) / 8;
     unsigned char offset_bits = (10 * index) % 8;
     *(shift_array + home_byte) &= 0xFF >> (8 - offset_bits);
@@ -54,10 +55,12 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
         *(shift_array + home_byte) |= (0xFF << offset_bits);
         *(shift_array + home_byte + 1) |= (0xFF >> (16 - (amplitude + offset_bits)));
     }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 /* Edit bytes in memory corresponding to 7 segment display character LEDs */
 void write_segments(char *text, unsigned int value) {
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     for (unsigned char i = 0; i < 8; i++) {
         *(shift_array + 10 + i) = 0x00;
     }
@@ -76,6 +79,7 @@ void write_segments(char *text, unsigned int value) {
         value /= 10; 
         j++;
     }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 /* Called by ISR to multiplex 7 segment display characters */
