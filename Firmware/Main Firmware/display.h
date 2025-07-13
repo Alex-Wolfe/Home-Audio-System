@@ -3,8 +3,8 @@
 /* Display Function Prototypes                                                    */
 /******************************************************************************/
 
-/* Takes in and modifies shift register array */
-void update_display(void);
+/* Takes in and modifies shift register array, called by ISR only!*/
+void refresh_display(void);
 
 /* Index selects bar graph LED that represent a certain audio band, can be 0-7*/
 /* Amplitude values can be 0-10*/

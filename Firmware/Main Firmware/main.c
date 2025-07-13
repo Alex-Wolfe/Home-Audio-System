@@ -136,16 +136,20 @@ int main(void) {
     /* Set VOL and EQ potentiometers to low level */
     init_eq();
     init_volume();
+  
+    /* Initialize LEDs with test display */
+    display_test();
     
     /* Get previous source setting */
     init_source();
     
-    /* Initialize LEDs with test display */
-    display_test();
     
     while(1) {
-        update_volume();    // update volume potentiometer with volume setting
+        update_pots();    //if volume or eq values changed, update potentiometers
         update_bargraphs_with_adc();
+        
+        
+        update_display();   // update display at end of loop with new info
     }
     
     return 0;

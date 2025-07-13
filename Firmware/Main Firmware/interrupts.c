@@ -62,14 +62,17 @@
 /* Interrupt Routines                                                         */
 /******************************************************************************/
 
-void ISR _T1Interrupt(void) {
-    TEST ^= 1;    
-    IFS0bits.T1IF = 0;
+void ISR _T1Interrupt(void) {       // deactivated to use Timer 1 for something
+//    TEST ^= 1;    
+//    IFS0bits.T1IF = 0;
+    /* if one second passes without volume encoder movement, and device is in 
+       ADJUST_VOLUME state, then go back to SOURCE_STATUS default state */
+    reset_display_state();
 }
 
 void ISR _T3Interrupt(void) {
     step_selected_index();
-    update_display();           //takes minimum 50us due to latch data function
+    refresh_display();           //takes minimum 50us due to latch data function
     IFS0bits.T3IF = 0;
 }
 

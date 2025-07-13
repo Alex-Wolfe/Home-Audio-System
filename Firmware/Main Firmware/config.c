@@ -182,7 +182,7 @@ void configure_interrupts(void) {
     /* Enable global interrupt enable */
     INTCON2bits.GIE = 1;
     /* Enable peripheral interrupt enables as needed */
-    IEC0bits.T1IE = 1;          // Enable Timer 1 interrupt
+    IEC0bits.T1IE = 0;          // Disable Timer 1 interrupt, to be enabled in code
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
     IEC0bits.AD1IE = 1;         // Enable ADC interrupt
     IEC1bits.IOCIE = 1;         // Enable IOC interrupts
@@ -190,7 +190,7 @@ void configure_interrupts(void) {
     
 }
 
-/* Used for heartbeat LED */
+/* Used to be used for heartbeat LED, now used to reset display state machine */
 void enable_timer1(void) {
     /*  Set to keep timer running in idle mode
         Set to use internal clock

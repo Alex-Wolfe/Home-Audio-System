@@ -40,7 +40,11 @@ void handle_nMULTI2(void);
 
 void handle_volume_encoder(void);
 
-void update_volume(void);
+void volume_encoder_inc(void);
+
+void volume_encoder_dec(void);
+
+void update_pots(void);
 
 void init_volume(void);
 
@@ -52,4 +56,6 @@ unsigned char get_bar_from_adc(unsigned int counts);
 
 void update_bargraphs_with_adc(void);
 
-void test_screen_update(void);
+void update_display(void);
+
+void reset_display_state(void);
