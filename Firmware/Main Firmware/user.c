@@ -96,18 +96,22 @@ void set_source(unsigned char a) {
         case 0:
             IN_SEL_A = 0;
             IN_SEL_B = 0;
+            write_first_segments_text("AUX");
             break;
         case 1:
             IN_SEL_A = 1;
             IN_SEL_B = 0;
+            write_first_segments_text("BT");
             break;
         case 2:
             IN_SEL_A = 0;
             IN_SEL_B = 1;
+            write_first_segments_text("TV");
             break;
         case 3:
             IN_SEL_A = 1;
             IN_SEL_B = 1;
+            write_first_segments_text("FM");
             break;
         default:
             break;
@@ -122,28 +126,6 @@ void toggle_source(void) {
 
 void init_source(void) {
     set_source(read_eeprom(EEPROM_SOURCE_ADD));
-}
-
-void update_source(void) {
-    if (source_changed_flag) {
-        switch (source_setting) {
-            case 0:
-                write_first_segments_text("AUX");
-                break;
-            case 1:
-                write_first_segments_text("BT");
-                break;
-            case 2:
-                write_first_segments_text("TV");
-                break;
-            case 3:
-                write_first_segments_text("FM");
-                break;
-            default:
-                break;
-        }
-        source_changed_flag = 0;
-    }
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
@@ -186,6 +168,12 @@ void handle_display_button(void) {
 void handle_nMULTI1(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (nMULTI1_pressed) {
+            if (IFS1bits.T5IF) {
+                // long press
+            }
+            else {
+                // short press
+            }
             nMULTI1_pressed = 0;
             TMR5 = 0;
             IFS1bits.T5IF = 0;
@@ -202,6 +190,12 @@ void handle_nMULTI1(void) {
 void handle_nMULTI2(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (nMULTI2_pressed) {
+            if (IFS1bits.T5IF) {
+                // long press
+            }
+            else {
+                // short press
+            }
             nMULTI2_pressed = 0;
             TMR5 = 0;
             IFS1bits.T5IF = 0;
@@ -245,9 +239,7 @@ void handle_volume_encoder(void) {
 
 void update_volume(void) {
     if (volume_changed_flag) {
-//        set_volume(volume_setting);
-        write_first_segments_text("VOL");
-        write_second_segments_int(volume_setting / 8);
+        set_volume(volume_setting);
         volume_changed_flag = 0;
     }
 }
@@ -331,7 +323,7 @@ unsigned char get_bar_from_adc(unsigned int counts) {
     }
 }
 
-void update_bargraphs(void) {
+void update_bargraphs_with_adc(void) {
     write_bargraph(7, get_bar_from_adc(adc_results[4]));
     write_bargraph(6, get_bar_from_adc(adc_results[2]));
     write_bargraph(5, get_bar_from_adc(adc_results[9]));
@@ -343,8 +335,8 @@ void update_bargraphs(void) {
 }
 
 void test_screen_update(void) {
-    write_first_segments_int(volume_setting / 8);
-    write_second_segments_int(tune_setting);
+//    write_first_segments_int(volume_setting / 8);
+//    write_second_segments_int(tune_setting);
 //    if (volume_changed_flag) {
 //        write_second_segments_int(volume_setting);
 //        volume_changed_flag = 0;

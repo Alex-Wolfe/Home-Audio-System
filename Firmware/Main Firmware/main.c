@@ -28,7 +28,7 @@
 // FOSC
 #pragma config POSCMD = HS              // Primary Oscillator Mode Select bits (HS Crystal Oscillator Mode)
 #pragma config OSCIOFCN = ON            // OSC2 Pin Function bit (OSC2 is general purpose digital I/O pin)
-#pragma config SOSCSEL = ON             // SOSC Power Selection Configuration bits (SOSC is used in crystal (SOSCI/SOSCO) mode)
+#pragma config SOSCSEL = OFF             // SOSC Power Selection Configuration bits (SOSC is used in crystal (SOSCI/SOSCO) mode)
 #pragma config PLLSS = PLL_PRI          // PLL Secondary Selection Configuration bit (PLL is fed by the Primary oscillator)
 #pragma config IOL1WAY = ON             // Peripheral pin select configuration bit (Allow only one reconfiguration)
 #pragma config FCKSM = CSDCMD           // Clock Switching Mode bits (Both Clock switching and Fail-safe Clock Monitor are disabled)
@@ -144,12 +144,8 @@ int main(void) {
     display_test();
     
     while(1) {
-//        update_source();    // update display with text for selected source
-//        update_volume();    // update volume potentiometer with volume setting
-
-        test_screen_update();
-//        update_bargraphs();
-        delayms(10);
+        update_volume();    // update volume potentiometer with volume setting
+        update_bargraphs_with_adc();
     }
     
     return 0;

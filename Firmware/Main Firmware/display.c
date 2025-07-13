@@ -191,7 +191,7 @@ void display_blank_setting_toggle(void) {
 void display_test(void) {
     write_first_segments_text("TEST");
     write_second_segments_int(1234);
-    for (unsigned char k = 0; k < 3; k++) {
+    for (unsigned char k = 0; k < 2; k++) {
         for (unsigned char amp = 0; amp < 11; amp++) {
             for (unsigned char i = 0; i < 8; i++) {
                 write_bargraph(i, amp);

@@ -28,8 +28,6 @@ void toggle_source(void);
 
 void init_source(void);
 
-void update_source(void);
-
 /* handle debouncing of source button with interrupt on change */
 void handle_source_button(void);
 
@@ -52,6 +50,6 @@ void update_ADC_memory(void);
 
 unsigned char get_bar_from_adc(unsigned int counts);
 
-void update_bargraphs(void);
+void update_bargraphs_with_adc(void);
 
 void test_screen_update(void);
