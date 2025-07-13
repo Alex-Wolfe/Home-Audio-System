@@ -463,7 +463,7 @@ void update_display(void) {
         case VOLUME_ADJUST:
             if (volume_changed_flag || state_changed_flag) {
                 write_first_segments_text("VOL");
-                write_second_segments_int(volume_encoder_destination[VOLUME_ADJUST]);
+                write_second_segments_int(volume_encoder_destination[VOLUME_ADJUST] / 8);
                 volume_changed_flag--;
                 state_changed_flag = 0;
             }

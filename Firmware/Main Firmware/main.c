@@ -145,7 +145,7 @@ int main(void) {
     
     
     while(1) {
-        update_pots();    //if volume or eq values changed, update potentiometers
+//        update_pots();    //if volume or eq values changed, update potentiometers
         update_bargraphs_with_adc();
         
         
