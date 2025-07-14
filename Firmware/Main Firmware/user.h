@@ -26,7 +26,7 @@ void set_source(unsigned char a);
 /* Toggle through sources with each call */
 void toggle_source(void);
 
-void init_source(void);
+void restore_settings(void);
 
 /* handle debouncing of source button with interrupt on change */
 void handle_source_button(void);
@@ -49,6 +49,10 @@ void update_pots(void);
 void init_volume(void);
 
 void handle_tune_encoder(void);
+
+void tune_encoder_inc(void);
+
+void tune_encoder_dec(void);
 
 void update_ADC_memory(void);
 
