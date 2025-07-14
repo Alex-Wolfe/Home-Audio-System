@@ -150,6 +150,7 @@ int main(void) {
         
         
         update_display();   // update display at end of loop with new info
+//        delayms(10);
     }
     
     return 0;

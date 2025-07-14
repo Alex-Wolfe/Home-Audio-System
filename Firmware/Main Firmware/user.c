@@ -19,7 +19,7 @@ enum sources {      // arguments for set source function
     TV,
     FM
 };
-char source_text_array[4][3] = {"AUX", "BT", "TV", "FM"};
+char source_text_array[4][5] = {{'A','U','X','\0'}, {'B','T','\0'}, {'T','V','\0'}, {'T','U','N','E','\0'}};
 unsigned char source_setting = AUX;
 unsigned char source_changed_flag = 0;
 
@@ -57,6 +57,7 @@ const unsigned char transition_table[4][4] = {
 };
 
 unsigned int adc_results[16];
+unsigned char adc_done_flag = 0;
 
 enum menu_screens {
     SOURCE_STATUS,  // note that fm screen will always show tuner frequency
@@ -151,18 +152,19 @@ void toggle_source(void) {
 
 void init_source(void) {
     set_source(read_eeprom(EEPROM_SOURCE_ADD));
+//    set_source(AUX);
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
 void handle_source_button(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
-        if (source_button_pressed) {
+        if (source_button_pressed && nSOURCE) {
             source_button_pressed = 0;
             toggle_source();
             TMR5 = 0;
             IFS1bits.T5IF = 0;
         }
-        else if (!source_button_pressed) {
+        else if (!source_button_pressed && !nSOURCE) {
             source_button_pressed = 1;
     //        toggle_source();
             TMR5 = 0;
@@ -255,14 +257,14 @@ void handle_volume_encoder(void) {
         if (!volume_direction) {
             return;
         }
+        TMR1 = 0;       // start timer1 and enable interrupt
+        IFS0bits.T1IF = 0;
+        IEC0bits.T1IE = 1;
         if (volume_direction == previous_volume_direction) {
             volume_direction_streak++;
             if (menu_state == SOURCE_STATUS) {  // if in default state, change to volume, else keep state
                 menu_state = VOLUME_ADJUST;
                 state_changed_flag = 1;
-                TMR1 = 0;       // start timer1 and enable interrupt
-                IFS0bits.T1IF = 0;
-                IEC0bits.T1IE = 1;
             }
             if ((volume_direction > 0) && (volume_direction_streak > 3)) {
                 volume_encoder_inc();
@@ -361,32 +363,34 @@ void init_volume(void) {
 
 /* Called by interrupt */
 void handle_tune_encoder(void) {
-    if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
-        tune_encoder_next_state = (TUNE_A << 1) + TUNE_B;
-        tune_direction = transition_table[tune_encoder_previous_state][tune_encoder_next_state];
-        tune_encoder_previous_state = tune_encoder_next_state;
-        if (!tune_direction) {
-            return;
-        }
-        if (tune_direction == previous_tune_direction) {
-            tune_direction_streak++;
-            if ((tune_direction > 0) && (tune_setting < 1079) && (tune_direction_streak > 3)) {
-                tune_setting += 1;
-                previous_tune_direction = 0;
-                tune_direction_streak = 0;
-                tune_changed_flag = 1;
+    if (source_setting == FM) {     // only process if in fm mode
+        if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+            tune_encoder_next_state = (TUNE_A << 1) + TUNE_B;
+            tune_direction = transition_table[tune_encoder_previous_state][tune_encoder_next_state];
+            tune_encoder_previous_state = tune_encoder_next_state;
+            if (!tune_direction) {
+                return;
             }
-            else if ((tune_direction < 0) && (tune_setting > 879) && (tune_direction_streak > 3)) {
-                tune_setting -= 1;
-                previous_tune_direction = 0;
-                tune_direction_streak = 0;
-                tune_changed_flag = 1;
+            if (tune_direction == previous_tune_direction) {
+                tune_direction_streak++;
+                if ((tune_direction > 0) && (tune_setting < 1079) && (tune_direction_streak > 3)) {
+                    tune_setting += 1;
+                    previous_tune_direction = 0;
+                    tune_direction_streak = 0;
+                    tune_changed_flag = 1;
+                }
+                else if ((tune_direction < 0) && (tune_setting > 879) && (tune_direction_streak > 3)) {
+                    tune_setting -= 1;
+                    previous_tune_direction = 0;
+                    tune_direction_streak = 0;
+                    tune_changed_flag = 1;
+                }
+            } else {
+                previous_tune_direction = tune_direction;
             }
-        } else {
-            previous_tune_direction = tune_direction;
+            TMR5 = 0;
+            IFS1bits.T5IF = 0;
         }
-        TMR5 = 0;
-        IFS1bits.T5IF = 0;
     }
 }
 
@@ -398,6 +402,7 @@ void update_ADC_memory(void) {
         adc_results[i] = *(adc_ptr + i);
     }
     AD1CON1bits.ASAM = 1;   // resume auto sampling/conversion
+    adc_done_flag = 1;
 }
 
 unsigned char get_bar_from_adc(unsigned int counts) {
@@ -437,51 +442,63 @@ unsigned char get_bar_from_adc(unsigned int counts) {
 }
 
 void update_bargraphs_with_adc(void) {
-    write_bargraph(7, get_bar_from_adc(adc_results[4]));    // avg volume data
-    write_bargraph(6, get_bar_from_adc(adc_results[2]));    // 16kHz data
-    write_bargraph(5, get_bar_from_adc(adc_results[9]));    // 6.25kHz data
-    write_bargraph(4, get_bar_from_adc(adc_results[8]));    // 2.5kHz data
-    write_bargraph(3, get_bar_from_adc(adc_results[5]));    // 1kHz data
-    write_bargraph(2, get_bar_from_adc(adc_results[6]));    // 400Hz data
-    write_bargraph(1, get_bar_from_adc(adc_results[7]));    // 160Hz data
-    write_bargraph(0, get_bar_from_adc(adc_results[3]));    // 63Hz data
+    if (adc_done_flag) {
+        write_bargraph(7, get_bar_from_adc(adc_results[4]));    // avg volume data
+        write_bargraph(6, get_bar_from_adc(adc_results[2]));    // 16kHz data
+        write_bargraph(5, get_bar_from_adc(adc_results[9]));    // 6.25kHz data
+        write_bargraph(4, get_bar_from_adc(adc_results[8]));    // 2.5kHz data
+        write_bargraph(3, get_bar_from_adc(adc_results[5]));    // 1kHz data
+        write_bargraph(2, get_bar_from_adc(adc_results[6]));    // 400Hz data
+        write_bargraph(1, get_bar_from_adc(adc_results[7]));    // 160Hz data
+        write_bargraph(0, get_bar_from_adc(adc_results[3]));    // 63Hz data
+    }
 }
 
 void update_display(void) {
     switch (menu_state) {
         case SOURCE_STATUS:
             if (source_changed_flag || state_changed_flag) {
+                clear_segment_data();
                 write_first_segments_text(source_text_array[source_setting]);
+                if (source_setting == FM) {
+                    write_second_segments_int(tune_setting);
+                }
+                if (source_changed_flag) {
+                    write_eeprom(EEPROM_SOURCE_ADD, source_setting);
+                    source_changed_flag = 0;
+                }
+                if (state_changed_flag) {state_changed_flag = 0;}
             }
-            if ((source_setting == FM) && (tune_changed_flag || state_changed_flag || source_changed_flag)) {
+            if ((source_setting == FM) && tune_changed_flag) {
                 write_second_segments_int(tune_setting);
                 tune_changed_flag = 0;
             }
-            source_changed_flag = 0;
-            state_changed_flag = 0;
             break;
         case VOLUME_ADJUST:
             if (volume_changed_flag || state_changed_flag) {
+                clear_segment_data();
                 write_first_segments_text("VOL");
                 write_second_segments_int(volume_encoder_destination[VOLUME_ADJUST] / 8);
-                volume_changed_flag--;
-                state_changed_flag = 0;
+                if (volume_changed_flag) {volume_changed_flag--;}
+                if (state_changed_flag) {state_changed_flag = 0;}
             }
             break;
         case LOW_ADJUST:
             if (eq_low_changed_flag || state_changed_flag) {
+                clear_segment_data();
                 write_first_segments_text("LO");
                 write_second_segments_int(volume_encoder_destination[LOW_ADJUST]);
-                eq_low_changed_flag--;
-                state_changed_flag = 0;
+                if (eq_low_changed_flag) {eq_low_changed_flag--;}
+                if (state_changed_flag) {state_changed_flag = 0;}
             }
             break;
         case HIGH_ADJUST:
             if (eq_high_changed_flag || state_changed_flag) {
+                clear_segment_data();
                 write_first_segments_text("HI");
                 write_second_segments_int(volume_encoder_destination[HIGH_ADJUST]);
-                eq_high_changed_flag--;
-                state_changed_flag = 0;
+                if (eq_high_changed_flag) {eq_high_changed_flag--;}
+                if (state_changed_flag) {state_changed_flag = 0;}
             }
             break;
     }

@@ -15,7 +15,7 @@ unsigned char shift_array[19] = {0x00, 0x00, 0x00, 0x00, 0x00,
 const unsigned char alphabet[43] = {0x7D, 0x11, 0x2F, 0x1F, 0x53, 0x5E, 0x7E,
     0x19, 0x7F, 0x5F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7B, 0x76,
     0x26, 0x37, 0x6E, 0x6A, 0x00, 0x73, 0x24, 0x15, 0x00, 0x64, 0x00, 0x32,
-    0x36, 0x6B, 0x00, 0x22, 0x5E, 0x66, 0x34, 0x75, 0x00, 0x00, 0x73, 0x00};
+    0x36, 0x6B, 0x00, 0x22, 0x5E, 0x66, 0x34, 0x75, 0x00, 0x73, 0x00, 0x00};
 
 unsigned char display_setting = 0;
 unsigned char character_index = 0;
@@ -43,9 +43,9 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
     if (index > 7) {
         return;
     }
-    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     unsigned char home_byte = (10 * index) / 8;
     unsigned char offset_bits = (10 * index) % 8;
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     *(shift_array + home_byte) &= 0xFF >> (8 - offset_bits);
     *(shift_array + home_byte + 1) &= 0xFF << (2 + offset_bits);
     if (amplitude <= 8 - offset_bits) {
@@ -60,21 +60,25 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
 
 /* Edit bytes in memory corresponding to 7 segment display character LEDs */
 void write_first_segments_text(char *text) {
-    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
-    for (unsigned char i = 0; i < 4; i++) { // clear character data
-        *(shift_array + 14 + i) = 0x00;
+    unsigned char temp[4] = {0,0,0,0};
+    unsigned char j = 0;
+    for (j = 0; *(text + j) != '\0'; j++) {
+        temp[j] = alphabet[*(text + j) - 48];
     }
-    for (unsigned char i = 0; *(text + i) != '\0'; i++) {
-        *(shift_array + 17 - i) = alphabet[*(text + i) - 48];
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // write segments in loop
+        if (i <= j) {
+            *(shift_array + 17 - i) = temp[i];
+        }
+        else {
+            *(shift_array + 17 - i) = 0x00;            
+        }
     }
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 void write_first_segments_int(unsigned int value) {
-    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
-    for (unsigned char i = 0; i < 4; i++) { // clear character data
-        *(shift_array + 14 + i) = 0x00;
-    }
+    unsigned char temp[4] = {0,0,0,0};
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -82,29 +86,37 @@ void write_first_segments_int(unsigned int value) {
             break;
         }
         remainder = value % 10;
-        *(shift_array + 14 + j) = alphabet[remainder];
+        temp[j] = alphabet[remainder];
         value /= 10; 
         j++;
+    }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 14 + i) = temp[i];
     }
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 void write_second_segments_text(char *text) {
-    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
-    for (unsigned char i = 0; i < 4; i++) { // clear character data
-        *(shift_array + 10 + i) = 0x00;
+    unsigned char temp[4] = {0,0,0,0};
+    unsigned char j = 0;
+    for (j = 0; *(text + j) != '\0'; j++) {
+        temp[j] = alphabet[*(text + j) - 48];
     }
-    for (unsigned char i = 0; *(text + i) != '\0'; i++) {
-        *(shift_array + 13 - i) = alphabet[*(text + i) - 48];
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // write segments in loop
+        if (i <= j) {
+            *(shift_array + 13 - i) = temp[i];
+        }
+        else {
+            *(shift_array + 13 - i) = 0x00;            
+        }
     }
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 void write_second_segments_int(unsigned int value) {
-    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
-    for (unsigned char i = 0; i < 4; i++) { // clear character data
-        *(shift_array + 10 + i) = 0x00;
-    }
+    unsigned char temp[4] = {0,0,0,0};
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -112,9 +124,13 @@ void write_second_segments_int(unsigned int value) {
             break;
         }
         remainder = value % 10;
-        *(shift_array + 10 + j) = alphabet[remainder];
+        temp[j] = alphabet[remainder];
         value /= 10; 
         j++;
+    }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 10 + i) = temp[i];
     }
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
