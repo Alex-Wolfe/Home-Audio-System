@@ -63,5 +63,6 @@ void save_eeprom_frequency(unsigned char freq) {
 unsigned int read_eeprom_frequency(void) {
     unsigned char upper_byte = read_eeprom(EEPROM_FREQ_ADD);
     unsigned char lower_byte = read_eeprom(EEPROM_FREQ_ADD + 1);
-    return ((upper_byte << 8) + lower_byte);
+    unsigned int result = ((upper_byte << 8) + lower_byte);
+    return result;
 }

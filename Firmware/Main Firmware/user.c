@@ -152,7 +152,14 @@ void toggle_source(void) {
 
 void restore_settings(void) {
     set_source(read_eeprom_source());
-    tune_encoder_destination[SOURCE_STATUS] = read_eeprom_frequency();
+//    unsigned int test = read_eeprom_frequency();
+//    if (test < 0xFFFF) {
+//        tune_encoder_destination[SOURCE_STATUS] = test;
+//    }
+//    else {
+//        tune_encoder_destination[SOURCE_STATUS] = 999;
+//    }
+    tune_encoder_destination[SOURCE_STATUS] = 999;
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
@@ -381,12 +388,12 @@ void handle_tune_encoder(void) {
                 tune_encoder_inc();
                 previous_tune_direction = 0;
                 tune_direction_streak = 0;
-            }
-            else if ((tune_direction < 0) && (tune_direction_streak > 3)) {
-                tune_encoder_dec();
-                previous_tune_direction = 0;
-                tune_direction_streak = 0;
-            }
+                }
+                else if ((tune_direction < 0) && (tune_direction_streak > 3)) {
+                    tune_encoder_dec();
+                    previous_tune_direction = 0;
+                    tune_direction_streak = 0;
+                }
             } else {
                 previous_tune_direction = tune_direction;
             }
@@ -412,7 +419,7 @@ void tune_encoder_inc(void) {
 void tune_encoder_dec(void) {
     switch (menu_state) {
         case SOURCE_STATUS:
-            if ((source_setting == FM) && (tune_encoder_destination[menu_state] < 879)) {
+            if ((source_setting == FM) && (tune_encoder_destination[menu_state] > 879)) {
                 tune_encoder_destination[menu_state] -= 2;
                 tune_changed_flag = 1;
             }
