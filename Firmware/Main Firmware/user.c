@@ -283,7 +283,8 @@ void handle_volume_encoder(void) {
                 previous_volume_direction = 0;
                 volume_direction_streak = 0;
             }
-        } else {
+        } 
+        else {
             previous_volume_direction = volume_direction;
         }
         TMR5 = 0;
@@ -375,7 +376,7 @@ void init_volume(void) {
 /* Called by interrupt */
 void handle_tune_encoder(void) {
     if (source_setting == FM) {     // only process if in fm mode
-        if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
+        if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) { // if debounce is done
             tune_encoder_next_state = (TUNE_A << 1) + TUNE_B;
             tune_direction = transition_table[tune_encoder_previous_state][tune_encoder_next_state];
             tune_encoder_previous_state = tune_encoder_next_state;
@@ -385,16 +386,17 @@ void handle_tune_encoder(void) {
             if (tune_direction == previous_tune_direction) {
                 tune_direction_streak++;
                 if ((tune_direction > 0) && (tune_direction_streak > 3)) {
-                tune_encoder_inc();
-                previous_tune_direction = 0;
-                tune_direction_streak = 0;
+                    tune_encoder_inc();
+                    previous_tune_direction = 0;
+                    tune_direction_streak = 0;
                 }
                 else if ((tune_direction < 0) && (tune_direction_streak > 3)) {
                     tune_encoder_dec();
                     previous_tune_direction = 0;
                     tune_direction_streak = 0;
                 }
-            } else {
+            } 
+            else {
                 previous_tune_direction = tune_direction;
             }
             TMR5 = 0;
