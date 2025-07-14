@@ -152,7 +152,6 @@ void toggle_source(void) {
 
 void init_source(void) {
     set_source(read_eeprom(EEPROM_SOURCE_ADD));
-//    set_source(AUX);
 }
 
 /* Removed rising/falling edge conditionals, add back in if doesn't work */
