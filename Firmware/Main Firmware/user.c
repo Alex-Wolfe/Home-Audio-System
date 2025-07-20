@@ -152,7 +152,7 @@ void toggle_source(void) {
 
 void restore_settings(void) {
     set_source(read_eeprom_source());
-//    unsigned int test = read_eeprom_frequency();
+//    unsigned int test = read_eeprom_frequency();  //fix eventually
 //    if (test < 0xFFFF) {
 //        tune_encoder_destination[SOURCE_STATUS] = test;
 //    }
@@ -162,7 +162,7 @@ void restore_settings(void) {
     tune_encoder_destination[SOURCE_STATUS] = 999;
 }
 
-/* Removed rising/falling edge conditionals, add back in if doesn't work */
+/* Called by interrupt for source button */
 void handle_source_button(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (source_button_pressed && nSOURCE) {
@@ -180,7 +180,7 @@ void handle_source_button(void) {
     }
 }
 
-/* Removed rising/falling edge conditionals, add back in if doesn't work */
+/* Called by interrupt for display toggle button */
 void handle_display_button(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (display_button_pressed) {
@@ -198,17 +198,17 @@ void handle_display_button(void) {
     }
 }
 
-/* Removed rising/falling edge conditionals, add back in if doesn't work */
+/* Called by interrupt for knob press */
 void handle_nMULTI1(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (nMULTI1_pressed) {
-            if (IFS1bits.T5IF) {
+            if (IFS1bits.T5IF) {    // long press
                 if (menu_state == SOURCE_STATUS) {
                     menu_state = LOW_ADJUST;
                     state_changed_flag = 1;
                 }
                 else {
-                    menu_state = SOURCE_STATUS; // long press
+                    menu_state = SOURCE_STATUS;
                     state_changed_flag = 1;
                 }
             }
@@ -227,7 +227,7 @@ void handle_nMULTI1(void) {
     }
 }
 
-/* Removed rising/falling edge conditionals, add back in if doesn't work */
+/* Called by interrupt for knob press */
 void handle_nMULTI2(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (nMULTI2_pressed) {
@@ -265,8 +265,8 @@ void handle_volume_encoder(void) {
             return;
         }
         TMR1 = 0;       // start timer1 and enable interrupt
-        IFS0bits.T1IF = 0;
-        IEC0bits.T1IE = 1;
+        IFS0bits.T1IF = 0;  // displays volume changes, but then jumps back
+        IEC0bits.T1IE = 1;  // to previous screen state
         if (volume_direction == previous_volume_direction) {
             volume_direction_streak++;
             if (menu_state == SOURCE_STATUS) {  // if in default state, change to volume, else keep state
@@ -549,6 +549,6 @@ void reset_display_state(void) {
     if (menu_state == VOLUME_ADJUST) {
         menu_state = SOURCE_STATUS;
         state_changed_flag = 1;
-        IEC0bits.T1IE = 0;
+        IEC0bits.T1IE = 0;      // disable interrupt
     }
 }

@@ -145,18 +145,17 @@ int main(void) {
     
     
     while(1) {
-//        update_pots();    //if volume or eq values changed, update potentiometers
+        update_pots();    //if volume or eq values changed, update potentiometers
         update_bargraphs_with_adc();
-        
         update_display();   // update display at end of loop with new info
     }
     
     
     // to do:
-//      save preset stations, and have alternate screen for FM
-//      to scroll through presets and not frequency
+    //      save preset stations, and have alternate screen for FM
+    //      to scroll through presets and not frequency
     
     //  make settings menu scrollable with knob
-    
+     
     return 0;
 }
