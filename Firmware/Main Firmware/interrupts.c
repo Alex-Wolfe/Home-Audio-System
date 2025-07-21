@@ -64,10 +64,11 @@
 
 void ISR _T1Interrupt(void) {       // deactivated to use Timer 1 for something
 //    TEST ^= 1;    
-//    IFS0bits.T1IF = 0;
     /* if one second passes without volume encoder movement, and device is in 
        ADJUST_VOLUME state, then go back to SOURCE_STATUS default state */
-    reset_display_state();
+    set_volume_timeout_flag();
+    IFS0bits.T1IF = 0;
+    IEC0bits.T1IE = 0;      // disable interrupt
 }
 
 void ISR _T3Interrupt(void) {

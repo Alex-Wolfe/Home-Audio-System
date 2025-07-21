@@ -74,6 +74,8 @@ unsigned char volume_encoder_destination[4] = {0, 24, 12, 12};
 /* bins for results from tune encoder depending on menu state */
 unsigned int tune_encoder_destination[1] = {999};
 
+unsigned char volume_timeout_flag = 0;
+
 /******************************************************************************/
 /* User Functions                                                             */
 /******************************************************************************/
@@ -143,6 +145,7 @@ void set_source(unsigned char a) {
             break;
     }
     source_changed_flag = 1;
+    state_changed_flag = 1;
 }
 
 void toggle_source(void) {
@@ -231,13 +234,13 @@ void handle_nMULTI1(void) {
 void handle_nMULTI2(void) {
     if ((TMR5 > DEBOUNCE_DELAY) || IFS1bits.T5IF) {
         if (nMULTI2_pressed) {
-            if (IFS1bits.T5IF) {
+            if (IFS1bits.T5IF) {     // long press
                 if (menu_state == SOURCE_STATUS) {
                     menu_state = HIGH_ADJUST;
                     state_changed_flag = 1;
                 }
                 else {
-                    menu_state = SOURCE_STATUS; // long press
+                    menu_state = SOURCE_STATUS;
                     state_changed_flag = 1;
                 }
             }
@@ -275,11 +278,13 @@ void handle_volume_encoder(void) {
             }
             if ((volume_direction > 0) && (volume_direction_streak > 3)) {
                 volume_encoder_inc();
+                state_changed_flag = 1;
                 previous_volume_direction = 0;
                 volume_direction_streak = 0;
             }
             else if ((volume_direction < 0) && (volume_direction_streak > 3)) {
                 volume_encoder_dec();
+                state_changed_flag = 1;
                 previous_volume_direction = 0;
                 volume_direction_streak = 0;
             }
@@ -299,22 +304,19 @@ void volume_encoder_inc(void) {
         case VOLUME_ADJUST:
             if (volume_encoder_destination[menu_state] < 248){
                 volume_encoder_destination[menu_state] += 8; //increase by 8
-                // set to 2 so 2 jobs can be done, update pots and display
-                volume_changed_flag = 2;
+                volume_changed_flag = 1;
             }
             break;
         case LOW_ADJUST:
             if (volume_encoder_destination[menu_state] <= 24) {
                 volume_encoder_destination[menu_state]++;
-                // set to 2 so 2 jobs can be done, update pots and display
-                eq_low_changed_flag = 2;
+                eq_low_changed_flag = 1;
             }
             break;
         case HIGH_ADJUST:
             if (volume_encoder_destination[menu_state] <= 24) {
                 volume_encoder_destination[menu_state]++;
-                // set to 2 so 2 jobs can be done, update pots and display
-                eq_high_changed_flag = 2;
+                eq_high_changed_flag = 1;
             }
             break;
         default:
@@ -329,22 +331,19 @@ void volume_encoder_dec(void) {
         case VOLUME_ADJUST:
             if (volume_encoder_destination[menu_state] >= 8){
                 volume_encoder_destination[menu_state] -= 8;
-                // set to 2 so 2 jobs can be done, update pots and display
-                volume_changed_flag = 2;
+                volume_changed_flag = 1;
             }
             break;
         case LOW_ADJUST:
             if (volume_encoder_destination[menu_state] >= 1) {
                 volume_encoder_destination[menu_state]--;
-                // set to 2 so 2 jobs can be done, update pots and display
-                eq_low_changed_flag = 2;
+                eq_low_changed_flag = 1;
             }
             break;
         case HIGH_ADJUST:
             if (volume_encoder_destination[menu_state] >= 1) {
                 volume_encoder_destination[menu_state]--;
-                // set to 2 so 2 jobs can be done, update pots and display
-                eq_high_changed_flag = 2;
+                eq_high_changed_flag = 1;
             }
             break;
         default:
@@ -355,17 +354,17 @@ void volume_encoder_dec(void) {
 void update_pots(void) {
     if (volume_changed_flag) {
         set_volume(volume_encoder_destination[VOLUME_ADJUST]);
-        volume_changed_flag--;
+        volume_changed_flag = 0;
     }
     if (eq_low_changed_flag) {
         set_left_low_level(volume_encoder_destination[LOW_ADJUST]);
         set_right_low_level(volume_encoder_destination[LOW_ADJUST]);
-        eq_low_changed_flag--;
+        eq_low_changed_flag = 0;
     }
     if (eq_high_changed_flag) {
         set_left_high_level(volume_encoder_destination[HIGH_ADJUST]);
         set_right_high_level(volume_encoder_destination[HIGH_ADJUST]);
-        eq_high_changed_flag--;
+        eq_high_changed_flag = 0;
     }
 }
 
@@ -387,11 +386,13 @@ void handle_tune_encoder(void) {
                 tune_direction_streak++;
                 if ((tune_direction > 0) && (tune_direction_streak > 3)) {
                     tune_encoder_inc();
+                    state_changed_flag = 1;
                     previous_tune_direction = 0;
                     tune_direction_streak = 0;
                 }
                 else if ((tune_direction < 0) && (tune_direction_streak > 3)) {
                     tune_encoder_dec();
+                    state_changed_flag = 1;
                     previous_tune_direction = 0;
                     tune_direction_streak = 0;
                 }
@@ -491,64 +492,76 @@ void update_bargraphs_with_adc(void) {
     }
 }
 
+void loop_handler(void) {
+    update_display();
+    if (volume_timeout_flag) {
+        volume_timeout();
+    }
+    if (tune_changed_flag) {
+        write_second_segments_int(tune_encoder_destination[menu_state]);
+        save_eeprom_frequency(tune_encoder_destination[SOURCE_STATUS]);
+        tune_changed_flag = 0;
+    }
+    if (source_changed_flag) {  // if source changed, save to eeprom
+        save_eeprom_source(source_setting);
+        source_changed_flag = 0;
+    }
+    update_pots();  //update pots depending on which flags are set
+    update_bargraphs_with_adc();    // update bargraphs with audio amplitude
+    
+}
+
+/* Set by Timer 1 interrupt to timeout volume adjust screen*/
+void set_volume_timeout_flag(void) {
+    volume_timeout_flag = 1;
+}
+
+/* called to timeout volume adjust screen */
+void volume_timeout(void) {
+    if (menu_state == VOLUME_ADJUST) {
+        menu_state = SOURCE_STATUS;
+        state_changed_flag = 1;
+    }
+    volume_timeout_flag = 0;
+}
+
 void update_display(void) {
     switch (menu_state) {
         case SOURCE_STATUS:
-            if (source_changed_flag || state_changed_flag) {
+            if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text(source_text_array[source_setting]);
-                if (source_setting == FM) {
+                if (source_setting == FM) { // if FM mode, write tune frequency
                     write_second_segments_int(tune_encoder_destination[menu_state]);
                 }
-                if (source_changed_flag) {
-                    save_eeprom_source(source_setting); // save here to keep slow eeprom write out of interrupt
-                    source_changed_flag = 0;
-                }
-                if (state_changed_flag) {state_changed_flag = 0;}
-            }
-            if ((source_setting == FM) && tune_changed_flag) {
-                write_second_segments_int(tune_encoder_destination[menu_state]);
-                save_eeprom_frequency(tune_encoder_destination[menu_state]); // save here to keep slow eeprom write out of interrupt
-                tune_changed_flag = 0;
+                state_changed_flag = 0;
             }
             break;
         case VOLUME_ADJUST:
-            if (volume_changed_flag || state_changed_flag) {
+            if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text("VOL");
                 write_second_segments_int(volume_encoder_destination[menu_state] / 8);
-                if (volume_changed_flag) {volume_changed_flag--;}
-                if (state_changed_flag) {state_changed_flag = 0;}
+                state_changed_flag = 0;
             }
             break;
         case LOW_ADJUST:
-            if (eq_low_changed_flag || state_changed_flag) {
+            if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text("LO");
                 write_second_segments_int(volume_encoder_destination[menu_state]);
-                if (eq_low_changed_flag) {eq_low_changed_flag--;}
-                if (state_changed_flag) {state_changed_flag = 0;}
+                state_changed_flag = 0;
             }
             break;
         case HIGH_ADJUST:
-            if (eq_high_changed_flag || state_changed_flag) {
+            if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text("HI");
                 write_second_segments_int(volume_encoder_destination[menu_state]);
-                if (eq_high_changed_flag) {eq_high_changed_flag--;}
-                if (state_changed_flag) {state_changed_flag = 0;}
+                state_changed_flag = 0;
             }
             break;
         default:
             break;
-    }
-}
-
-/* called by TIMER 1 interrupt to timeout volume adjust screen */
-void reset_display_state(void) {
-    if (menu_state == VOLUME_ADJUST) {
-        menu_state = SOURCE_STATUS;
-        state_changed_flag = 1;
-        IEC0bits.T1IE = 0;      // disable interrupt
     }
 }

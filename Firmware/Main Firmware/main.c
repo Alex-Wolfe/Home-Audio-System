@@ -105,33 +105,14 @@
 
 int main(void) {
     
-    char fw_version[11] = "v0.1 Alpha";
-    
     /* Disable reference oscillator */
     configure_oscillator();
     
     /* Initialize IO ports and peripherals */
     config_app();
     
-    TEST = 0;           // heartbeat LED off
-    
-    PLAY_PAUSE = 1;     // set BT play/pause pin
-    VOL_UP = 1;         // Set VOL up and dn signals to bluetooth high
-    VOL_DN = 1;
-    MFB = 0;
-    
-    FAN_EN = 1;         // Disable fan power supply
-    FAN_PWM = 0;        // Disable fan power switch
-
-    DISPLAY_LATCH = 0;  // Set output latch on LED display shift registers
-    DISPLAY_BLANK = 0;  // Enable LEDs to be turned on
-    LATCH = 0;          // Set latch on LED bar graph shift registers
-    BLANK = 0;
-
-    FM_nRST = 0;        // Initialize with FM radio in reset
-    
     /* Write FW version to debug UART header */
-    write_debug_string(fw_version);
+    write_debug_string("v0.1 Alpha");
     
     /* Set VOL and EQ potentiometers to low level */
     init_eq();
@@ -145,9 +126,7 @@ int main(void) {
     
     
     while(1) {
-        update_pots();    //if volume or eq values changed, update potentiometers
-        update_bargraphs_with_adc();
-        update_display();   // update display at end of loop with new info
+        loop_handler();   // process all changes in user.c function space
     }
     
     

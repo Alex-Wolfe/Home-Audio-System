@@ -20,6 +20,23 @@ void config_app(void) {
     configure_SPI2_port();
     configure_ADC();
     configure_interrupts();
+    
+    TEST = 0;           // heartbeat LED off
+    
+    PLAY_PAUSE = 1;     // set BT play/pause pin
+    VOL_UP = 1;         // Set VOL up and dn signals to bluetooth high
+    VOL_DN = 1;
+    MFB = 0;
+    
+    FAN_EN = 1;         // Disable fan power supply
+    FAN_PWM = 0;        // Disable fan power switch
+
+    DISPLAY_LATCH = 0;  // Set output latch on LED display shift registers
+    DISPLAY_BLANK = 0;  // Enable LEDs to be turned on
+    LATCH = 0;          // Set latch on LED bar graph shift registers
+    BLANK = 0;
+
+    FM_nRST = 0;        // Initialize with FM radio in reset
 }
 
 void disable_LCD_module(void) {

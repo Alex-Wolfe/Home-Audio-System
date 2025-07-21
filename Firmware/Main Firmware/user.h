@@ -60,6 +60,10 @@ unsigned char get_bar_from_adc(unsigned int counts);
 
 void update_bargraphs_with_adc(void);
 
-void update_display(void);
+void loop_handler(void);
 
-void reset_display_state(void);
+void set_volume_timeout_flag(void);
+
+void volume_timeout(void);
+
+void update_display(void);
