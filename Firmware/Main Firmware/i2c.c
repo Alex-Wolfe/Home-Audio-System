@@ -45,8 +45,10 @@ void i2c_stop(void) {
 }
 
 void i2c_send_byte(unsigned char byte) {        // send data byte out to bus
+    while (i2c_idle_status());
     I2C1TRN = byte;
-    i2c_ack_wait();
+    while (TBF);    // wait for 8 data bits to be sent
+    i2c_ack_wait(); // process ack on 9th bit
 }
 
 unsigned char i2c_read_byte(void) {
@@ -70,11 +72,14 @@ void i2c_ack_wait(void) {
     T2CONbits.TCKPS1 = 1;
     TMR2 = 0x0000;
     T2CONbits.TON = 1;
-    while (ACKSTAT) {       // wait for slave ack, timeout after 10ms
+    while (TRSTAT) {       // wait for slave ack, timeout after 10ms
         if (TMR2 >= 625) {
             write_debug_string("i2c ack timeout");
             return;
         }
+    }
+    if (!ACKSTAT) {
+        write_debug_string("slave nacked!");
     }
 }
 
