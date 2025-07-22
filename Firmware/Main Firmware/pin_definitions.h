@@ -17,6 +17,7 @@
 #define DISPLAY_LATCH LATDbits.LATD8
 #define DISPLAY_BLANK LATDbits.LATD9
 #define VOL_A PORTDbits.RD10
+#define SPI_CS LATDbits.LATD0
 
 /* Define digital inputs and outputs for Port E */
 #define nSOURCE PORTEbits.RE0

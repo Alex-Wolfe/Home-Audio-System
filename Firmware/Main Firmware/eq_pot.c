@@ -2,36 +2,45 @@
 #include "user.h"
 #include "i2c.h"
 #include "spi.h"
+#include "pin_definitions.h"
 
 /******************************************************************************/
-/* EQ_POT Global Variables                                                  */
+/* EQ_POT Global Variables                                                    */
 /******************************************************************************/
 
 
 
 
 /******************************************************************************/
-/* VOL POT Functions                                                         */
+/* EQ POT Functions                                                           */
 /******************************************************************************/
 
 void set_right_low_level(unsigned char val) {   //255 is max
+    SPI_CS = 0;
     spi2_write(val >> 3);
     spi2_write(val << 5);
+    SPI_CS = 1;
 }
 
 void set_right_high_level(unsigned char val) {
+    SPI_CS = 0;
     spi2_write(0x20 | (val >> 3));
     spi2_write(val << 5);
+    SPI_CS = 1;
 }
 
 void set_left_low_level(unsigned char val) {
+    SPI_CS = 0;
     spi2_write(0x40 | (val >> 3));
     spi2_write(val << 5);
+    SPI_CS = 1;
 }
 
 void set_left_high_level(unsigned char val) {
+    SPI_CS = 0;
     spi2_write(0x60 | (val >> 3));
     spi2_write(val << 5);
+    SPI_CS = 1;
 }
 
 void set_eq(unsigned char lo, unsigned char hi) {

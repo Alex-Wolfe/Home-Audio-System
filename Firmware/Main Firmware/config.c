@@ -115,15 +115,15 @@ void configure_SPI2_port(void) {
     SPI2STATLbits.SPIROV = 0;       // clear the overflow
     SPI2CON1Lbits.MSTEN = 1;        // enable master mode
     SPI2CON1Lbits.DISSDI = 1;       // disable SDI pin on SPI port 2
-    SPI2CON1Hbits.FRMEN = 1;        // use chip select as FSYNC
-    SPI2CON1Hbits.FRMSYPW = 1;      // frame sync is one serial word length
-    SPI2CON1Hbits.MSSEN = 1;        // give peripheral automatic control of CS
-    SPI2CON2Lbits.WLENGTH = 0b01010; // use 11 bit word lengths
+//    SPI2CON1Hbits.FRMEN = 1;        // use chip select as FSYNC
+//    SPI2CON1Hbits.FRMSYPW = 1;      // frame sync is one serial word length
+//    SPI2CON1Hbits.MSSEN = 1;        // give peripheral automatic control of CS
+//    SPI2CON2Lbits.WLENGTH = 0b01010; // use 11 bit word lengths
 //    setup interrupts here
     SPI2CON1Lbits.SPIEN = 1;        // enable SPI
     RPOR15 = 0x0A;                  // Assign MOSI Pin
     RPOR8 = 0x0B;                   // Assign SCLK Pin
-    RPOR5 = 0xC0;                   // Assign CS Pin
+//    RPOR5 = 0xC0;                   // Assign CS Pin
 //    RPINR22 = 0x0C;                 // Assign MISO Pin
 }
 
