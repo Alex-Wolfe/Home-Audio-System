@@ -357,14 +357,16 @@ void update_pots(void) {
         volume_changed_flag = 0;
     }
     if (eq_low_changed_flag) {
-        set_left_low_level(volume_encoder_destination[LOW_ADJUST]);
-        set_right_low_level(volume_encoder_destination[LOW_ADJUST]);
+        set_left_low_level(volume_encoder_destination[LOW_ADJUST]*8);
+        set_right_low_level(volume_encoder_destination[LOW_ADJUST]*8);
         eq_low_changed_flag = 0;
+        delayus(50);
     }
     if (eq_high_changed_flag) {
-        set_left_high_level(volume_encoder_destination[HIGH_ADJUST]);
-        set_right_high_level(volume_encoder_destination[HIGH_ADJUST]);
+        set_left_high_level(volume_encoder_destination[HIGH_ADJUST]*8);
+        set_right_high_level(volume_encoder_destination[HIGH_ADJUST]*8);
         eq_high_changed_flag = 0;
+        delayus(50);
     }
 }
 

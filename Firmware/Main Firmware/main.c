@@ -102,7 +102,6 @@
 #define FM 3
 
 
-
 int main(void) {
     
     /* Disable reference oscillator */

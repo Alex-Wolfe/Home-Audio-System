@@ -17,45 +17,59 @@
 
 void set_right_low_level(unsigned char val) {   //255 is max
     SPI_CS = 0;
-    spi2_write(val >> 3);
-    spi2_write(val << 5);
+    spi2_write(0x00);
+    spi2_write(val);
+    delayus(50);
     SPI_CS = 1;
+    delayus(20);
 }
 
 void set_right_high_level(unsigned char val) {
     SPI_CS = 0;
-    spi2_write(0x20 | (val >> 3));
-    spi2_write(val << 5);
+    spi2_write(0x01);
+    spi2_write(val);
+    delayus(50);
     SPI_CS = 1;
+    delayus(20);
 }
 
 void set_left_low_level(unsigned char val) {
     SPI_CS = 0;
-    spi2_write(0x40 | (val >> 3));
-    spi2_write(val << 5);
+    spi2_write(0x02);
+    spi2_write(val);
+    delayus(50);
     SPI_CS = 1;
+    delayus(20);
 }
 
 void set_left_high_level(unsigned char val) {
     SPI_CS = 0;
-    spi2_write(0x60 | (val >> 3));
-    spi2_write(val << 5);
+    spi2_write(0x03);
+    spi2_write(val);
+    delayus(50);
     SPI_CS = 1;
+    delayus(20);
 }
 
 void set_eq(unsigned char lo, unsigned char hi) {
-    set_right_low_level(lo);
-    set_right_high_level(hi);
-    set_left_low_level(lo);
-    set_left_high_level(hi);
+//    SPI_CS = 0;
+//    set_right_low_level(lo);
+//    delayus(20);
+//    set_right_high_level(hi);
+//    delayus(20);
+//    set_left_low_level(lo);
+//    delayus(20);
+//    set_left_high_level(hi);
+//    delayus(20);
+//    SPI_CS = 1;
 }
 
 void init_eq(void) {
-    set_right_low_level(128);
-    delayus(10);
-    set_right_high_level(128);
-    delayus(10);
-    set_left_low_level(128);
-    delayus(10);
-    set_left_high_level(128);
+//    set_right_low_level(128);
+//    delayus(20);
+//    set_right_high_level(128);
+//    delayus(20);
+//    set_left_low_level(128);
+//    delayus(20);
+//    set_left_high_level(128);
 }

@@ -23,6 +23,8 @@ void config_app(void) {
     
     TEST = 0;           // heartbeat LED off
     
+    SPI_CS = 1;
+    
     PLAY_PAUSE = 1;     // set BT play/pause pin
     VOL_UP = 1;         // Set VOL up and dn signals to bluetooth high
     VOL_DN = 1;
