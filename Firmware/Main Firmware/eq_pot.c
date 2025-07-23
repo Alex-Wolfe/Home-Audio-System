@@ -65,11 +65,11 @@ void set_eq(unsigned char lo, unsigned char hi) {
 }
 
 void init_eq(void) {
-//    set_right_low_level(128);
-//    delayus(20);
-//    set_right_high_level(128);
-//    delayus(20);
-//    set_left_low_level(128);
-//    delayus(20);
-//    set_left_high_level(128);
+    set_right_low_level(128);
+    delayus(20);
+    set_right_high_level(128);
+    delayus(20);
+    set_left_low_level(128);
+    delayus(20);
+    set_left_high_level(128);
 }
