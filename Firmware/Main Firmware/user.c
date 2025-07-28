@@ -11,7 +11,6 @@
 #define SAMPLES_PER_STEP 2
 #define DEBOUNCE_DELAY 63      // delay of ~1ms assuming 256 prescalar
 
-
 enum sources {      // arguments for set source function
     AUX,
     BT,
@@ -155,14 +154,7 @@ void toggle_source(void) {
 
 void restore_settings(void) {
     set_source(read_eeprom_source());
-//    unsigned int test = read_eeprom_frequency();  //fix eventually
-//    if (test < 0xFFFF) {
-//        tune_encoder_destination[SOURCE_STATUS] = test;
-//    }
-//    else {
-//        tune_encoder_destination[SOURCE_STATUS] = 999;
-//    }
-    tune_encoder_destination[SOURCE_STATUS] = 999;
+    tune_encoder_destination[SOURCE_STATUS] = read_eeprom_frequency();
 }
 
 /* Called by interrupt for source button */

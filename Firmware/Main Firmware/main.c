@@ -110,18 +110,23 @@ int main(void) {
     /* Initialize IO ports and peripherals */
     config_app();
     
+    /* Mute volume */
+    set_volume(0x00); // Mute right and left channels 
+    
+    /* Set EQ potentiometer to mid range */
+    init_eq();
+  
     /* Write FW version to debug UART header */
     write_debug_string("v0.1 Alpha");
     
-    /* Set VOL and EQ potentiometers to low level */
-    init_eq();
-    init_volume();
-  
-    /* Initialize LEDs with test display */
+    /* Initialize LEDs with test animation */
     display_test();
     
     /* Restore previous settings */
     restore_settings();
+    
+    /* Set volume to (8*)3 on startup */
+    set_volume(24);
     
     
     while(1) {

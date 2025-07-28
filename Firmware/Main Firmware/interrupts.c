@@ -62,8 +62,7 @@
 /* Interrupt Routines                                                         */
 /******************************************************************************/
 
-void ISR _T1Interrupt(void) {       // deactivated to use Timer 1 for something
-//    TEST ^= 1;    
+void ISR _T1Interrupt(void) {
     /* if one second passes without volume encoder movement, and device is in 
        ADJUST_VOLUME state, then go back to SOURCE_STATUS default state */
     set_volume_timeout_flag();
