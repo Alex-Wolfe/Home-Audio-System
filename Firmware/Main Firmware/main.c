@@ -115,6 +115,9 @@ int main(void) {
     
     /* Set EQ potentiometer to mid range */
     init_eq();
+    
+    /* Restore previous settings */
+    restore_settings();
   
     /* Write FW version to debug UART header */
     write_debug_string("v0.1 Alpha");
@@ -122,8 +125,8 @@ int main(void) {
     /* Initialize LEDs with test animation */
     display_test();
     
-    /* Restore previous settings */
-    restore_settings();
+    /* Enable 2.5V LDO */
+    TEST = 1;
     
     /* Set volume to (8*)3 on startup */
     set_volume(24);

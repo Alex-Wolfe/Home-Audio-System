@@ -154,7 +154,8 @@ void toggle_source(void) {
 
 void restore_settings(void) {
     set_source(read_eeprom_source());
-    tune_encoder_destination[SOURCE_STATUS] = read_eeprom_frequency();
+//    tune_encoder_destination[SOURCE_STATUS] = read_eeprom_frequency();
+    tune_encoder_destination[SOURCE_STATUS] = 999;
 }
 
 /* Called by interrupt for source button */
