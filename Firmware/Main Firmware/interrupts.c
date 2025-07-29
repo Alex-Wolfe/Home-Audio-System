@@ -71,8 +71,7 @@ void ISR _T1Interrupt(void) {
 }
 
 void ISR _T3Interrupt(void) {
-    step_selected_index();
-    refresh_display();           //takes minimum 50us due to latch data function
+    set_screen_refresh_flag();
     IFS0bits.T3IF = 0;
 }
 

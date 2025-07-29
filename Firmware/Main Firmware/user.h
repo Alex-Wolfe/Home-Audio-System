@@ -16,10 +16,6 @@ void delayms(unsigned int ms);
  *     Uses Timer 2        */
 void delayus(unsigned int us);
 
-/* Delay by us microseconds 
-    Uses Timer 4            */
-void intdelayus(unsigned int us);
-
 /* Set input audio source*/
 void set_source(unsigned char a);
 
@@ -62,8 +58,10 @@ void update_bargraphs_with_adc(void);
 
 void loop_handler(void);
 
+void update_display(void);
+
 void set_volume_timeout_flag(void);
 
 void volume_timeout(void);
 
-void update_display(void);
+void set_screen_refresh_flag(void);

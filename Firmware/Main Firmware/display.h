@@ -12,11 +12,11 @@ void write_bargraph(unsigned char index, unsigned char amplitude);
 
 void write_first_segments_text(char *text);
 
-void write_first_segments_int(unsigned int value);
+void write_first_segments_int(int value);
 
 void write_second_segments_text(char *text);
 
-void write_second_segments_int(unsigned int value);
+void write_second_segments_int(int value);
 
 void step_selected_index(void);
 

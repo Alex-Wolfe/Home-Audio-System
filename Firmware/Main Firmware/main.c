@@ -96,11 +96,6 @@
 /* Main Program                                                               */
 /******************************************************************************/
 
-#define AUX 0       // arguments for set source function
-#define BT 1
-#define TV 2
-#define FM 3
-
 
 int main(void) {
     
