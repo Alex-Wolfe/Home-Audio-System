@@ -78,7 +78,6 @@ unsigned char eq_lookup_table[32] = {6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 23, 26,
 unsigned int tune_encoder_destination[1] = {999};
 
 unsigned char volume_timeout_flag = 0;
-unsigned char screen_refresh_flag = 0;
 
 /******************************************************************************/
 /* User Functions                                                             */
@@ -104,6 +103,18 @@ void delayus(unsigned int us) {
     T2CONbits.TON = 1;
     TMR2 = 0x0000;
     while (TMR2 <= ticks);
+}
+
+/* Assumes fcy of 16MHz, 4000us max
+    delay function for used in interrupts so that timers don't collide */
+void intdelayus(unsigned int us) {
+    T4CONbits.TON = 0;
+    T4CONbits.TCKPS0 = 0;       // change prescalar to 1
+    T4CONbits.TCKPS1 = 0;
+    unsigned int ticks = us * 16;
+    T4CONbits.TON = 1;
+    TMR4 = 0x0000;
+    while (TMR4 <= ticks);
 }
 
 /* Set input source with decoder 
@@ -496,11 +507,7 @@ void loop_handler(void) {
     }
     update_pots();  //update pots depending on which flags are set
     update_bargraphs_with_adc();    // update bargraphs with audio amplitude
-    if (screen_refresh_flag) {
-        step_selected_index();  //increment character to be multiplexed
-        refresh_display();      // shift out shift array for led data
-        screen_refresh_flag = 0;
-    }
+    
 }
 
 void update_display(void) {
@@ -556,8 +563,4 @@ void volume_timeout(void) {
         state_changed_flag = 1;
     }
     volume_timeout_flag = 0;
-}
-
-void set_screen_refresh_flag(void) {
-    screen_refresh_flag = 1;
 }

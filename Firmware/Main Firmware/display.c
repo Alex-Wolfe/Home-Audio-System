@@ -45,6 +45,7 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
     }
     unsigned char home_byte = (10 * index) / 8;
     unsigned char offset_bits = (10 * index) % 8;
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     *(shift_array + home_byte) &= 0xFF >> (8 - offset_bits);
     *(shift_array + home_byte + 1) &= 0xFF << (2 + offset_bits);
     if (amplitude <= 8 - offset_bits) {
@@ -54,16 +55,30 @@ void write_bargraph(unsigned char index, unsigned char amplitude) {
         *(shift_array + home_byte) |= (0xFF << offset_bits);
         *(shift_array + home_byte + 1) |= (0xFF >> (16 - (amplitude + offset_bits)));
     }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 /* Edit bytes in memory corresponding to 7 segment display character LEDs */
 void write_first_segments_text(char *text) {
-    for (unsigned char j = 0; *(text + j) != '\0'; j++) {
-        *(shift_array + 17 - j) = alphabet[*(text + j) - 48];
+    unsigned char temp[4] = {0,0,0,0};
+    unsigned char j = 0;
+    for (j = 0; *(text + j) != '\0'; j++) {
+        temp[j] = alphabet[*(text + j) - 48];
     }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // write segments in loop
+        if (i <= j) {
+            *(shift_array + 17 - i) = temp[i];
+        }
+        else {
+            *(shift_array + 17 - i) = 0x00;            
+        }
+    }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 void write_first_segments_int(int value) {
+    unsigned char temp[4] = {0,0,0,0};
     if (value == 0) {
         write_first_segments_text("0");
         return;
@@ -76,22 +91,40 @@ void write_first_segments_int(int value) {
             break;
         }
         remainder = value % 10;
-        *(shift_array + 14 + j) = alphabet[remainder];
+        temp[j] = alphabet[remainder];
         value /= 10; 
         j++;
+    }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 14 + i) = temp[i];
     }
     if (original < 0) {
         *(shift_array + 14 + j) = 0x02;  // if neg value, write negative sign
     }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 void write_second_segments_text(char *text) {
-    for (unsigned char j = 0; *(text + j) != '\0'; j++) {
-        *(shift_array + 13 - j) = alphabet[*(text + j) - 48];
+    unsigned char temp[4] = {0,0,0,0};
+    unsigned char j = 0;
+    for (j = 0; *(text + j) != '\0'; j++) {
+        temp[j] = alphabet[*(text + j) - 48];
     }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // write segments in loop
+        if (i <= j) {
+            *(shift_array + 13 - i) = temp[i];
+        }
+        else {
+            *(shift_array + 13 - i) = 0x00;            
+        }
+    }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 void write_second_segments_int(int value) {
+    unsigned char temp[4] = {0,0,0,0};
     if (value == 0) {
         write_second_segments_text("0");
         return;
@@ -99,19 +132,23 @@ void write_second_segments_int(int value) {
     int original = value;
     unsigned char j = 0;
     unsigned char remainder;
-    if (value)
     while (value) {
         if (j > 3) {
             break;
         }
         remainder = value % 10;
-        *(shift_array + 10 + j) = alphabet[remainder];
+        temp[j] = alphabet[remainder];
         value /= 10; 
         j++;
+    }
+    IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
+    for (unsigned char i = 0; i < 4; i++) { // clear character data
+        *(shift_array + 10 + i) = temp[i];
     }
     if (original < 0) {
         *(shift_array + 10 + j) = 0x02;  // if neg value, write negative sign
     }
+    IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
 /* Called by ISR to multiplex 7 segment display characters */
@@ -131,7 +168,7 @@ void latch_data(void) {
     while (SPI1STATLbits.SPITBF);   // wait for buffer to be empty
     DISPLAY_LATCH = 1; // latch in data to output
     LATCH = 1;
-    delayus(50); // this length uncertain, but seems to work
+    intdelayus(50); // this length uncertain, but seems to work
     DISPLAY_LATCH = 0;
     LATCH = 0;
 }

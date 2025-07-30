@@ -71,7 +71,8 @@ void ISR _T1Interrupt(void) {
 }
 
 void ISR _T3Interrupt(void) {
-    set_screen_refresh_flag();
+    step_selected_index();  //increment character to be multiplexed
+    refresh_display();
     IFS0bits.T3IF = 0;
 }
 
