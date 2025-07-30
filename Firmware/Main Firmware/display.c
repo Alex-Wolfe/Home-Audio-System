@@ -77,8 +77,13 @@ void write_first_segments_text(char *text) {
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
-void write_first_segments_int(unsigned int value) {
+void write_first_segments_int(int value) {
     unsigned char temp[4] = {0,0,0,0};
+    if (value == 0) {
+        write_first_segments_text("0");
+        return;
+    }
+    int original = value;
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -93,6 +98,9 @@ void write_first_segments_int(unsigned int value) {
     IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     for (unsigned char i = 0; i < 4; i++) { // clear character data
         *(shift_array + 14 + i) = temp[i];
+    }
+    if (original < 0) {
+        *(shift_array + 14 + j) = 0x02;  // if neg value, write negative sign
     }
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
@@ -115,8 +123,13 @@ void write_second_segments_text(char *text) {
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }
 
-void write_second_segments_int(unsigned int value) {
+void write_second_segments_int(int value) {
     unsigned char temp[4] = {0,0,0,0};
+    if (value == 0) {
+        write_second_segments_text("0");
+        return;
+    }
+    int original = value;
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
@@ -131,6 +144,9 @@ void write_second_segments_int(unsigned int value) {
     IEC0bits.T3IE = 0;          // Disable Timer 3 interrupt
     for (unsigned char i = 0; i < 4; i++) { // clear character data
         *(shift_array + 10 + i) = temp[i];
+    }
+    if (original < 0) {
+        *(shift_array + 10 + j) = 0x02;  // if neg value, write negative sign
     }
     IEC0bits.T3IE = 1;          // Enable Timer 3 interrupt
 }

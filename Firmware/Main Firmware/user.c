@@ -8,7 +8,6 @@
 #include "vol_pot.h"
 #include "eq_pot.h"
 
-#define SAMPLES_PER_STEP 2
 #define DEBOUNCE_DELAY 63      // delay of ~1ms assuming 256 prescalar
 
 enum sources {      // arguments for set source function
@@ -66,9 +65,14 @@ unsigned char menu_state = SOURCE_STATUS;
 unsigned char state_changed_flag = 0;
 
 /* bins for results from volume encoder depending on menu state 
- * 3(*8) is starting volume. 12 is starting eq value which represents 0dB
- * but can go to 0 (-12dB) and 24 (+12dB)             LO  HI    */
-unsigned char volume_encoder_destination[4] = {0, 24, 12, 12};
+ * 3(*8) is starting volume. 25 is starting eq value which represents -6dB
+ * but can go to 0 (-32dB) to 31 (0dB)*/
+unsigned char volume_encoder_destination[4] = {0, 24, 25, 25};
+
+/* Table where each index is a step in dB of the attenuation */
+unsigned char eq_lookup_table[32] = {6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 23, 26,
+    29, 32, 36, 41, 46, 51, 57, 64, 72, 81, 91, 102, 114, 128, 144, 161, 181,
+    203, 228, 255};
 
 /* bins for results from tune encoder depending on menu state */
 unsigned int tune_encoder_destination[1] = {999};
@@ -301,13 +305,13 @@ void volume_encoder_inc(void) {
             }
             break;
         case LOW_ADJUST:
-            if (volume_encoder_destination[menu_state] <= 24) {
+            if (volume_encoder_destination[menu_state] <= 30) {
                 volume_encoder_destination[menu_state]++;
                 eq_low_changed_flag = 1;
             }
             break;
         case HIGH_ADJUST:
-            if (volume_encoder_destination[menu_state] <= 24) {
+            if (volume_encoder_destination[menu_state] <= 30) {
                 volume_encoder_destination[menu_state]++;
                 eq_high_changed_flag = 1;
             }
@@ -350,16 +354,14 @@ void update_pots(void) {
         volume_changed_flag = 0;
     }
     if (eq_low_changed_flag) {
-        set_left_low_level(volume_encoder_destination[LOW_ADJUST]*8);
-        set_right_low_level(volume_encoder_destination[LOW_ADJUST]*8);
+        set_left_low_level(eq_lookup_table[volume_encoder_destination[LOW_ADJUST]]);
+        set_right_low_level(eq_lookup_table[volume_encoder_destination[LOW_ADJUST]]);
         eq_low_changed_flag = 0;
-        delayus(50);
     }
     if (eq_high_changed_flag) {
-        set_left_high_level(volume_encoder_destination[HIGH_ADJUST]*8);
-        set_right_high_level(volume_encoder_destination[HIGH_ADJUST]*8);
+        set_left_high_level(eq_lookup_table[volume_encoder_destination[HIGH_ADJUST]]);
+        set_right_high_level(eq_lookup_table[volume_encoder_destination[HIGH_ADJUST]]);
         eq_high_changed_flag = 0;
-        delayus(50);
     }
 }
 
@@ -438,6 +440,8 @@ void update_ADC_memory(void) {
     adc_done_flag = 1;
 }
 
+/* This function converts adc counts to log display on the bar graphs 
+    starting with -3dBFS to -30dBFS in steps of 3dB */
 unsigned char get_bar_from_adc(unsigned int counts) {
     if (counts <= 129) {
         return 0;
@@ -506,20 +510,6 @@ void loop_handler(void) {
     
 }
 
-/* Set by Timer 1 interrupt to timeout volume adjust screen*/
-void set_volume_timeout_flag(void) {
-    volume_timeout_flag = 1;
-}
-
-/* called to timeout volume adjust screen */
-void volume_timeout(void) {
-    if (menu_state == VOLUME_ADJUST) {
-        menu_state = SOURCE_STATUS;
-        state_changed_flag = 1;
-    }
-    volume_timeout_flag = 0;
-}
-
 void update_display(void) {
     switch (menu_state) {
         case SOURCE_STATUS:
@@ -544,7 +534,7 @@ void update_display(void) {
             if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text("LO");
-                write_second_segments_int(volume_encoder_destination[menu_state]);
+                write_second_segments_int(volume_encoder_destination[menu_state] - 25); //display as -6db being "0"
                 state_changed_flag = 0;
             }
             break;
@@ -552,11 +542,25 @@ void update_display(void) {
             if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text("HI");
-                write_second_segments_int(volume_encoder_destination[menu_state]);
+                write_second_segments_int(volume_encoder_destination[menu_state] - 25);
                 state_changed_flag = 0;
             }
             break;
         default:
             break;
     }
+}
+
+/* Set by Timer 1 interrupt to timeout volume adjust screen*/
+void set_volume_timeout_flag(void) {
+    volume_timeout_flag = 1;
+}
+
+/* called to timeout volume adjust screen */
+void volume_timeout(void) {
+    if (menu_state == VOLUME_ADJUST) {
+        menu_state = SOURCE_STATUS;
+        state_changed_flag = 1;
+    }
+    volume_timeout_flag = 0;
 }

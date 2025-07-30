@@ -21,7 +21,7 @@ void config_app(void) {
     configure_ADC();
     configure_interrupts();
     
-    TEST = 0;           // heartbeat LED off
+    TEST = 0;           // heartbeat LED off, 2.5V LDO off
     
     SPI_CS = 1;
     
@@ -239,11 +239,11 @@ void enable_timer3(void) {
     T3CONbits.TCKPS0 = 1;       // set to prescalar of 256
     T3CONbits.TCKPS1 = 1;
     T3CONbits.TSIDL = 0;
-    PR3 = 0x0040;             // set refresh rate to idek
-    T3CONbits.TON = 1;
+    PR3 = 0x0040;           // switch characters every 1ms, screen refresh
+    T3CONbits.TON = 1;      //  every 8ms or 125Hz
 }
 
-/* Used for user delays called by interrupts */
+/* */
 void enable_timer4(void) {
     T4CONbits.TCS = 0;
     T4CONbits.T32 = 0;          // use as 16 bit timer

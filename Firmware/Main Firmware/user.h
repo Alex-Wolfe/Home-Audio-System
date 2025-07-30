@@ -62,8 +62,8 @@ void update_bargraphs_with_adc(void);
 
 void loop_handler(void);
 
+void update_display(void);
+
 void set_volume_timeout_flag(void);
 
 void volume_timeout(void);
-
-void update_display(void);
