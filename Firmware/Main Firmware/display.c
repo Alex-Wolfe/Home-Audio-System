@@ -80,7 +80,7 @@ void write_first_segments_text(char *text) {
 void write_first_segments_int(int value) {
     unsigned char temp[4] = {0,0,0,0};
     if (value == 0) {
-        write_first_segments_text("0");
+        write_first_segments_text("ZZZ0");
         return;
     }
     int original = value;
@@ -126,10 +126,13 @@ void write_second_segments_text(char *text) {
 void write_second_segments_int(int value) {
     unsigned char temp[4] = {0,0,0,0};
     if (value == 0) {
-        write_second_segments_text("0");
+        write_second_segments_text("ZZZ0");
         return;
     }
     int original = value;
+    if (value < 0) {
+        value *= -1;
+    }
     unsigned char j = 0;
     unsigned char remainder;
     while (value) {
