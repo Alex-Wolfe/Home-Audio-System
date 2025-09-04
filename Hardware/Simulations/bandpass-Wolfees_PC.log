@@ -1,0 +1,7 @@
+Questionable use of curly braces in "c1 n002 n001 {c}"
+    Error: undefined symbol in: "[c]"
+Questionable use of curly braces in "c2 n003 n001 {c}"
+    Error: undefined symbol in: "[c]"
+LTspice 24.0.12 for Windows
+Circuit: * C:\Users\adwol\OneDrive\Documents\GitHub\Home-Audio-System\Hardware\Simulations\bandpass.asc
+Start Time: Wed Sep  3 22:05:34 2025
