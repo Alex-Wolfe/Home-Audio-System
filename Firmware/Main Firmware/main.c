@@ -91,6 +91,7 @@
 #include "display.h"
 #include "vol_pot.h"
 #include "eq_pot.h"
+#include "fm_radio.h"
 
 /******************************************************************************/
 /* Main Program                                                               */
@@ -106,7 +107,7 @@ int main(void) {
     config_app();
     
     /* Mute volume */
-    set_volume(0x00); // Mute right and left channels 
+    mute(); // Mute right and left channels 
     
     /* Set EQ potentiometer to mid range */
     init_eq();
@@ -117,14 +118,20 @@ int main(void) {
     /* Write FW version to debug UART header */
     write_debug_string("v0.1 Alpha");
     
+    /* Initialize FM radio */
+    enable_FM();
+    
     /* Initialize LEDs with test animation */
     display_test();
     
     /* Enable 2.5V LDO */
     TEST = 1;
     
-    /* Set volume to (8*)3 on startup */
-    set_volume(24);
+    /* Wait for voltage to settle */
+    delayms(900);
+    
+    /* Set volume on startup */
+    init_volume();
     
     
     while(1) {

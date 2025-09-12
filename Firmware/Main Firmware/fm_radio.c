@@ -63,7 +63,7 @@ void poll_STC(void) {
 
 void enable_FM(void) {
     FM_nRST = 1;
-    delayus(1);
+    delayus(10);
     send_command_byte(0x01);    // send power up command
     i2c_send_byte(0xD0);        // enable cts interrupt, crystal, gpo2
     i2c_send_byte(0x05);

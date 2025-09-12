@@ -7,6 +7,7 @@
 #include "eeprom.h"
 #include "vol_pot.h"
 #include "eq_pot.h"
+#include "fm_radio.h"
 
 #define DEBOUNCE_DELAY 63      // delay of ~1ms assuming 256 prescalar
 
@@ -64,18 +65,16 @@ enum menu_screens {
 unsigned char menu_state = SOURCE_STATUS;
 unsigned char state_changed_flag = 0;
 
-/* bins for results from volume encoder depending on menu state 
- * 3(*8) is starting volume. 25 is starting eq value which represents -6dB
- * but can go to 0 (-32dB) to 31 (0dB)*/
-unsigned char volume_encoder_destination[4] = {0, 24, 25, 25};
+/* bins for results from volume encoder depending on menu state */
+unsigned char volume_encoder_destination[4] = {0, 3, 25, 25};
 
 /* Table where each index is a step in dB of the attenuation */
-unsigned char eq_lookup_table[32] = {6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 23, 26,
+unsigned char db_lookup_table[34] = {1, 3, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 23, 26,
     29, 32, 36, 41, 46, 51, 57, 64, 72, 81, 91, 102, 114, 128, 144, 161, 181,
     203, 228, 255};
 
 /* bins for results from tune encoder depending on menu state */
-unsigned int tune_encoder_destination[1] = {999};
+unsigned int tune_encoder_destination[1] = {963};
 
 unsigned char volume_timeout_flag = 0;
 
@@ -125,24 +124,32 @@ void intdelayus(unsigned int us) {
 void set_source(unsigned char a) {
     switch (a) {
         case AUX:
+            mute();
             IN_SEL_A = 0;
             IN_SEL_B = 0;
-            source_setting = AUX;
+            delayms(500);
+            volume_changed_flag = 1;
             break;
         case BT:
+            mute();
             IN_SEL_A = 1;
             IN_SEL_B = 0;
-            source_setting = BT;
+            delayms(500);
+            volume_changed_flag = 1;
             break;
         case TV:
+            mute();
             IN_SEL_A = 0;
             IN_SEL_B = 1;
-            source_setting = TV;
+            delayms(500);
+            volume_changed_flag = 1;
             break;
         case FM:
+            mute();
             IN_SEL_A = 1;
             IN_SEL_B = 1;
-            source_setting = FM;
+            delayms(500);
+            volume_changed_flag = 1;
             break;
         default:
             break;
@@ -153,7 +160,6 @@ void set_source(unsigned char a) {
 
 void toggle_source(void) {
     source_setting = (source_setting + 1) % 4;
-    set_source(source_setting);
 }
 
 void restore_settings(void) {
@@ -299,19 +305,19 @@ void volume_encoder_inc(void) {
         case SOURCE_STATUS:
             break;
         case VOLUME_ADJUST:
-            if (volume_encoder_destination[menu_state] < 248){
-                volume_encoder_destination[menu_state] += 8; //increase by 8
+            if (volume_encoder_destination[menu_state] <= 32){
+                volume_encoder_destination[menu_state]++;
                 volume_changed_flag = 1;
             }
             break;
         case LOW_ADJUST:
-            if (volume_encoder_destination[menu_state] <= 30) {
+            if (volume_encoder_destination[menu_state] <= 32) {
                 volume_encoder_destination[menu_state]++;
                 eq_low_changed_flag = 1;
             }
             break;
         case HIGH_ADJUST:
-            if (volume_encoder_destination[menu_state] <= 30) {
+            if (volume_encoder_destination[menu_state] <= 32) {
                 volume_encoder_destination[menu_state]++;
                 eq_high_changed_flag = 1;
             }
@@ -326,8 +332,8 @@ void volume_encoder_dec(void) {
         case SOURCE_STATUS:
             break;
         case VOLUME_ADJUST:
-            if (volume_encoder_destination[menu_state] >= 8){
-                volume_encoder_destination[menu_state] -= 8;
+            if (volume_encoder_destination[menu_state] >= 1){
+                volume_encoder_destination[menu_state]--;;
                 volume_changed_flag = 1;
             }
             break;
@@ -350,23 +356,23 @@ void volume_encoder_dec(void) {
 
 void update_pots(void) {
     if (volume_changed_flag) {
-        set_volume(volume_encoder_destination[VOLUME_ADJUST]);
+        set_volume(db_lookup_table[volume_encoder_destination[VOLUME_ADJUST]]);
         volume_changed_flag = 0;
     }
     if (eq_low_changed_flag) {
-        set_left_low_level(eq_lookup_table[volume_encoder_destination[LOW_ADJUST]]);
-        set_right_low_level(eq_lookup_table[volume_encoder_destination[LOW_ADJUST]]);
+        set_left_low_level(db_lookup_table[volume_encoder_destination[LOW_ADJUST]]);
+        set_right_low_level(db_lookup_table[volume_encoder_destination[LOW_ADJUST]]);
         eq_low_changed_flag = 0;
     }
     if (eq_high_changed_flag) {
-        set_left_high_level(eq_lookup_table[volume_encoder_destination[HIGH_ADJUST]]);
-        set_right_high_level(eq_lookup_table[volume_encoder_destination[HIGH_ADJUST]]);
+        set_left_high_level(db_lookup_table[volume_encoder_destination[HIGH_ADJUST]]);
+        set_right_high_level(db_lookup_table[volume_encoder_destination[HIGH_ADJUST]]);
         eq_high_changed_flag = 0;
     }
 }
 
 void init_volume(void) {
-    set_volume(volume_encoder_destination[VOLUME_ADJUST]);
+    set_volume(db_lookup_table[volume_encoder_destination[VOLUME_ADJUST]]);
 }
 
 /* Called by interrupt */
@@ -488,6 +494,7 @@ void update_bargraphs_with_adc(void) {
         write_bargraph(2, get_bar_from_adc(adc_results[6]));    // 400Hz data
         write_bargraph(1, get_bar_from_adc(adc_results[7]));    // 160Hz data
         write_bargraph(0, get_bar_from_adc(adc_results[3]));    // 63Hz data
+        adc_done_flag = 0;
     }
 }
 
@@ -498,14 +505,16 @@ void loop_handler(void) {
     }
     if (tune_changed_flag) {
         write_second_segments_int(tune_encoder_destination[menu_state]);
-        save_eeprom_frequency(tune_encoder_destination[SOURCE_STATUS]);
+        FM_tune_freq(tune_encoder_destination[menu_state]);
+//        save_eeprom_frequency(tune_encoder_destination[SOURCE_STATUS]);
         tune_changed_flag = 0;
     }
     if (source_changed_flag) {  // if source changed, save to eeprom
         save_eeprom_source(source_setting);
+        set_source(source_setting);
         source_changed_flag = 0;
     }
-    update_pots();  //update pots depending on which flags are set
+    update_pots();  // update pots depending on which flags are set
     update_bargraphs_with_adc();    // update bargraphs with audio amplitude
     
 }
@@ -517,7 +526,7 @@ void update_display(void) {
                 clear_segment_data();
                 write_first_segments_text(source_text_array[source_setting]);
                 if (source_setting == FM) { // if FM mode, write tune frequency
-                    write_second_segments_int(tune_encoder_destination[menu_state]);
+                    write_second_segments_int(tune_encoder_destination[menu_state] * 10);
                 }
                 state_changed_flag = 0;
             }
@@ -526,7 +535,7 @@ void update_display(void) {
             if (state_changed_flag) {
                 clear_segment_data();
                 write_first_segments_text("VOL");
-                write_second_segments_int(volume_encoder_destination[menu_state] / 8);
+                write_second_segments_int(volume_encoder_destination[menu_state]);
                 state_changed_flag = 0;
             }
             break;
